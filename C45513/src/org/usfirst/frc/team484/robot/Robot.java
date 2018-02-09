@@ -10,12 +10,22 @@ package org.usfirst.frc.team484.robot;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
+import edu.wpi.first.wpilibj.command.WaitCommand;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import org.usfirst.frc.team484.robot.MatchData.GameFeature;
 import org.usfirst.frc.team484.robot.MatchData.OwnedSide;
+import org.usfirst.frc.team484.robot.commands.auto.AutoDoNothing;
+import org.usfirst.frc.team484.robot.commands.auto.CrossAutoLine;
+import org.usfirst.frc.team484.robot.commands.auto.StraightThenLeftToScale;
+import org.usfirst.frc.team484.robot.commands.auto.StraightThenLeftToSwitch;
+import org.usfirst.frc.team484.robot.commands.auto.StraightThenRightToScale;
+import org.usfirst.frc.team484.robot.commands.auto.StraightThenRightToSwitch;
+import org.usfirst.frc.team484.robot.commands.auto.StraightToSwitch;
 import org.usfirst.frc.team484.robot.subsystems.DriveSub;
 import org.usfirst.frc.team484.robot.subsystems.ElevatorSub;
+import org.usfirst.frc.team484.robot.subsystems.GrabberAngleSub;
 import org.usfirst.frc.team484.robot.subsystems.GrabberSub;
 import org.usfirst.frc.team484.robot.subsystems.ShifterSub;
 
@@ -28,16 +38,19 @@ public class Robot extends TimedRobot {
 	public static final ElevatorSub elevatorSub = new ElevatorSub();
 	public static final GrabberSub grabberSub = new GrabberSub();
 	public static final ShifterSub shifterSub = new ShifterSub();
+	public static final GrabberAngleSub grabberAngleSub = new GrabberAngleSub();
 	
 	//-----Creates Operator Interface-----
 	public static OI oi;
 	
 	//-----Choosers for Auto Mode-----
-	Command autonomousCommand;
-	SendableChooser<Command> llChooser = new SendableChooser<>();
-	SendableChooser<Command> lrChooser = new SendableChooser<>();
-	SendableChooser<Command> rlChooser = new SendableChooser<>();
-	SendableChooser<Command> rrChooser = new SendableChooser<>();
+	private static Command autonomousCommand;
+	private static Command delayCommand;
+	private static final SendableChooser<Command> llChooser = new SendableChooser<>();
+	private static final SendableChooser<Command> lrChooser = new SendableChooser<>();
+	private static final SendableChooser<Command> rlChooser = new SendableChooser<>();
+	private static final SendableChooser<Command> rrChooser = new SendableChooser<>();
+	private static boolean hasAutoCommandStarted = false;
 	
 
 	@Override
@@ -46,9 +59,30 @@ public class Robot extends TimedRobot {
 		oi = new OI();
 		
 		llChooser.setName("Switch Left Scale Left");
+		llChooser.addDefault("Do Nothing", new AutoDoNothing());
+		llChooser.addObject("Switch Front", new StraightToSwitch());
+		llChooser.addObject("Switch Side", new StraightThenRightToSwitch());
+		llChooser.addObject("Scale", new StraightThenRightToScale());
+		llChooser.addObject("Cross Auto Line", new CrossAutoLine());
 		lrChooser.setName("Switch Left Scale Right");
+		lrChooser.addDefault("Do Nothing", new AutoDoNothing());
+		lrChooser.addObject("Switch Front", new StraightToSwitch());
+		lrChooser.addObject("Switch Side", new StraightThenRightToSwitch());
+		lrChooser.addObject("Cross Auto Line", new CrossAutoLine());
 		rlChooser.setName("Switch Right Scale Left");
+		rlChooser.addDefault("Do Nothing", new AutoDoNothing());
+		rlChooser.addObject("Switch Front", new StraightToSwitch());
+		rlChooser.addObject("Switch Side", new StraightThenLeftToSwitch());
+		rlChooser.addObject("Cross Auto Line", new CrossAutoLine());
 		rrChooser.setName("Switch Right Scale Right");
+		rrChooser.addDefault("Do Nothing", new AutoDoNothing());
+		rrChooser.addObject("Switch Front", new StraightToSwitch());
+		rrChooser.addObject("Switch Side", new StraightThenLeftToSwitch());
+		rrChooser.addObject("Scale", new StraightThenLeftToScale());
+		rrChooser.addObject("Cross Auto Line", new CrossAutoLine());
+		
+		SmartDashboard.putNumber("Delay", 0);
+		SmartDashboard.putNumber("Delay Set To", SmartDashboard.getNumber("Delay", 0));
 	}
 
 	@Override
@@ -59,10 +93,12 @@ public class Robot extends TimedRobot {
 	@Override
 	public void disabledPeriodic() {
 		Scheduler.getInstance().run();
+		SmartDashboard.putNumber("Delay Set To", SmartDashboard.getNumber("Delay", 0));
 	}
 
 	@Override
 	public void autonomousInit() {
+		hasAutoCommandStarted = false;
 		OwnedSide switchState = MatchData.getOwnedSide(GameFeature.SWITCH_NEAR);
 		OwnedSide scaleState = MatchData.getOwnedSide(GameFeature.SCALE);
 		if (switchState == OwnedSide.LEFT) {
@@ -85,18 +121,25 @@ public class Robot extends TimedRobot {
 			System.err.println("Could not get field state");
 		}
 		
-		if (autonomousCommand != null) autonomousCommand.start();
+		double delay = SmartDashboard.getNumber("Delay", 0);
+		delayCommand = new WaitCommand("Auto Delay", delay);
+		delayCommand.start();
 		
 		if (!RobotIO.logger.isAlive()) RobotIO.logger.start();
 	}
 
 	@Override
 	public void autonomousPeriodic() {
+		if (delayCommand.isCompleted() && autonomousCommand != null && !hasAutoCommandStarted) {
+			hasAutoCommandStarted = true;
+			autonomousCommand.start();
+		}
 		Scheduler.getInstance().run();
 	}
 
 	@Override
 	public void teleopInit() {
+		if (delayCommand != null) delayCommand.cancel();
 		if (autonomousCommand != null) autonomousCommand.cancel();
 		
 		if (!RobotIO.logger.isAlive()) RobotIO.logger.start();

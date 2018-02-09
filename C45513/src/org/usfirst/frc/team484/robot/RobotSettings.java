@@ -30,6 +30,10 @@ public class RobotSettings {
 	//-----Motor Constants-----
 	public static final boolean INVERT_LEFT_MOTORS = true;
 	public static final boolean INVERT_RIGHT_MOTORS = true;
+	public static final boolean INVERT_ELEVATOR_MOTOR = false;
+	public static final boolean INVERT_GRABBER_ANGLE_MOTOR = false;
+	public static final boolean INVERT_LEFT_CLIMBER_MOTOR = false;
+	public static final boolean INVERT_RIGHT_CLIMBER_MOTOR = false;
 	
 	public static final double VOLTAGE_TARGET = 10.0; //In volts
 	public static final int CAN_COMMAND_TIMEOUT = 10; //In milliseconds
@@ -66,13 +70,20 @@ public class RobotSettings {
 	public static final double SWITCH_HEIGHT = 12; //In inches
 	
 	//-----Ports-----
+		//-----CAN-----
 	public static final int[] LEFT_DRIVE_MOTOR_IDS = {1,2,3};
 	public static final int[] RIGHT_DRIVE_MOTOR_IDS = {4,5,6};
-	
-	public static final int ELEVATOR_MOTOR_PORT = 0;
-	
 	public static final int IMU_TALON_ID = 4; //Talon the IMU is plugged into
 	
+		//-----PWM-----
+	public static final int ELEVATOR_MOTOR_PORT = 0;
+	
+	public static final int GRABBER_ANGLE_MOTOR_PORT = 1;
+	
+	public static final int LEFT_CLIMBER_MOTOR_PORT = 2;
+	public static final int RIGHT_CLIMBER_MOTOR_PORT = 3;
+	
+		//-----DIO-----
 	public static final int LEFT_ENCODER_A_CHANNEL = 0;
 	public static final int LEFT_ENCODER_B_CHANNEL = 1;
 	public static final int RIGHT_ENCODER_A_CHANNEL = 2;
@@ -80,6 +91,10 @@ public class RobotSettings {
 	public static final int ELEVATOR_ENCODER_A_CHANNEL = 4;
 	public static final int ELEVATOR_ENCODER_B_CHANNEL = 5;
 	
+	public static final int GRABBER_ANGLE_UP_DI_PORT = 6;
+	public static final int GRABBER_ANGLE_DOWN_DI_PORT = 7;
+	
+		//-----PCM-----
 	public static final int SHIFTER_SOLENOID_LOW_GEAR_PORT = 1;
 	public static final int SHIFTER_SOLENOID_HIGH_GEAR_PORT = 0;
 	public static final int GRABBER_OPEN_PORT = 2;

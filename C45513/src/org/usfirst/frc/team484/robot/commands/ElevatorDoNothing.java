@@ -1,27 +1,22 @@
 package org.usfirst.frc.team484.robot.commands;
 
 import org.usfirst.frc.team484.robot.Robot;
-import org.usfirst.frc.team484.robot.RobotIO;
 import org.usfirst.frc.team484.robot.subsystems.ElevatorSub;
 
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
- * Controls the elevator using the operator joystick.
+ * Tells the elevator to hold position.
  */
-public class JoystickElevator extends Command {
+public class ElevatorDoNothing extends Command {
 
-    public JoystickElevator() {
+    public ElevatorDoNothing() {
         requires(Robot.elevatorSub);
     }
 
     protected void execute() {
-    		ElevatorSub.setRate(-RobotIO.opStick.getY());
+    		ElevatorSub.setRate(0);
     }
 
     protected boolean isFinished() { return false; }
-
-    protected void end() {
-    		ElevatorSub.doNothing();
-    }
 }

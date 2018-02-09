@@ -14,7 +14,7 @@ import edu.wpi.first.wpilibj.PIDSourceType;
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
- *
+ * Rotates the robot to a given yaw delta.
  */
 public class DriveAngle extends Command {
 	ArrayList<Double> gyroAngles = new ArrayList<>();
@@ -53,7 +53,6 @@ public class DriveAngle extends Command {
 		}, RobotSettings.ROTATE_PID_UPDATE_RATE);
 	}
 
-	// Called just before this Command runs the first time
 	protected void initialize() {
 		double[] ypr = new double[3];
 		RobotIO.imu.getYawPitchRoll(ypr);
@@ -63,7 +62,6 @@ public class DriveAngle extends Command {
 		pid.enable();
 	}
 
-	// Make this return true when this Command no longer needs to run execute()
 	protected boolean isFinished() {
 		if (gyroAngles.size() == 0) return false;
 		double averageRate = gyroAngles.get(gyroAngles.size() - 1) - gyroAngles.get(0);
@@ -71,7 +69,6 @@ public class DriveAngle extends Command {
 				Math.abs(averageRate) < RobotSettings.ROTATE_PID_RATE_TOLERANCE;
 	}
 
-	// Called once after isFinished returns true
 	protected void end() {
 		pid.disable();
 		DriveSub.doNothing();

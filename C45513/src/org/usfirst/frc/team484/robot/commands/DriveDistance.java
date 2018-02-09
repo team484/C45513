@@ -12,7 +12,7 @@ import edu.wpi.first.wpilibj.PIDSourceType;
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
- *
+ * Drives the robot a given distance.
  */
 public class DriveDistance extends Command {
 	private PIDController pid;
@@ -44,7 +44,6 @@ public class DriveDistance extends Command {
 		}, RobotSettings.DRIVE_PID_UPDATE_RATE);
 	}
 
-	// Called just before this Command runs the first time
 	protected void initialize() {
 		RobotIO.leftEncoder.reset();
 		RobotIO.rightEncoder.reset();
@@ -53,13 +52,11 @@ public class DriveDistance extends Command {
 		pid.enable();
 	}
 
-	// Make this return true when this Command no longer needs to run execute()
 	protected boolean isFinished() {
 		return pid.onTarget() &&
 				Math.abs(RobotIO.getFusedEncoderRate()) < RobotSettings.DRIVE_PID_RATE_TOLERANCE;
 	}
 
-	// Called once after isFinished returns true
 	protected void end() {
 		pid.disable();
 		DriveSub.doNothing();

@@ -6,6 +6,7 @@ import java.util.List;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.sensors.PigeonIMU;
 
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Joystick;
@@ -21,12 +22,18 @@ public class RobotIO {
 	public static SpeedControllerGroup leftDriveMotors;
 	public static SpeedControllerGroup rightDriveMotors;
 	public static VictorSP elevatorMotor;
+	public static VictorSP grabberAngleMotor;
+	public static VictorSP leftClimberMotor;
+	public static VictorSP rightClimberMotor;
 	
 	public static DifferentialDrive drive;
 	
 	public static Encoder leftEncoder;
 	public static Encoder rightEncoder;
 	public static Encoder elevatorEncoder;
+	
+	public static DigitalInput grabberAngleUpDI;
+	public static DigitalInput grabberAngleDownDI;
 	
 	public static DoubleSolenoid shifterSolenoid;
 	public static DoubleSolenoid grabberSolenoid;
@@ -70,6 +77,18 @@ public class RobotIO {
 
 		elevatorMotor = new VictorSP(RobotSettings.ELEVATOR_MOTOR_PORT);
 		elevatorMotor.setName("Elevator", "Motor");
+		elevatorMotor.setInverted(RobotSettings.INVERT_ELEVATOR_MOTOR);
+		
+		grabberAngleMotor = new VictorSP(RobotSettings.GRABBER_ANGLE_MOTOR_PORT);
+		grabberAngleMotor.setName("Grabber", "Angle Motor");
+		grabberAngleMotor.setInverted(RobotSettings.INVERT_GRABBER_ANGLE_MOTOR);
+		
+		leftClimberMotor = new VictorSP(RobotSettings.LEFT_CLIMBER_MOTOR_PORT);
+		rightClimberMotor = new VictorSP(RobotSettings.RIGHT_CLIMBER_MOTOR_PORT);
+		leftClimberMotor.setName("Climber", "Left Motor");
+		rightClimberMotor.setName("Climber", "Right Motor");
+		leftClimberMotor.setInverted(RobotSettings.INVERT_LEFT_CLIMBER_MOTOR);
+		rightClimberMotor.setInverted(RobotSettings.INVERT_RIGHT_CLIMBER_MOTOR);
 		
 		drive = new DifferentialDrive(leftDriveMotors, rightDriveMotors);
 		
@@ -86,6 +105,12 @@ public class RobotIO {
 		leftEncoder.setName("Left Drive", "Encoder");
 		rightEncoder.setName("Right Drive", "Encoder");
 		elevatorEncoder.setName("Elevator", "Encoder");
+		
+		//-----Initialize remaining DIO-----
+		grabberAngleUpDI = new DigitalInput(RobotSettings.GRABBER_ANGLE_UP_DI_PORT);
+		grabberAngleDownDI = new DigitalInput(RobotSettings.GRABBER_ANGLE_DOWN_DI_PORT);
+		grabberAngleUpDI.setName("Grabber", "Up Switch");
+		grabberAngleDownDI.setName("Grabber", "Down Switch");
 		
 		//-----Initialize all solenoid actuators-----
 		shifterSolenoid = new DoubleSolenoid(RobotSettings.SHIFTER_SOLENOID_HIGH_GEAR_PORT,
