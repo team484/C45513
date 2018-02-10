@@ -237,37 +237,55 @@ public class RobotLogger extends Thread {
 	}
 	
 	/**
+	 * Un-interrupts the thread. The thread must be started before this method is called
+	 */
+	public void enable() {
+		// interrupted will clear the interrupt flag, which run listens for 
+		Thread.interrupted();
+	}
+	
+	/**
 	 * Runs the logger until the thread is interrupted. To run the logger in a separate thread, use start
 	 * instead of run.
+	 * 
+	 * Interrupting this thread will cause the thread to go into an idle state and wait for the
+	 * interrupt flag to be cleared. Care must be taken as to not otherwise clear the interrupt flag.
+	 * @see #enable
 	 */
 	@Override
 	public void run() {
-		allowNewObjects = false;
-		if (!setActiveSaveDirectory()) return;
-		if (!createWriter()) return;
-		
-		StringBuilder outputString = new StringBuilder();
-		for (LoggerObject loggerobj : loggerObjects) {
-			writeObjNames(loggerobj, outputString);
-		}
-		writeLine(outputString);
-		
-		long loopStart = System.currentTimeMillis();
-		while(!Thread.interrupted()) {
-			for (LoggerObject loggerobj : loggerObjects) {
-				writeObj(loggerobj, outputString);
+		while (true) {
+			if (!isInterrupted()) {
+				allowNewObjects = false;
+				if (!setActiveSaveDirectory()) return;
+				if (!createWriter()) return;
+				
+				StringBuilder outputString = new StringBuilder();
+				for (LoggerObject loggerobj : loggerObjects) {
+					writeObjNames(loggerobj, outputString);
+				}
+				writeLine(outputString);
+				
+				long loopStart = System.currentTimeMillis();
+				while(!isInterrupted()) {
+					for (LoggerObject loggerobj : loggerObjects) {
+						writeObj(loggerobj, outputString);
+					}
+					writeLine(outputString);
+					try {
+						long time = System.currentTimeMillis() - loopStart;
+						Thread.sleep(Math.max(waitTime - time, 0));
+						loopStart = System.currentTimeMillis();
+					} catch (InterruptedException e) {
+						break;
+					}
+				}
+				closeWriter();
+				allowNewObjects = true;
+			} else {
+				Thread.yield();
 			}
-			writeLine(outputString);
-			try {
-				long time = System.currentTimeMillis() - loopStart;
-				Thread.sleep(Math.max(waitTime - time, 0));
-				loopStart = System.currentTimeMillis();
-			} catch (InterruptedException e) {
-				break;
-			}
 		}
-		closeWriter();
-		allowNewObjects = true;
 	}
 	
 	/**

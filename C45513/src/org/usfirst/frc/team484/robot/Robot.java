@@ -83,11 +83,13 @@ public class Robot extends TimedRobot {
 		
 		SmartDashboard.putNumber("Delay", 0);
 		SmartDashboard.putNumber("Delay Set To", SmartDashboard.getNumber("Delay", 0));
+		
+		RobotIO.logger.start();
 	}
 
 	@Override
 	public void disabledInit() {
-		if (RobotIO.logger.isAlive()) RobotIO.logger.interrupt();
+		RobotIO.logger.interrupt();
 	}
 
 	@Override
@@ -125,7 +127,7 @@ public class Robot extends TimedRobot {
 		delayCommand = new WaitCommand("Auto Delay", delay);
 		delayCommand.start();
 		
-		if (!RobotIO.logger.isAlive()) RobotIO.logger.start();
+		RobotIO.logger.enable();
 	}
 
 	@Override
@@ -142,7 +144,7 @@ public class Robot extends TimedRobot {
 		if (delayCommand != null) delayCommand.cancel();
 		if (autonomousCommand != null) autonomousCommand.cancel();
 		
-		if (!RobotIO.logger.isAlive()) RobotIO.logger.start();
+		RobotIO.logger.enable();
 	}
 
 	@Override
