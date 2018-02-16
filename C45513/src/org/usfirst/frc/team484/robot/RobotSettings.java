@@ -76,9 +76,9 @@ public class RobotSettings {
 	public static final int IMU_TALON_ID = 4; //Talon the IMU is plugged into
 	
 		//-----PWM-----
-	public static final int ELEVATOR_MOTOR_PORT = 0;
+	public static final int ELEVATOR_MOTOR_PORT = 1;
 	
-	public static final int GRABBER_ANGLE_MOTOR_PORT = 1;
+	public static final int GRABBER_ANGLE_MOTOR_PORT = 0;
 	
 	public static final int LEFT_CLIMBER_MOTOR_PORT = 2;
 	public static final int RIGHT_CLIMBER_MOTOR_PORT = 3;
