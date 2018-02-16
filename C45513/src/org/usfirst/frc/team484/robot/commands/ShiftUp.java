@@ -15,6 +15,6 @@ public class ShiftUp extends InstantCommand {
 	}
 	
 	protected void execute() {
-		ShifterSub.shiftLow();
+		ShifterSub.shiftHigh();
 	}
 }
