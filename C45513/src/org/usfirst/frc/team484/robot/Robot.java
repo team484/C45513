@@ -84,12 +84,17 @@ public class Robot extends TimedRobot {
 		SmartDashboard.putNumber("Delay", 0);
 		SmartDashboard.putNumber("Delay Set To", SmartDashboard.getNumber("Delay", 0));
 		
-		RobotIO.logger.start();
+		SmartDashboard.putData(llChooser);
+		SmartDashboard.putData(lrChooser);
+		SmartDashboard.putData(rlChooser);
+		SmartDashboard.putData(rrChooser);
+		
+		RobotIO.watchdog.enable();
 	}
 
 	@Override
 	public void disabledInit() {
-		RobotIO.logger.interrupt();
+		RobotIO.logger.disable();
 	}
 
 	@Override
@@ -100,6 +105,7 @@ public class Robot extends TimedRobot {
 
 	@Override
 	public void autonomousInit() {
+		RobotIO.logger.enable();
 		hasAutoCommandStarted = false;
 		OwnedSide switchState = MatchData.getOwnedSide(GameFeature.SWITCH_NEAR);
 		OwnedSide scaleState = MatchData.getOwnedSide(GameFeature.SCALE);

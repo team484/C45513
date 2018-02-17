@@ -1,4 +1,4 @@
-package org.usfirst.frc.team484.robot;
+package org.usfirst.frc.team484.robot.background;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -28,7 +28,7 @@ import edu.wpi.first.wpilibj.Timer;
  * considerate of what is added to the logger as logging can get verbose quickly. After creating an
  * instance of the logger, call the run method to begin logging. Interrupt the thread to stop logging.
  */
-public class RobotLogger extends Thread {
+public class RobotLogger extends BackgroundTask {
 
 	//----------- Private Declaration of Object Types -----------
 	
@@ -83,17 +83,45 @@ public class RobotLogger extends Thread {
 	private File activeSaveDirectory;
 	private File outputFile;
 	private PrintWriter writer;
-	
-	private long waitTime;
+	private StringBuilder outputBuffer = new StringBuilder();
 	
 	/**
 	 * Creates a new RobotLogger instance with a specified time to wait between recording logs. After an
 	 * instance is created, call the log method to add items to the logger then the run method to start
 	 * logging.
-	 * @param msBetweenLogs - Milliseconds between log entries.
+	 * @param interval - Milliseconds between log entries.
 	 */
-	public RobotLogger(long msBetweenLogs) {
-		waitTime = msBetweenLogs;
+	public RobotLogger(long interval) {
+		super(interval);
+	}
+	
+	@Override
+	protected void setup() {
+		if (!setActiveSaveDirectory()) { kill(); return; }
+		if (!createWriter()) { kill(); return; }
+		
+		allowNewObjects = false;
+		
+		for (LoggerObject loggerobj : loggerObjects) {
+			writeObjNames(loggerobj, outputBuffer);
+		}
+		writeLine(outputBuffer);
+	}
+
+	@Override
+	protected void execute() {
+		for (LoggerObject loggerobj : loggerObjects) {
+			writeObj(loggerobj, outputBuffer);
+		}
+		writeLine(outputBuffer);
+		
+	}
+	
+	@Override
+	protected void cleanup() {
+		closeWriter();
+		allowNewObjects = true;
+		outputBuffer.setLength(0);
 	}
 	
 	/**
@@ -226,7 +254,7 @@ public class RobotLogger extends Thread {
 	 * Adds an object to the logger if it is ok do to so.
 	 * @param type - The object type.
 	 * @param obj - The object that is being added.
-	 * @param name - The name given to the obkect.
+	 * @param name - The name given to the object.
 	 */
 	private void addObjectToLogger(ObjectType type, Object obj, String name) {
 		if (!allowNewObjects) {
@@ -235,59 +263,7 @@ public class RobotLogger extends Thread {
 		}
 		loggerObjects.add(new LoggerObject(type, obj, name));
 	}
-	
-	/**
-	 * Un-interrupts the thread. The thread must be started before this method is called
-	 */
-	public void enable() {
-		// interrupted will clear the interrupt flag, which run listens for 
-		Thread.interrupted();
-	}
-	
-	/**
-	 * Runs the logger until the thread is interrupted. To run the logger in a separate thread, use start
-	 * instead of run.
-	 * 
-	 * Interrupting this thread will cause the thread to go into an idle state and wait for the
-	 * interrupt flag to be cleared. Care must be taken as to not otherwise clear the interrupt flag.
-	 * @see #enable
-	 */
-	@Override
-	public void run() {
-		while (true) {
-			if (!isInterrupted()) {
-				allowNewObjects = false;
-				if (!setActiveSaveDirectory()) return;
-				if (!createWriter()) return;
-				
-				StringBuilder outputString = new StringBuilder();
-				for (LoggerObject loggerobj : loggerObjects) {
-					writeObjNames(loggerobj, outputString);
-				}
-				writeLine(outputString);
-				
-				long loopStart = System.currentTimeMillis();
-				while(!isInterrupted()) {
-					for (LoggerObject loggerobj : loggerObjects) {
-						writeObj(loggerobj, outputString);
-					}
-					writeLine(outputString);
-					try {
-						long time = System.currentTimeMillis() - loopStart;
-						Thread.sleep(Math.max(waitTime - time, 0));
-						loopStart = System.currentTimeMillis();
-					} catch (InterruptedException e) {
-						break;
-					}
-				}
-				closeWriter();
-				allowNewObjects = true;
-			} else {
-				Thread.yield();
-			}
-		}
-	}
-	
+
 	/**
 	 * Finds the best directory to write the log files to.
 	 * @return - If it was successful in finding a flash drive.
@@ -301,6 +277,7 @@ public class RobotLogger extends Thread {
 				return true;
 			}
 		}
+		
 		return false;
 	}
 	
@@ -318,6 +295,7 @@ public class RobotLogger extends Thread {
 			e.printStackTrace();
 			return false;
 		}
+		
 		return true;
 	}
 	

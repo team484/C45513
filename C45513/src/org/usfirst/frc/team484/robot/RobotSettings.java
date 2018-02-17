@@ -17,6 +17,7 @@ import edu.wpi.first.wpilibj.CounterBase.EncodingType;
 public class RobotSettings {
 	public static final double ROBOT_UPDATE_RATE = 0.01; //In seconds
 	public static final long LOGGER_UPDATE_RATE = 10; //in milliseconds
+	public static final long WATCHDOG_UPDATE_RATE = 10; // in milliseconds
 	
 	//-----Encoder Constants-----
 	public static final double LEFT_ENCODER_DISTANCE_PER_PULSE = 0.03337939375 / 3.0; //For inches

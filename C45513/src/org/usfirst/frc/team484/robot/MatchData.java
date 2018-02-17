@@ -8,7 +8,6 @@ import edu.wpi.first.wpilibj.DriverStation;
  * and SCALE.
  */
 public class MatchData {
-
     /**
      * Game features including the SWITCH and SCALE. Near denotes close
      * to the alliance wall and FAR denotes furthest from the alliance

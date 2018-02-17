@@ -3,6 +3,9 @@ package org.usfirst.frc.team484.robot;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.usfirst.frc.team484.robot.background.RobotLogger;
+import org.usfirst.frc.team484.robot.background.SystemWatchdog;
+
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.sensors.PigeonIMU;
 
@@ -10,14 +13,16 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.VictorSP;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 
 public class RobotIO {
-	private static List<WPI_TalonSRX> leftTalons = new ArrayList<>();
-	private static List<WPI_TalonSRX> rightTalons = new ArrayList<>();
+	// FIXME: public because SystemWatchdog needs access to individual talons
+	public static List<TogglableSpeedController<WPI_TalonSRX>> leftTalons = new ArrayList<>();
+	public static List<TogglableSpeedController<WPI_TalonSRX>> rightTalons = new ArrayList<>();
 	
 	public static SpeedControllerGroup leftDriveMotors;
 	public static SpeedControllerGroup rightDriveMotors;
@@ -44,6 +49,9 @@ public class RobotIO {
 	public static PigeonIMU imu;
 	
 	public static RobotLogger logger;
+	public static SystemWatchdog watchdog;
+	
+	public static PowerDistributionPanel pdp;
 	
 	/**
 	 * Initializes all objects connected to the RoboRIO.
@@ -51,9 +59,10 @@ public class RobotIO {
 	public RobotIO() {
 		
 		//-----Initialize all rotary actuators-----
+		// NOTE: Code elsewhere (in SystemWatchdog) assumes that the initialization order stays like this
 		for (int id : RobotSettings.LEFT_DRIVE_MOTOR_IDS) {
 			WPI_TalonSRX talon = new WPI_TalonSRX(id);
-			leftTalons.add(talon);
+			leftTalons.add(new TogglableSpeedController<>(talon));
 			talon.setName("Left Drive", "Motor (" + id + ")");
 			talon.setInverted(RobotSettings.INVERT_LEFT_MOTORS);
 			if (id == RobotSettings.IMU_TALON_ID && imu == null) {
@@ -62,13 +71,15 @@ public class RobotIO {
 		}
 		for (int id : RobotSettings.RIGHT_DRIVE_MOTOR_IDS) {
 			WPI_TalonSRX talon = new WPI_TalonSRX(id);
-			rightTalons.add(talon);
+			rightTalons.add(new TogglableSpeedController<>(talon));
 			talon.setName("Right Drive", "Motor (" + id + ")");
 			talon.setInverted(RobotSettings.INVERT_RIGHT_MOTORS);
 			if (id == RobotSettings.IMU_TALON_ID && imu == null) {
 				imu = new PigeonIMU(talon);
 			}
 		}
+		
+		pdp = new PowerDistributionPanel();
 		
 		leftDriveMotors = new SpeedControllerGroup(leftTalons.get(0),
 				leftTalons.subList(1, leftTalons.size()).toArray(new SpeedController[leftTalons.size() - 1]));
@@ -125,6 +136,8 @@ public class RobotIO {
 		
 		//-----Creates logger-----
 		logger = new RobotLogger(RobotSettings.LOGGER_UPDATE_RATE);
+		
+		watchdog = new SystemWatchdog(RobotSettings.WATCHDOG_UPDATE_RATE);
 	}
 	
 	/**
@@ -132,11 +145,13 @@ public class RobotIO {
 	 * PID autonomous operation.
 	 */
 	public static void setVoltageComp(boolean enabled) {
-		for (WPI_TalonSRX talon : leftTalons) {
+		for (TogglableSpeedController<WPI_TalonSRX> togTalon : leftTalons) {
+			WPI_TalonSRX talon = togTalon.getController();
 			talon.configVoltageCompSaturation(RobotSettings.VOLTAGE_TARGET, RobotSettings.CAN_COMMAND_TIMEOUT);
 			talon.enableVoltageCompensation(enabled);
 		}
-		for (WPI_TalonSRX talon : rightTalons) {
+		for (TogglableSpeedController<WPI_TalonSRX> togTalon : rightTalons) {
+			WPI_TalonSRX talon = togTalon.getController();
 			talon.configVoltageCompSaturation(RobotSettings.VOLTAGE_TARGET, RobotSettings.CAN_COMMAND_TIMEOUT);
 			talon.enableVoltageCompensation(enabled);
 		}
