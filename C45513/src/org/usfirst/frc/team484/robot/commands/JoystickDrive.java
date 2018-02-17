@@ -16,6 +16,7 @@ public class JoystickDrive extends Command {
     }
 
     protected void execute() {
+    		if (RobotIO.driveStick == null) DriveSub.squaredDrive(0, 0);
     		DriveSub.squaredDrive(-RobotIO.driveStick.getY(), RobotIO.driveStick.getX());
     }
 

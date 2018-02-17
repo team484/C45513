@@ -31,8 +31,10 @@ public class DriveAngle extends Command {
 
 			@Override
 			public double pidGet() {
+				if (RobotIO.imu == null) return 0;
 				double[] ypr = new double[3];
 				RobotIO.imu.getYawPitchRoll(ypr);
+				if (gyroAngles == null) gyroAngles = new ArrayList<>();
 				gyroAngles.add(ypr[0]);
 				while (gyroAngles.size() > RobotSettings.GYRO_SAMPLES_TO_AVERAGE) {
 					gyroAngles.remove(0);
@@ -55,14 +57,20 @@ public class DriveAngle extends Command {
 
 	protected void initialize() {
 		double[] ypr = new double[3];
-		RobotIO.imu.getYawPitchRoll(ypr);
+		if (RobotIO.imu != null) {
+			RobotIO.imu.getYawPitchRoll(ypr);
+		}
+		if (gyroAngles == null) gyroAngles = new ArrayList<>();
 		gyroAngles.clear();
+		if (pid == null) return;
 		pid.setSetpoint(setpoint + ypr[0]);
 		pid.setAbsoluteTolerance(RobotSettings.ROTATE_PID_TOLERANCE);
 		pid.enable();
 	}
 
 	protected boolean isFinished() {
+		if (pid == null) return false;
+		if (gyroAngles == null) gyroAngles = new ArrayList<>();
 		if (gyroAngles.size() == 0) return false;
 		double averageRate = gyroAngles.get(gyroAngles.size() - 1) - gyroAngles.get(0);
 		return pid.onTarget() &&
@@ -70,7 +78,9 @@ public class DriveAngle extends Command {
 	}
 
 	protected void end() {
-		pid.disable();
+		if (pid != null) {
+			pid.disable();
+		}
 		DriveSub.doNothing();
 	}
 }

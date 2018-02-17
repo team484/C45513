@@ -19,6 +19,7 @@ public class GrabberSub extends Subsystem {
 	 * Closes the cube grabber.
 	 */
 	public static void closeGrabber() {
+		if (RobotIO.grabberSolenoid == null) return;
 		RobotIO.grabberSolenoid.set(Value.kForward);
 	}
 	
@@ -26,7 +27,20 @@ public class GrabberSub extends Subsystem {
 	 * Opens the cube grabber.
 	 */
 	public static void openGrabber() {
+		if (RobotIO.grabberSolenoid == null) return;
 		RobotIO.grabberSolenoid.set(Value.kReverse);
+	}
+	
+	/**
+	 * Toggles the grabber between open and close states
+	 */
+	public static void toggleGrabber() {
+		if (RobotIO.grabberSolenoid == null) return;
+		if (RobotIO.grabberSolenoid.get() == Value.kForward) {
+			openGrabber();
+		} else {
+			closeGrabber();
+		}
 	}
 }
 

@@ -28,10 +28,10 @@ import edu.wpi.first.wpilibj.Timer;
  * considerate of what is added to the logger as logging can get verbose quickly. After creating an
  * instance of the logger, call the run method to begin logging. Interrupt the thread to stop logging.
  */
-public class RobotLogger extends Thread {
+public class RobotLogger {
 
 	//----------- Private Declaration of Object Types -----------
-	
+
 	/**
 	 * A list of all object types the logger supports
 	 */
@@ -51,7 +51,7 @@ public class RobotLogger extends Thread {
 		SPEED_CONTROLLER,
 		TIMER
 	}
-	
+
 	/**
 	 * A struct for storing an added object to the logger
 	 */
@@ -65,7 +65,7 @@ public class RobotLogger extends Thread {
 			this.name = name;
 		}
 	}
-	
+
 	//------------------------ Constants ------------------------
 	private static final String FILE_NAME_PREFIX = "ROBOT_LOG_";
 	private static final String FILE_EXTENSION = ".csv";
@@ -75,17 +75,21 @@ public class RobotLogger extends Thread {
 			"/media/sda",
 			"/media/sdb",
 	};
-	
-	
+
+
 	private ArrayList<LoggerObject> loggerObjects = new ArrayList<>();
 	private boolean allowNewObjects = true;
-	
+
 	private File activeSaveDirectory;
 	private File outputFile;
 	private PrintWriter writer;
-	
+
 	private long waitTime;
-	
+
+	private Thread logThread;
+
+	private String fileName = "";
+
 	/**
 	 * Creates a new RobotLogger instance with a specified time to wait between recording logs. After an
 	 * instance is created, call the log method to add items to the logger then the run method to start
@@ -95,7 +99,7 @@ public class RobotLogger extends Thread {
 	public RobotLogger(long msBetweenLogs) {
 		waitTime = msBetweenLogs;
 	}
-	
+
 	/**
 	 * Adds an analog input to the logger.
 	 * @param name - The name to give the analog input.
@@ -104,7 +108,7 @@ public class RobotLogger extends Thread {
 	public void log(String name, AnalogInput analogInput) {
 		addObjectToLogger(ObjectType.ANALOGINPUT, analogInput, name);
 	}
-	
+
 	/**
 	 * Adds a compressor to the logger.
 	 * @param name - The name to give the compressor.
@@ -113,7 +117,7 @@ public class RobotLogger extends Thread {
 	public void log(String name, Compressor compressor) {
 		addObjectToLogger(ObjectType.COMPRESSOR, compressor, name);
 	}
-	
+
 	/**
 	 * Adds a digital input to the logger.
 	 * @param name - The name to give the digital input.
@@ -122,7 +126,7 @@ public class RobotLogger extends Thread {
 	public void log(String name, DigitalInput digitalInput) {
 		addObjectToLogger(ObjectType.DIGITALINPUT, digitalInput, name);
 	}
-	
+
 	/**
 	 * Adds a double solenoid to the logger.
 	 * @param name - The name to give the double solenoid.
@@ -131,7 +135,7 @@ public class RobotLogger extends Thread {
 	public void log(String name, DoubleSolenoid doubleSolenoid) {
 		addObjectToLogger(ObjectType.DOUBLESOLENOID, doubleSolenoid, name);
 	}
-	
+
 	/**
 	 * Adds the driverstation to the logger.
 	 * @param name - The name to give the driver station.
@@ -140,7 +144,7 @@ public class RobotLogger extends Thread {
 	public void log(String name, DriverStation ds) {
 		addObjectToLogger(ObjectType.DRIVERSTATION, ds, name);
 	}
-	
+
 	/**
 	 * Adds an encoder to the logger.
 	 * @param name - The name to give the encoder.
@@ -149,7 +153,7 @@ public class RobotLogger extends Thread {
 	public void log(String name, Encoder encoder) {
 		addObjectToLogger(ObjectType.ENCODER, encoder, name);
 	}
-	
+
 	/**
 	 * Adds a gyro to the logger.
 	 * @param name - The name to give the gyro.
@@ -158,7 +162,7 @@ public class RobotLogger extends Thread {
 	public void log(String name, GyroBase gyro) {
 		addObjectToLogger(ObjectType.GYRO, gyro, name);
 	}
-	
+
 	/**
 	 * Adds a joystick to the logger.
 	 * @param name - The name to give the joystick.
@@ -167,7 +171,7 @@ public class RobotLogger extends Thread {
 	public void log(String name, Joystick joystick) {
 		addObjectToLogger(ObjectType.JOYSTICK, joystick, name);
 	}
-	
+
 	/**
 	 * Adds a PDP to the logger.
 	 * @param name - The name to give the PDP.
@@ -176,7 +180,7 @@ public class RobotLogger extends Thread {
 	public void log(String name, PowerDistributionPanel pdp) {
 		addObjectToLogger(ObjectType.PDP, pdp, name);
 	}
-	
+
 	/**
 	 * Adds a relay to the logger.
 	 * @param name - The name to give the relay.
@@ -185,7 +189,7 @@ public class RobotLogger extends Thread {
 	public void log(String name, Relay relay) {
 		addObjectToLogger(ObjectType.RELAY, relay, name);
 	}
-	
+
 	/**
 	 * Adds a Robot Controller to the logger.
 	 * @param name - The name to give the relay.
@@ -194,7 +198,7 @@ public class RobotLogger extends Thread {
 	public void log(String name, RobotController controller) {
 		addObjectToLogger(ObjectType.ROBOT_CONTROLLER, controller, name);
 	}
-	
+
 	/**
 	 * Adds a solenoid to the logger.
 	 * @param name - The name to give the solenoid.
@@ -203,7 +207,7 @@ public class RobotLogger extends Thread {
 	public void log(String name, Solenoid solenoid) {
 		addObjectToLogger(ObjectType.SOLENOID, solenoid, name);
 	}
-	
+
 	/**
 	 * Adds a speed controller to the logger.
 	 * @param name - The name to give the speed controller.
@@ -212,7 +216,7 @@ public class RobotLogger extends Thread {
 	public void log(String name, SpeedController speedController) {
 		addObjectToLogger(ObjectType.SPEED_CONTROLLER, speedController, name);
 	}
-	
+
 	/**
 	 * Adds a timer to the logger.
 	 * @param name - The name to give the speed controller.
@@ -221,7 +225,7 @@ public class RobotLogger extends Thread {
 	public void log(String name, Timer timer) {
 		addObjectToLogger(ObjectType.TIMER, timer, name);
 	}
-	
+
 	/**
 	 * Adds an object to the logger if it is ok do to so.
 	 * @param type - The object type.
@@ -235,15 +239,40 @@ public class RobotLogger extends Thread {
 		}
 		loggerObjects.add(new LoggerObject(type, obj, name));
 	}
-	
+
 	/**
-	 * Un-interrupts the thread. The thread must be started before this method is called
+	 * Spins off a new thread to begin logging operations.
+	 * @param name - a string to include in the file name (e.g. "teleop")
 	 */
-	public void enable() {
-		// interrupted will clear the interrupt flag, which run listens for 
-		Thread.interrupted();
+	public void startLogging(String name) {
+		try {
+			if (loggerObjects.size() == 0) return; //No point in logging if there's nothing to log
+			fileName = name;
+			if (logThread != null) {
+				if (logThread.isAlive()) return;
+			}
+			logThread = new Thread() {
+				@Override
+				public void run() {
+					log();
+				}
+			};
+			logThread.start();
+		} catch (Throwable t) {
+			t.printStackTrace();
+		}
 	}
-	
+
+	/**
+	 * Interrupts the logging thread so that it can save the log file and quit.
+	 */
+	public void endLogging() {
+		try {
+			logThread.interrupt();
+		} catch (Throwable t) {
+			t.printStackTrace();
+		}
+	}
 	/**
 	 * Runs the logger until the thread is interrupted. To run the logger in a separate thread, use start
 	 * instead of run.
@@ -252,42 +281,35 @@ public class RobotLogger extends Thread {
 	 * interrupt flag to be cleared. Care must be taken as to not otherwise clear the interrupt flag.
 	 * @see #enable
 	 */
-	@Override
-	public void run() {
-		while (true) {
-			if (!isInterrupted()) {
-				allowNewObjects = false;
-				if (!setActiveSaveDirectory()) return;
-				if (!createWriter()) return;
-				
-				StringBuilder outputString = new StringBuilder();
-				for (LoggerObject loggerobj : loggerObjects) {
-					writeObjNames(loggerobj, outputString);
-				}
-				writeLine(outputString);
-				
-				long loopStart = System.currentTimeMillis();
-				while(!isInterrupted()) {
-					for (LoggerObject loggerobj : loggerObjects) {
-						writeObj(loggerobj, outputString);
-					}
-					writeLine(outputString);
-					try {
-						long time = System.currentTimeMillis() - loopStart;
-						Thread.sleep(Math.max(waitTime - time, 0));
-						loopStart = System.currentTimeMillis();
-					} catch (InterruptedException e) {
-						break;
-					}
-				}
-				closeWriter();
-				allowNewObjects = true;
-			} else {
-				Thread.yield();
+	private void log() {
+		allowNewObjects = false;
+		if (!setActiveSaveDirectory()) return;
+		if (!createWriter()) return;
+
+		StringBuilder outputString = new StringBuilder();
+		for (LoggerObject loggerobj : loggerObjects) {
+			writeObjNames(loggerobj, outputString);
+		}
+		writeLine(outputString);
+
+		long loopStart = System.currentTimeMillis();
+		while(!Thread.interrupted()) {
+			for (LoggerObject loggerobj : loggerObjects) {
+				writeObj(loggerobj, outputString);
+			}
+			writeLine(outputString);
+			try {
+				long time = System.currentTimeMillis() - loopStart;
+				Thread.sleep(Math.max(waitTime - time, 0));
+				loopStart = System.currentTimeMillis();
+			} catch (InterruptedException e) {
+				break;
 			}
 		}
+		closeWriter();
+		allowNewObjects = true;
 	}
-	
+
 	/**
 	 * Finds the best directory to write the log files to.
 	 * @return - If it was successful in finding a flash drive.
@@ -303,14 +325,14 @@ public class RobotLogger extends Thread {
 		}
 		return false;
 	}
-	
+
 	/**
 	 * Creates the print writer object used to write to the log file.
 	 * @return - If the creation of the writer was successful.
 	 */
 	private boolean createWriter() {
-		String timeStamp = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new Date());
-		String fileName = FILE_NAME_PREFIX + timeStamp + FILE_EXTENSION;
+		String timeStamp = new SimpleDateFormat("MM.dd.HH.mm.ss").format(new Date());
+		String fileName = FILE_NAME_PREFIX + this.fileName + timeStamp + FILE_EXTENSION;
 		outputFile = new File(activeSaveDirectory.getAbsolutePath() + "/" + fileName);
 		try {
 			writer = new PrintWriter(outputFile);
@@ -320,7 +342,7 @@ public class RobotLogger extends Thread {
 		}
 		return true;
 	}
-	
+
 	/**
 	 * Writes a line to the writer and clears the string builder cache.
 	 * @param line - The line to write.
@@ -332,7 +354,7 @@ public class RobotLogger extends Thread {
 		}
 		line.setLength(0);
 	}
-	
+
 	/**
 	 * Flushes and closes the print writer.
 	 */
@@ -340,7 +362,7 @@ public class RobotLogger extends Thread {
 		writer.flush();
 		writer.close();
 	}
-	
+
 	/**
 	 * Writes the logger object table headers to the string builder.
 	 * @param loggerObject - The object that needs to be added to the header.
@@ -406,7 +428,7 @@ public class RobotLogger extends Thread {
 			sb.append(loggerObject.name + " - current,");
 			sb.append(loggerObject.name + " - voltage,");
 			sb.append(loggerObject.name + " - brown-out,");
-		break;
+			break;
 		case SOLENOID:
 			sb.append(loggerObject.name + ",");
 			break;
@@ -420,7 +442,7 @@ public class RobotLogger extends Thread {
 			break;
 		}
 	}
-	
+
 	/**
 	 * Writes the state of a logger object to the string builder.
 	 * @param loggerObject - The object used to write the state of.

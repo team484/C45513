@@ -24,6 +24,7 @@ public class GrabberAngleSub extends Subsystem {
 	 * @param speed - the rate
 	 */
 	public static void setRotateSpeed(double speed) {
+		if (RobotIO.grabberAngleMotor == null) return;
 		if (speed > 0 && isUp()) {
 			RobotIO.grabberAngleMotor.set(0);
 			return;
@@ -37,12 +38,21 @@ public class GrabberAngleSub extends Subsystem {
 		RobotIO.grabberAngleMotor.set(speed);
 	}
 	
+	/**
+	 * Checks if the arm is already down
+	 * @return true if arm is rotated down all the way.
+	 */
 	public static boolean isDown() {
+		if (RobotIO.grabberAngleDownDI == null) return false;
 		return RobotIO.grabberAngleDownDI.get();
 	}
 	
+	/**
+	 * Checks if the arm is already up. Will only work when arm is powered.
+	 * @return true if arm is rotated up all the way.
+	 */
 	public static boolean isUp() {
-		return RobotIO.grabberAngleUpDI.get();
+		return false; //TODO: Use current draw to determine this
 	}
 }
 

@@ -16,7 +16,6 @@ public class ElevatorSub extends Subsystem {
 	 * other commands are running that require the subsystem.
 	 */
     public void initDefaultCommand() {
-        // Set the default command for a subsystem here.
         setDefaultCommand(new JoystickElevator());
     }
     
@@ -24,6 +23,7 @@ public class ElevatorSub extends Subsystem {
      * Applies an output of 0 to the elevator motor.
      */
     public static void doNothing() {
+		if (RobotIO.elevatorMotor == null) return;
     		RobotIO.elevatorMotor.set(0);
     }
     
@@ -32,7 +32,8 @@ public class ElevatorSub extends Subsystem {
      * @param speed - the power output from -1 to 1.
      */
     public static void setRate(double speed) {
-    		RobotIO.elevatorMotor.set(speed + RobotSettings.ELEVATOR_GRAVITY_COMPENSATION_POWER);
+    		if (RobotIO.elevatorMotor == null) return;
+    		RobotIO.elevatorMotor.set(speed - RobotSettings.ELEVATOR_GRAVITY_COMPENSATION_POWER);
     }
 }
 

@@ -44,8 +44,10 @@ public class RobotSettings {
 	
 	public static final int SHIFT_UP_BUTTON = 3;
 	public static final int SHIFT_DOWN_BUTTON = 2;
-	public static final int CLOSE_GRABBER_BUTTON = 3;
-	public static final int OPEN_GRABBER_BUTTON = 2;
+	public static final int TOGGLE_GRABBER_BUTTON = 1;
+	public static final int RAISE_GRABBER_BUTTON = 3;
+	public static final int LOWER_GRABBER_BUTTON = 2;
+	public static final int CLIMBER_BUTTON = 4;
 	
 	//-----PID Constants-----
 	public static final double DRIVE_DISTANCE_KP = 0.05;
@@ -65,9 +67,12 @@ public class RobotSettings {
 	public static final int GYRO_SAMPLES_TO_AVERAGE = 20; //Used in determining rate
 	
 	//-----Elevator Settings-----
-	public static final double ELEVATOR_GRAVITY_COMPENSATION_POWER = 0.2;
+	public static final double ELEVATOR_GRAVITY_COMPENSATION_POWER = 0.1;
 	public static final double LIFT_HEIGHT = 60; //In inches
 	public static final double SWITCH_HEIGHT = 12; //In inches
+	
+	//-----Grabber Settings-----
+	public static final double GRABBER_ROTATE_SPEED = 0.8;
 	
 	//-----Ports-----
 		//-----CAN-----

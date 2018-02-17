@@ -13,22 +13,22 @@ public class ShifterSub extends Subsystem {
 	/**
 	 * This subsystem has no default command.
 	 */
-    public void initDefaultCommand() {
-        // Set the default command for a subsystem here.
-    }
-    
-    /**
-     * Shifts the robot into high gear.
-     */
-    public static void shiftHigh() {
-    		RobotIO.shifterSolenoid.set(Value.kForward);
-    }
-    
-    /**
-     * Shifts the robot into low gear.
-     */
-    public static void shiftLow() {
+	public void initDefaultCommand() {}
+
+	/**
+	 * Shifts the robot into high gear.
+	 */
+	public static void shiftHigh() {
+		if (RobotIO.shifterSolenoid == null) return;
+		RobotIO.shifterSolenoid.set(Value.kForward);
+	}
+
+	/**
+	 * Shifts the robot into low gear.
+	 */
+	public static void shiftLow() {
+		if (RobotIO.shifterSolenoid == null) return;
 		RobotIO.shifterSolenoid.set(Value.kReverse);
-}
+	}
 }
 

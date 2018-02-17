@@ -15,7 +15,6 @@ public class DriveSub extends Subsystem {
 	 * other commands are running that require the subsystem.
 	 */
 	public void initDefaultCommand() {
-		// Set the default command for a subsystem here.
 		setDefaultCommand(new JoystickDrive());
 	}
 
@@ -23,6 +22,7 @@ public class DriveSub extends Subsystem {
 	 * Tells the drivetrain to disable motion
 	 */
 	public static void doNothing() {
+		if (RobotIO.drive == null) return;
 		RobotIO.drive.tankDrive(0, 0);
 	}
 	/**
@@ -32,6 +32,7 @@ public class DriveSub extends Subsystem {
 	 */
 
 	public static void squaredDrive(double y, double rot) {
+		if (RobotIO.drive == null) return;
 		RobotIO.drive.arcadeDrive(y, rot, true);
 	}
 
@@ -41,6 +42,7 @@ public class DriveSub extends Subsystem {
 	 * @param rot - rotation power
 	 */
 	public static void linearDrive(double y, double rot) {
+		if (RobotIO.drive == null) return;
 		RobotIO.drive.arcadeDrive(y, rot, false);
 	}
 }

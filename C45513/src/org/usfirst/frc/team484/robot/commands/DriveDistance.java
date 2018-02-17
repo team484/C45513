@@ -45,20 +45,28 @@ public class DriveDistance extends Command {
 	}
 
 	protected void initialize() {
-		RobotIO.leftEncoder.reset();
-		RobotIO.rightEncoder.reset();
+		if (RobotIO.leftEncoder != null) {
+			RobotIO.leftEncoder.reset();
+		}
+		if (RobotIO.rightEncoder != null) {
+			RobotIO.rightEncoder.reset();
+		}
+		if (pid == null) return;
 		pid.setAbsoluteTolerance(RobotSettings.DRIVE_PID_TOLERANCE);
 		pid.setSetpoint(setpoint);
 		pid.enable();
 	}
 
 	protected boolean isFinished() {
+		if (pid == null) return false;
 		return pid.onTarget() &&
 				Math.abs(RobotIO.getFusedEncoderRate()) < RobotSettings.DRIVE_PID_RATE_TOLERANCE;
 	}
 
 	protected void end() {
-		pid.disable();
+		if (pid != null) {
+			pid.disable();
+		}
 		DriveSub.doNothing();
 	}
 }
