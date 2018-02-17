@@ -44,7 +44,7 @@ public class GrabberAngleSub extends Subsystem {
 	 */
 	public static boolean isDown() {
 		if (RobotIO.grabberAngleDownDI == null) return false;
-		return RobotIO.grabberAngleDownDI.get();
+		return !RobotIO.grabberAngleDownDI.get();
 	}
 	
 	/**
