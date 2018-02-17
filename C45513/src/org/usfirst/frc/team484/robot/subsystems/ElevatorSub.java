@@ -5,6 +5,7 @@ import org.usfirst.frc.team484.robot.RobotSettings;
 import org.usfirst.frc.team484.robot.commands.JoystickElevator;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * Subsystem for controlling the cube elevator.
@@ -33,7 +34,34 @@ public class ElevatorSub extends Subsystem {
      */
     public static void setRate(double speed) {
     		if (RobotIO.elevatorMotor == null) return;
-    		RobotIO.elevatorMotor.set(speed - RobotSettings.ELEVATOR_GRAVITY_COMPENSATION_POWER);
+    		if (speed > 0 && isUp()) {
+    			RobotIO.elevatorMotor.set(-RobotSettings.ELEVATOR_GRAVITY_COMPENSATION_POWER);
+    		} else if (speed < 0 && isDown()) {
+    			RobotIO.elevatorMotor.set(-RobotSettings.ELEVATOR_GRAVITY_COMPENSATION_POWER / 2.0);
+    		} else {
+    			RobotIO.elevatorMotor.set(-speed - RobotSettings.ELEVATOR_GRAVITY_COMPENSATION_POWER);
+    		}
+    }
+    
+    /**
+     * Returns true if the elevator is all the way down using a limit switch.
+     * Will return false if the switch is unplugged or cannot be instantiated.
+     * @return true if elevator is down
+     */
+    public static boolean isDown() {
+    	if (RobotIO.elevatorDownDI == null) return false;
+    		return !RobotIO.elevatorDownDI.get();
+    }
+    
+    /**
+     * Returns true if the elevator is all the way up using the hall-effect.
+     * Will return false if the sensor is unplugged or cannot be instantiated.
+     * @return true if elevator is up
+     */
+    public static boolean isUp() {
+    	if (RobotIO.elevatorUpDI == null) return false;
+    	SmartDashboard.putBoolean("is up", RobotIO.elevatorUpDI.get());
+    		return !RobotIO.elevatorUpDI.get();
     }
 }
 

@@ -6,6 +6,7 @@ import java.util.List;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.sensors.PigeonIMU;
 
+import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Encoder;
@@ -34,9 +35,13 @@ public class RobotIO {
 	public static Encoder rightEncoder;
 	public static Encoder elevatorEncoder;
 
-	public static DigitalInput grabberAngleUpDI;
 	public static DigitalInput grabberAngleDownDI;
+	public static DigitalInput elevatorDownDI;
+	public static DigitalInput elevatorUpDI;
 
+	public static AnalogInput irSensor;
+	public static AnalogInput pressureSensor;
+	
 	public static DoubleSolenoid shifterSolenoid;
 	public static DoubleSolenoid grabberSolenoid;
 
@@ -146,14 +151,37 @@ public class RobotIO {
 
 		//-----Initialize remaining DIO-----
 		try {
-			grabberAngleUpDI = new DigitalInput(RobotSettings.GRABBER_ANGLE_UP_DI_PORT);
-			grabberAngleUpDI.setName("Grabber", "Up Switch");
+			grabberAngleDownDI = new DigitalInput(RobotSettings.GRABBER_ANGLE_DOWN_DI_PORT);
+			grabberAngleDownDI.setName("Grabber", "Down Switch");
 		} catch (Throwable t) {
 			t.printStackTrace();
 		}
+		
 		try {
-			grabberAngleDownDI = new DigitalInput(RobotSettings.GRABBER_ANGLE_DOWN_DI_PORT);
-			grabberAngleDownDI.setName("Grabber", "Down Switch");
+			elevatorDownDI = new DigitalInput(RobotSettings.ELEVATOR_DOWN_DI_PORT);
+			elevatorDownDI.setName("Elevator", "Down Switch");
+		} catch (Throwable t) {
+			t.printStackTrace();
+		}
+		
+		try {
+			elevatorUpDI = new DigitalInput(RobotSettings.ELEVATOR_UP_DI_PORT);
+			elevatorUpDI.setName("Elevator", "Up Switch");
+		} catch (Throwable t) {
+			t.printStackTrace();
+		}
+		
+		//-----Initialize all Analog Inputs-----
+		try {
+			irSensor = new AnalogInput(RobotSettings.IR_SENSOR_PORT);
+			irSensor.setName("Grabber", "IR");
+		} catch (Throwable t) {
+			t.printStackTrace();
+		}
+		
+		try {
+			pressureSensor = new AnalogInput(RobotSettings.PRESSURE_SENSOR_PORT);
+			pressureSensor.setName("Pneumatics", "Pressure");
 		} catch (Throwable t) {
 			t.printStackTrace();
 		}

@@ -17,7 +17,7 @@ public class JoystickElevator extends Command {
 
     protected void execute() {
     		if (RobotIO.opStick == null) ElevatorSub.setRate(0);
-    		ElevatorSub.setRate(-RobotIO.opStick.getY());
+    		ElevatorSub.setRate(RobotIO.opStick.getY());
     }
 
     protected boolean isFinished() { return false; }

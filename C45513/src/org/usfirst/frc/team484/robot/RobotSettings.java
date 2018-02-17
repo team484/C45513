@@ -31,7 +31,7 @@ public class RobotSettings {
 	public static final boolean INVERT_LEFT_MOTORS = true;
 	public static final boolean INVERT_RIGHT_MOTORS = true;
 	public static final boolean INVERT_ELEVATOR_MOTOR = false;
-	public static final boolean INVERT_GRABBER_ANGLE_MOTOR = false;
+	public static final boolean INVERT_GRABBER_ANGLE_MOTOR = true;
 	public static final boolean INVERT_LEFT_CLIMBER_MOTOR = false;
 	public static final boolean INVERT_RIGHT_CLIMBER_MOTOR = false;
 	
@@ -72,7 +72,8 @@ public class RobotSettings {
 	public static final double SWITCH_HEIGHT = 12; //In inches
 	
 	//-----Grabber Settings-----
-	public static final double GRABBER_ROTATE_SPEED = 0.8;
+	public static final double GRABBER_ROTATE_SPEED_UP = 0.8;
+	public static final double GRABBER_ROTATE_SPEED_DOWN = 0.5;
 	
 	//-----Ports-----
 		//-----CAN-----
@@ -96,12 +97,20 @@ public class RobotSettings {
 	public static final int ELEVATOR_ENCODER_A_CHANNEL = 4;
 	public static final int ELEVATOR_ENCODER_B_CHANNEL = 5;
 	
-	public static final int GRABBER_ANGLE_UP_DI_PORT = 6;
-	public static final int GRABBER_ANGLE_DOWN_DI_PORT = 7;
+	public static final int GRABBER_ANGLE_DOWN_DI_PORT = 6;
+	public static final int ELEVATOR_DOWN_DI_PORT = 8;
+	public static final int ELEVATOR_UP_DI_PORT = 7;
 	
 		//-----PCM-----
 	public static final int SHIFTER_SOLENOID_LOW_GEAR_PORT = 1;
 	public static final int SHIFTER_SOLENOID_HIGH_GEAR_PORT = 0;
 	public static final int GRABBER_OPEN_PORT = 2;
 	public static final int GRABBER_CLOSE_PORT = 3;
+	
+		//-----PDP-----
+	public static final int GRABBER_ROTATE_PDP_PORT = 6;
+	
+		//-----ANALOG INPUTS-----
+	public static final int IR_SENSOR_PORT = 1;
+	public static final int PRESSURE_SENSOR_PORT = 0;
 }

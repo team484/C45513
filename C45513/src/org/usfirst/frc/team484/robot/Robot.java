@@ -7,6 +7,9 @@
 
 package org.usfirst.frc.team484.robot;
 
+import edu.wpi.cscore.UsbCamera;
+import edu.wpi.cscore.VideoMode.PixelFormat;
+import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
@@ -86,6 +89,11 @@ public class Robot extends TimedRobot {
 
 			SmartDashboard.putNumber("Delay", 0);
 			SmartDashboard.putNumber("Delay Set To", SmartDashboard.getNumber("Delay", 0));
+			UsbCamera camera = CameraServer.getInstance().startAutomaticCapture();
+			camera.setExposureAuto();
+			camera.setWhiteBalanceAuto();
+			camera.setFPS(30);
+			camera.setVideoMode(PixelFormat.kMJPEG, 320, 240, 30);
 		} catch (Throwable t) {
 			t.printStackTrace();
 		}
@@ -113,6 +121,7 @@ public class Robot extends TimedRobot {
 	@Override
 	public void autonomousInit() {
 		try {
+			RobotIO.setVoltageComp(true);
 			hasAutoCommandStarted = false;
 			OwnedSide switchState = MatchData.getOwnedSide(GameFeature.SWITCH_NEAR);
 			OwnedSide scaleState = MatchData.getOwnedSide(GameFeature.SCALE);
@@ -162,6 +171,7 @@ public class Robot extends TimedRobot {
 	@Override
 	public void teleopInit() {
 		try {
+			RobotIO.setVoltageComp(false);
 			if (delayCommand != null) delayCommand.cancel();
 			if (autonomousCommand != null) autonomousCommand.cancel();
 
@@ -182,5 +192,10 @@ public class Robot extends TimedRobot {
 
 	@Override
 	public void testPeriodic() {
+	}
+	
+	@Override
+	public void robotPeriodic() {
+		GrabberAngleSub.updateMotorAvg();
 	}
 }

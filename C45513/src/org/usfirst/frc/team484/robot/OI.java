@@ -51,8 +51,8 @@ public class OI {
 			toggleGrabber = new JoystickButton(RobotIO.opStick, RobotSettings.TOGGLE_GRABBER_BUTTON);
 			climbButton = new JoystickButton(RobotIO.opStick, RobotSettings.CLIMBER_BUTTON);
 
-			lowerGrabber.whileHeld(new RotateGrabberDown(RobotSettings.GRABBER_ROTATE_SPEED));
-			raiseGrabber.whileHeld(new RotateGrabberUp(RobotSettings.GRABBER_ROTATE_SPEED));
+			lowerGrabber.whenPressed(new RotateGrabberDown(RobotSettings.GRABBER_ROTATE_SPEED_DOWN));
+			raiseGrabber.whenPressed(new RotateGrabberUp(RobotSettings.GRABBER_ROTATE_SPEED_UP));
 			lowerGrabber.whenReleased(new GrabberAngleDoNothing());
 			raiseGrabber.whenReleased(new GrabberAngleDoNothing());
 			toggleGrabber.whenPressed(new ToggleGrabber());
