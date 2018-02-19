@@ -28,9 +28,10 @@ import edu.wpi.first.wpilibj.buttons.JoystickButton;
 public class OI {
 	private Button shiftUp;
 	private Button shiftDown;
+	private Button triggerShifting;
 	private Button lowerGrabber;
 	private Button raiseGrabber;
-	private Button  toggleGrabber;
+	private Button toggleGrabber;
 	private Button climbButton;
 	
 	private Button test;
@@ -42,12 +43,15 @@ public class OI {
 		try {
 			shiftUp = new JoystickButton(RobotIO.driveStick, RobotSettings.SHIFT_UP_BUTTON);
 			shiftDown = new JoystickButton(RobotIO.driveStick, RobotSettings.SHIFT_DOWN_BUTTON);
+			triggerShifting = new JoystickButton(RobotIO.driveStick, 1);
 			test = new JoystickButton(RobotIO.driveStick, 8);
 			test.whenPressed(new DriveDistance(250));
 			test.whenReleased(new JoystickDrive());
 			
 			shiftUp.whenPressed(new ShiftUp());
 			shiftDown.whenPressed(new ShiftDown());
+			triggerShifting.whenPressed(new ShiftUp());
+			triggerShifting.whenReleased(new ShiftDown());
 		} catch (Throwable t) {
 			t.printStackTrace();
 		}
