@@ -172,7 +172,7 @@ public class Robot extends TimedRobot {
 	@Override
 	public void teleopInit() {
 		try {
-			RobotIO.setVoltageComp(true);
+			RobotIO.setVoltageComp(false);
 			if (delayCommand != null) delayCommand.cancel();
 			if (autonomousCommand != null) autonomousCommand.cancel();
 
