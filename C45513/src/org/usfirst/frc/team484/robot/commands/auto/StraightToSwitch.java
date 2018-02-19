@@ -6,6 +6,7 @@ import org.usfirst.frc.team484.robot.commands.ElevateToHeight;
 import org.usfirst.frc.team484.robot.commands.OpenGrabber;
 import org.usfirst.frc.team484.robot.commands.RotateGrabberDown;
 import org.usfirst.frc.team484.robot.commands.RotateGrabberUp;
+import org.usfirst.frc.team484.robot.commands.ShiftUp;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.WaitCommand;
@@ -17,13 +18,13 @@ import edu.wpi.first.wpilibj.command.WaitForChildren;
 public class StraightToSwitch extends CommandGroup {
 
     public StraightToSwitch() {
-		addParallel(new DriveDistance(140.0 - 32.0 - 6.5)); //Total distance - robot length - bumper thickness
+    		addSequential(new ShiftUp(), 0.1);
+		addParallel(new DriveDistance(109)); //Total distance - robot length - bumper thickness
 		addParallel(new ElevateToHeight(RobotSettings.SWITCH_HEIGHT, 1));
-		addParallel(new RotateGrabberDown(1));
+		addParallel(new RotateGrabberDown(0.6));
 		addSequential(new WaitForChildren());
 		addSequential(new OpenGrabber());
 		addSequential(new WaitCommand(1));
-		addSequential(new DriveDistance(-20));
-		addSequential(new RotateGrabberUp(1));
+		addSequential(new RotateGrabberUp(1), 1);
     }
 }

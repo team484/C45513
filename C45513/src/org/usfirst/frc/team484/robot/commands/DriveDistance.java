@@ -10,38 +10,43 @@ import edu.wpi.first.wpilibj.PIDOutput;
 import edu.wpi.first.wpilibj.PIDSource;
 import edu.wpi.first.wpilibj.PIDSourceType;
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * Drives the robot a given distance.
  */
 public class DriveDistance extends Command {
-	private PIDController pid;
+	private static PIDController pid = new PIDController(RobotSettings.DRIVE_DISTANCE_KP, RobotSettings.DRIVE_DISTANCE_KI, RobotSettings.DRIVE_DISTANCE_KD,
+			new PIDSource() {
+
+		@Override
+		public void setPIDSourceType(PIDSourceType pidSource) {}
+
+		@Override
+		public double pidGet() {
+			return RobotIO.getFusedEncoderDistance();
+		}
+
+		@Override
+		public PIDSourceType getPIDSourceType() {
+			return PIDSourceType.kDisplacement;
+		}
+	}, new PIDOutput() {
+
+		@Override
+		public void pidWrite(double output) {
+			if (output > 0.2) {
+				DriveSub.linearDrive(output, RobotSettings.DRIVE_PID_DRIFT_OFFSET * Math.signum(output));
+			} else {
+				DriveSub.linearDrive(output, 0);
+			}
+		}
+	}, RobotSettings.DRIVE_PID_UPDATE_RATE);
 	private double setpoint;
 	public DriveDistance(double distance) {
 		requires(Robot.driveSub);
 		setpoint = distance;
-		pid = new PIDController(RobotSettings.DRIVE_DISTANCE_KP, RobotSettings.DRIVE_DISTANCE_KI, RobotSettings.DRIVE_DISTANCE_KD,
-				new PIDSource() {
-
-			@Override
-			public void setPIDSourceType(PIDSourceType pidSource) {}
-
-			@Override
-			public double pidGet() {
-				return RobotIO.getFusedEncoderDistance();
-			}
-
-			@Override
-			public PIDSourceType getPIDSourceType() {
-				return PIDSourceType.kDisplacement;
-			}
-		}, new PIDOutput() {
-
-			@Override
-			public void pidWrite(double output) {
-				DriveSub.linearDrive(output, RobotSettings.DRIVE_PID_DRIFT_OFFSET);
-			}
-		}, RobotSettings.DRIVE_PID_UPDATE_RATE);
+		SmartDashboard.putData(pid);
 	}
 
 	protected void initialize() {
@@ -57,6 +62,14 @@ public class DriveDistance extends Command {
 		pid.enable();
 	}
 
+	@Override
+	public void execute() {
+		double[] ypr = new double[3];
+		RobotIO.imu.getYawPitchRoll(ypr);
+		SmartDashboard.putNumber("ERROR", pid.getError());
+		SmartDashboard.putNumber("DIST", ypr[0]);
+	}
+	
 	protected boolean isFinished() {
 		if (pid == null) return false;
 		return pid.onTarget() &&

@@ -25,17 +25,17 @@ public class RobotSettings {
 	public static final double HIGH_GEAR_ROTATIONS_PER_ENCODER_PULSE = 2.83/256.0/3.0;
 	public static final EncodingType ENCODER_ENCODING_TYPE = EncodingType.k1X;
 	
-	public static final double ELEVATOR_ENCODER_DISTANCE_PER_PULSE = 1; //In inches
+	public static final double ELEVATOR_ENCODER_DISTANCE_PER_PULSE = 1.0 / 6310.0; //In percent/100
 	
 	//-----Motor Constants-----
 	public static final boolean INVERT_LEFT_MOTORS = true;
 	public static final boolean INVERT_RIGHT_MOTORS = true;
 	public static final boolean INVERT_ELEVATOR_MOTOR = false;
-	public static final boolean INVERT_GRABBER_ANGLE_MOTOR = true;
+	public static final boolean INVERT_GRABBER_ANGLE_MOTOR = false;
 	public static final boolean INVERT_LEFT_CLIMBER_MOTOR = false;
 	public static final boolean INVERT_RIGHT_CLIMBER_MOTOR = false;
 	
-	public static final double VOLTAGE_TARGET = 10.0; //In volts
+	public static final double VOLTAGE_TARGET = 7.5; //In volts
 	public static final int CAN_COMMAND_TIMEOUT = 10; //In milliseconds
 	
 	//-----Joystick Map-----
@@ -52,15 +52,15 @@ public class RobotSettings {
 	//-----PID Constants-----
 	public static final double DRIVE_DISTANCE_KP = 0.05;
 	public static final double DRIVE_DISTANCE_KI = 0;
-	public static final double DRIVE_DISTANCE_KD = 0;
-	public static final double DRIVE_PID_DRIFT_OFFSET = 0.1; //Compensate for rotational drift
-	public static final double DRIVE_PID_TOLERANCE = 2; //inches
+	public static final double DRIVE_DISTANCE_KD = 1.4;
+	public static final double DRIVE_PID_DRIFT_OFFSET = -0.125; //Compensate for rotational drift
+	public static final double DRIVE_PID_TOLERANCE = 8; //inches
 	public static final double DRIVE_PID_RATE_TOLERANCE = 0.5; //inches per second
 	public static final double DRIVE_PID_UPDATE_RATE = 0.01; //In seconds
 	
-	public static final double ROTATE_ANGLE_KP = 0;
+	public static final double ROTATE_ANGLE_KP = 0.1;
 	public static final double ROTATE_ANGLE_KI = 0;
-	public static final double ROTATE_ANGLE_KD = 0;
+	public static final double ROTATE_ANGLE_KD = 0.6;
 	public static final double ROTATE_PID_TOLERANCE = 2; //Degrees
 	public static final double ROTATE_PID_RATE_TOLERANCE = 1; //Degrees per second
 	public static final double ROTATE_PID_UPDATE_RATE = 0.01; //In seconds
@@ -68,8 +68,7 @@ public class RobotSettings {
 	
 	//-----Elevator Settings-----
 	public static final double ELEVATOR_GRAVITY_COMPENSATION_POWER = 0.1;
-	public static final double LIFT_HEIGHT = 60; //In inches
-	public static final double SWITCH_HEIGHT = 12; //In inches
+	public static final double SWITCH_HEIGHT = 0.5; //Value out of 1. 0 is ground 1 is max
 	
 	//-----Grabber Settings-----
 	public static final double GRABBER_ROTATE_SPEED_UP = 0.8;
@@ -102,8 +101,8 @@ public class RobotSettings {
 	public static final int ELEVATOR_UP_DI_PORT = 7;
 	
 		//-----PCM-----
-	public static final int SHIFTER_SOLENOID_LOW_GEAR_PORT = 1;
-	public static final int SHIFTER_SOLENOID_HIGH_GEAR_PORT = 0;
+	public static final int SHIFTER_SOLENOID_LOW_GEAR_PORT = 0;
+	public static final int SHIFTER_SOLENOID_HIGH_GEAR_PORT = 1;
 	public static final int GRABBER_OPEN_PORT = 2;
 	public static final int GRABBER_CLOSE_PORT = 3;
 	

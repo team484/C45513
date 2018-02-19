@@ -58,7 +58,7 @@ public class GrabberAngleSub extends Subsystem {
 	 * @return true if arm is rotated up all the way.
 	 */
 	public static boolean isUp() {
-		return getAvgCurrent() > 17;
+		return RobotIO.irSensor.getAverageVoltage() > 2.4;
 	}
 	
 	/**

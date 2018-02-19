@@ -64,29 +64,28 @@ public class Robot extends TimedRobot {
 			setPeriod(RobotSettings.ROBOT_UPDATE_RATE);
 			oi = new OI();
 
-			llChooser.setName("Switch Left Scale Left");
 			llChooser.addDefault("Do Nothing", new AutoDoNothing());
 			llChooser.addObject("Switch Front", new StraightToSwitch());
 			llChooser.addObject("Switch Side", new StraightThenRightToSwitch());
 			llChooser.addObject("Scale", new StraightThenRightToScale());
 			llChooser.addObject("Cross Auto Line", new CrossAutoLine());
-			lrChooser.setName("Switch Left Scale Right");
 			lrChooser.addDefault("Do Nothing", new AutoDoNothing());
 			lrChooser.addObject("Switch Front", new StraightToSwitch());
 			lrChooser.addObject("Switch Side", new StraightThenRightToSwitch());
 			lrChooser.addObject("Cross Auto Line", new CrossAutoLine());
-			rlChooser.setName("Switch Right Scale Left");
 			rlChooser.addDefault("Do Nothing", new AutoDoNothing());
 			rlChooser.addObject("Switch Front", new StraightToSwitch());
 			rlChooser.addObject("Switch Side", new StraightThenLeftToSwitch());
 			rlChooser.addObject("Cross Auto Line", new CrossAutoLine());
-			rrChooser.setName("Switch Right Scale Right");
 			rrChooser.addDefault("Do Nothing", new AutoDoNothing());
 			rrChooser.addObject("Switch Front", new StraightToSwitch());
 			rrChooser.addObject("Switch Side", new StraightThenLeftToSwitch());
 			rrChooser.addObject("Scale", new StraightThenLeftToScale());
 			rrChooser.addObject("Cross Auto Line", new CrossAutoLine());
-
+			SmartDashboard.putData("Left Switch Left Scale", llChooser);
+			SmartDashboard.putData("Left Switch Right Scale", lrChooser);
+			SmartDashboard.putData("Right Switch Left Scale", rlChooser);
+			SmartDashboard.putData("Right Switch Right Scale", rrChooser);
 			SmartDashboard.putNumber("Delay", 0);
 			SmartDashboard.putNumber("Delay Set To", SmartDashboard.getNumber("Delay", 0));
 			UsbCamera camera = CameraServer.getInstance().startAutomaticCapture();
@@ -144,12 +143,14 @@ public class Robot extends TimedRobot {
 			} else {
 				System.err.println("Could not get field state");
 			}
-
+			
 			double delay = SmartDashboard.getNumber("Delay", 0);
 			delayCommand = new WaitCommand("Auto Delay", delay);
 			delayCommand.start();
 
 			RobotIO.logger.startLogging("auto");
+			
+			RobotIO.elevatorEncoder.reset();
 		} catch (Throwable t) {
 			t.printStackTrace();
 		}
@@ -171,7 +172,7 @@ public class Robot extends TimedRobot {
 	@Override
 	public void teleopInit() {
 		try {
-			RobotIO.setVoltageComp(false);
+			RobotIO.setVoltageComp(true);
 			if (delayCommand != null) delayCommand.cancel();
 			if (autonomousCommand != null) autonomousCommand.cancel();
 

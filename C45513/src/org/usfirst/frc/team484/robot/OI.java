@@ -9,7 +9,10 @@ package org.usfirst.frc.team484.robot;
 
 import org.usfirst.frc.team484.robot.commands.ClimbWithJoystick;
 import org.usfirst.frc.team484.robot.commands.ClimberDoNothing;
+import org.usfirst.frc.team484.robot.commands.DriveAngle;
+import org.usfirst.frc.team484.robot.commands.DriveDistance;
 import org.usfirst.frc.team484.robot.commands.GrabberAngleDoNothing;
+import org.usfirst.frc.team484.robot.commands.JoystickDrive;
 import org.usfirst.frc.team484.robot.commands.RotateGrabberDown;
 import org.usfirst.frc.team484.robot.commands.RotateGrabberUp;
 import org.usfirst.frc.team484.robot.commands.ShiftDown;
@@ -29,6 +32,8 @@ public class OI {
 	private Button raiseGrabber;
 	private Button  toggleGrabber;
 	private Button climbButton;
+	
+	private Button test;
 
 
 	public OI() {
@@ -37,7 +42,10 @@ public class OI {
 		try {
 			shiftUp = new JoystickButton(RobotIO.driveStick, RobotSettings.SHIFT_UP_BUTTON);
 			shiftDown = new JoystickButton(RobotIO.driveStick, RobotSettings.SHIFT_DOWN_BUTTON);
-
+			test = new JoystickButton(RobotIO.driveStick, 8);
+			test.whenPressed(new DriveDistance(250));
+			test.whenReleased(new JoystickDrive());
+			
 			shiftUp.whenPressed(new ShiftUp());
 			shiftDown.whenPressed(new ShiftDown());
 		} catch (Throwable t) {

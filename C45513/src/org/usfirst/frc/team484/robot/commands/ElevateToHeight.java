@@ -35,6 +35,8 @@ public class ElevateToHeight extends Command {
 
 	protected boolean isFinished() {
 		double actualHeight = RobotIO.elevatorEncoder.getDistance();
+		if (goUp && ElevatorSub.isUp()) return true;
+		if (!goUp && ElevatorSub.isDown()) return true;
 		return goUp && height <= actualHeight ||
 				!goUp && height >= actualHeight;
 	}
