@@ -58,6 +58,7 @@ public class Robot extends TimedRobot {
 	private static final SendableChooser<Command> lrChooser = new SendableChooser<>();
 	private static final SendableChooser<Command> rlChooser = new SendableChooser<>();
 	private static final SendableChooser<Command> rrChooser = new SendableChooser<>();
+	private static final SendableChooser<Integer> position = new SendableChooser<>();
 	private static boolean hasAutoCommandStarted = false;
 
 	private static boolean isCameraServerUp = false;
@@ -68,7 +69,11 @@ public class Robot extends TimedRobot {
 		try {
 			setPeriod(RobotSettings.ROBOT_UPDATE_RATE);
 			oi = new OI();
-
+			position.addDefault("(1) Far Left",1);
+			position.addObject("(2) Left",2);
+			position.addObject("(3) Center",3);
+			position.addObject("(4) Right",4);
+			position.addObject("(5) Far Right",5);
 			llChooser.addDefault("Do Nothing", new AutoDoNothing());
 			llChooser.addObject("Switch Front", new StraightToSwitch());
 			llChooser.addObject("Switch Side", new SideOfLeftSwitchFromP1());
@@ -91,10 +96,6 @@ public class Robot extends TimedRobot {
 			rrChooser.addObject("Scale", new RightScaleFromP5());
 			rrChooser.addObject("Cross Auto Line", new CrossAutoLine());
 			rrChooser.addObject("Center to Right Switch", new RightSwitchFromP3());
-			SmartDashboard.putData("Left Switch Left Scale", llChooser);
-			SmartDashboard.putData("Left Switch Right Scale", lrChooser);
-			SmartDashboard.putData("Right Switch Left Scale", rlChooser);
-			SmartDashboard.putData("Right Switch Right Scale", rrChooser);
 			SmartDashboard.setDefaultNumber("Delay", 0);
 		} catch (Throwable t) {
 			t.printStackTrace();
@@ -117,6 +118,7 @@ public class Robot extends TimedRobot {
 		try {
 			SmartDashboard.putNumber("Delay Set To", SmartDashboard.getNumber("Delay", 0));
 			Scheduler.getInstance().run();
+			updateChoosers();
 			enableCameraServer(); //Will try to enable server if it has not started up yet.
 		} catch (Throwable t) {
 			t.printStackTrace();
@@ -230,12 +232,76 @@ public class Robot extends TimedRobot {
 				UsbCamera camera = CameraServer.getInstance().startAutomaticCapture();
 				camera.setExposureAuto();
 				camera.setWhiteBalanceAuto();
-				camera.setFPS(30);
+				camera.setFPS(120);
 				camera.setVideoMode(PixelFormat.kMJPEG, 320, 240, 30);
 				isCameraServerUp = true;
 			} catch (Throwable t) {
 				t.printStackTrace();
 			}
 		}
+	}
+	
+	private static void updateChoosers() {
+		SmartDashboard.delete("Left Switch Left Scale");
+		SmartDashboard.delete("Left Switch Right Scale");
+		SmartDashboard.delete("Right Switch Left Scale");
+		SmartDashboard.delete("Right Switch Right Scale");
+		int pos = position.getSelected();
+		llChooser.addDefault("Do Nothing", new AutoDoNothing());
+		lrChooser.addDefault("Do Nothing", new AutoDoNothing());
+		rlChooser.addDefault("Do Nothing", new AutoDoNothing());
+		rrChooser.addDefault("Do Nothing", new AutoDoNothing());
+		switch(pos) {
+		case 1:
+			llChooser.addObject("Switch Side", new SideOfLeftSwitchFromP1());
+			llChooser.addObject("Scale", new LeftScaleFromP1());
+			llChooser.addObject("Cross Auto Line", new CrossAutoLine());
+			lrChooser.addObject("Switch Side", new SideOfLeftSwitchFromP1());
+			lrChooser.addObject("Cross Auto Line", new CrossAutoLine());
+			rlChooser.addObject("Cross Auto Line", new CrossAutoLine());
+			rrChooser.addObject("Cross Auto Line", new CrossAutoLine());
+			break;
+		case 2:
+			llChooser.addObject("Switch Front", new StraightToSwitch());
+			llChooser.addObject("Cross Auto Line", new CrossAutoLine());
+			lrChooser.addObject("Switch Front", new StraightToSwitch());
+			lrChooser.addObject("Cross Auto Line", new CrossAutoLine());
+			rlChooser.addObject("Cross Auto Line", new CrossAutoLine());
+			rrChooser.addObject("Cross Auto Line", new CrossAutoLine());
+			break;
+		case 3:
+			llChooser.addObject("Cross Auto Line", new CrossAutoLine());
+			llChooser.addObject("Center to Left Switch", new LeftSwitchFromP3());
+			lrChooser.addObject("Cross Auto Line", new CrossAutoLine());
+			lrChooser.addObject("Center to Left Switch", new LeftSwitchFromP3());
+			rlChooser.addObject("Cross Auto Line", new CrossAutoLine());
+			rlChooser.addObject("Center to Right Switch", new RightSwitchFromP3());
+			rrChooser.addObject("Cross Auto Line", new CrossAutoLine());
+			rrChooser.addObject("Center to Right Switch", new RightSwitchFromP3());
+			break;
+		case 4:
+			llChooser.addObject("Cross Auto Line", new CrossAutoLine());
+			lrChooser.addObject("Cross Auto Line", new CrossAutoLine());
+			rlChooser.addObject("Switch Front", new StraightToSwitch());
+			rlChooser.addObject("Cross Auto Line", new CrossAutoLine());
+			rrChooser.addObject("Switch Front", new StraightToSwitch());
+			rrChooser.addObject("Cross Auto Line", new CrossAutoLine());
+			break;
+		case 5:
+			llChooser.addObject("Cross Auto Line", new CrossAutoLine());
+			lrChooser.addObject("Cross Auto Line", new CrossAutoLine());
+			rlChooser.addObject("Switch Side", new SideOfRightSwitchFromP5());
+			rlChooser.addObject("Cross Auto Line", new CrossAutoLine());
+			rrChooser.addObject("Switch Side", new SideOfRightSwitchFromP5());
+			rrChooser.addObject("Scale", new RightScaleFromP5());
+			rrChooser.addObject("Cross Auto Line", new CrossAutoLine());
+			break;
+		default:
+			break;
+		}
+		SmartDashboard.putData("Left Switch Left Scale", llChooser);
+		SmartDashboard.putData("Left Switch Right Scale", lrChooser);
+		SmartDashboard.putData("Right Switch Left Scale", rlChooser);
+		SmartDashboard.putData("Right Switch Right Scale", rrChooser);
 	}
 }
