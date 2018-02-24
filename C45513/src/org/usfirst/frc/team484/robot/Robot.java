@@ -54,11 +54,11 @@ public class Robot extends TimedRobot {
 	//-----Choosers for Auto Mode-----
 	private static Command autonomousCommand;
 	private static Command delayCommand;
-	private static final SendableChooser<Command> llChooser = new SendableChooser<>();
-	private static final SendableChooser<Command> lrChooser = new SendableChooser<>();
-	private static final SendableChooser<Command> rlChooser = new SendableChooser<>();
-	private static final SendableChooser<Command> rrChooser = new SendableChooser<>();
-	private static final SendableChooser<Integer> position = new SendableChooser<>();
+	private static SendableChooser<Command> llChooser = new SendableChooser<>();
+	private static SendableChooser<Command> lrChooser = new SendableChooser<>();
+	private static SendableChooser<Command> rlChooser = new SendableChooser<>();
+	private static SendableChooser<Command> rrChooser = new SendableChooser<>();
+	private static SendableChooser<Integer> position = new SendableChooser<>();
 	private static boolean hasAutoCommandStarted = false;
 
 	private static boolean isCameraServerUp = false;
@@ -74,28 +74,7 @@ public class Robot extends TimedRobot {
 			position.addObject("(3) Center",3);
 			position.addObject("(4) Right",4);
 			position.addObject("(5) Far Right",5);
-			llChooser.addDefault("Do Nothing", new AutoDoNothing());
-			llChooser.addObject("Switch Front", new StraightToSwitch());
-			llChooser.addObject("Switch Side", new SideOfLeftSwitchFromP1());
-			llChooser.addObject("Scale", new LeftScaleFromP1());
-			llChooser.addObject("Cross Auto Line", new CrossAutoLine());
-			llChooser.addObject("Center to Left Switch", new LeftSwitchFromP3());
-			lrChooser.addDefault("Do Nothing", new AutoDoNothing());
-			lrChooser.addObject("Switch Front", new StraightToSwitch());
-			lrChooser.addObject("Switch Side", new SideOfLeftSwitchFromP1());
-			lrChooser.addObject("Cross Auto Line", new CrossAutoLine());
-			lrChooser.addObject("Center to Left Switch", new LeftSwitchFromP3());
-			rlChooser.addDefault("Do Nothing", new AutoDoNothing());
-			rlChooser.addObject("Switch Front", new StraightToSwitch());
-			rlChooser.addObject("Switch Side", new SideOfRightSwitchFromP5());
-			rlChooser.addObject("Cross Auto Line", new CrossAutoLine());
-			rlChooser.addObject("Center to Right Switch", new RightSwitchFromP3());
-			rrChooser.addDefault("Do Nothing", new AutoDoNothing());
-			rrChooser.addObject("Switch Front", new StraightToSwitch());
-			rrChooser.addObject("Switch Side", new SideOfRightSwitchFromP5());
-			rrChooser.addObject("Scale", new RightScaleFromP5());
-			rrChooser.addObject("Cross Auto Line", new CrossAutoLine());
-			rrChooser.addObject("Center to Right Switch", new RightSwitchFromP3());
+			SmartDashboard.putData("Field Position", position);
 			SmartDashboard.setDefaultNumber("Delay", 0);
 		} catch (Throwable t) {
 			t.printStackTrace();
@@ -241,12 +220,22 @@ public class Robot extends TimedRobot {
 		}
 	}
 	
+	private static int oldPos = 1;
+	/**
+	 * Update the SendableChoosers based on field position
+	 */
 	private static void updateChoosers() {
+		int pos = position.getSelected();
+		if (pos == oldPos) return;
+		oldPos = pos;
 		SmartDashboard.delete("Left Switch Left Scale");
 		SmartDashboard.delete("Left Switch Right Scale");
 		SmartDashboard.delete("Right Switch Left Scale");
 		SmartDashboard.delete("Right Switch Right Scale");
-		int pos = position.getSelected();
+		llChooser = new SendableChooser<Command>();
+		lrChooser = new SendableChooser<Command>();
+		rlChooser = new SendableChooser<Command>();
+		rrChooser = new SendableChooser<Command>();
 		llChooser.addDefault("Do Nothing", new AutoDoNothing());
 		lrChooser.addDefault("Do Nothing", new AutoDoNothing());
 		rlChooser.addDefault("Do Nothing", new AutoDoNothing());
