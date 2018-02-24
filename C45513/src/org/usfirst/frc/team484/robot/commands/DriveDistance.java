@@ -64,10 +64,6 @@ public class DriveDistance extends Command {
 
 	@Override
 	public void execute() {
-		double[] ypr = new double[3];
-		RobotIO.imu.getYawPitchRoll(ypr);
-		SmartDashboard.putNumber("ERROR", pid.getError());
-		SmartDashboard.putNumber("DIST", ypr[0]);
 	}
 	
 	protected boolean isFinished() {

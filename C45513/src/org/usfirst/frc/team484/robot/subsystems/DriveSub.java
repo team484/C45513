@@ -45,5 +45,11 @@ public class DriveSub extends Subsystem {
 		if (RobotIO.drive == null) return;
 		RobotIO.drive.arcadeDrive(y, rot, false);
 	}
+	
+	
+	public static double pidOut1, pidOut2;
+	public static void doublePIDDrive() {
+		linearDrive(pidOut1, pidOut2);
+	}
 }
 

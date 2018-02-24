@@ -14,7 +14,9 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
+import edu.wpi.first.wpilibj.Ultrasonic;
 import edu.wpi.first.wpilibj.VictorSP;
+import edu.wpi.first.wpilibj.Ultrasonic.Unit;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -38,6 +40,8 @@ public class RobotIO {
 	public static DigitalInput grabberAngleDownDI;
 	public static DigitalInput elevatorDownDI;
 	public static DigitalInput elevatorUpDI;
+	
+	public static Ultrasonic ultrasonic;
 
 	public static AnalogInput irSensor;
 	public static AnalogInput pressureSensor;
@@ -171,6 +175,16 @@ public class RobotIO {
 			t.printStackTrace();
 		}
 		
+		try {
+			ultrasonic = new Ultrasonic(RobotSettings.ULTRASONIC_PING_CHANNEL, RobotSettings.ULTRASONIC_ECHO_CHANNEL);
+			ultrasonic.setName("Ultrasonic");
+			ultrasonic.setAutomaticMode(true);
+			ultrasonic.setDistanceUnits(Unit.kInches);
+			ultrasonic.setEnabled(true);
+		} catch (Throwable t) {
+			t.printStackTrace();
+		}
+		
 		//-----Initialize all Analog Inputs-----
 		try {
 			irSensor = new AnalogInput(RobotSettings.IR_SENSOR_PORT);
@@ -280,5 +294,13 @@ public class RobotIO {
 			return leftEncoder.getRate();
 		}
 		return (leftEncoder.getRate() + rightEncoder.getRate()) / 2.0;
+	}
+	
+	/**
+	 * Calculates the air pressure recorded by the pressure gauge on the robot in PSI
+	 * @return - Pneumatic pressure (PSI)
+	 */
+	public static double getAirPressure() {
+		return pressureSensor.getAverageVoltage() * 49.3 - 17.666;
 	}
 }

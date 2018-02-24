@@ -21,10 +21,12 @@ import org.usfirst.frc.team484.robot.MatchData.GameFeature;
 import org.usfirst.frc.team484.robot.MatchData.OwnedSide;
 import org.usfirst.frc.team484.robot.commands.auto.AutoDoNothing;
 import org.usfirst.frc.team484.robot.commands.auto.CrossAutoLine;
-import org.usfirst.frc.team484.robot.commands.auto.StraightThenLeftToScale;
-import org.usfirst.frc.team484.robot.commands.auto.StraightThenLeftToSwitch;
-import org.usfirst.frc.team484.robot.commands.auto.StraightThenRightToScale;
-import org.usfirst.frc.team484.robot.commands.auto.StraightThenRightToSwitch;
+import org.usfirst.frc.team484.robot.commands.auto.LeftSwitchFromP3;
+import org.usfirst.frc.team484.robot.commands.auto.RightSwitchFromP3;
+import org.usfirst.frc.team484.robot.commands.auto.RightScaleFromP5;
+import org.usfirst.frc.team484.robot.commands.auto.SideOfRightSwitchFromP5;
+import org.usfirst.frc.team484.robot.commands.auto.LeftScaleFromP1;
+import org.usfirst.frc.team484.robot.commands.auto.SideOfLeftSwitchFromP1;
 import org.usfirst.frc.team484.robot.commands.auto.StraightToSwitch;
 import org.usfirst.frc.team484.robot.subsystems.ClimberSub;
 import org.usfirst.frc.team484.robot.subsystems.DriveSub;
@@ -66,22 +68,26 @@ public class Robot extends TimedRobot {
 
 			llChooser.addDefault("Do Nothing", new AutoDoNothing());
 			llChooser.addObject("Switch Front", new StraightToSwitch());
-			llChooser.addObject("Switch Side", new StraightThenRightToSwitch());
-			llChooser.addObject("Scale", new StraightThenRightToScale());
+			llChooser.addObject("Switch Side", new SideOfLeftSwitchFromP1());
+			llChooser.addObject("Scale", new LeftScaleFromP1());
 			llChooser.addObject("Cross Auto Line", new CrossAutoLine());
+			llChooser.addObject("Center to Left Switch", new LeftSwitchFromP3());
 			lrChooser.addDefault("Do Nothing", new AutoDoNothing());
 			lrChooser.addObject("Switch Front", new StraightToSwitch());
-			lrChooser.addObject("Switch Side", new StraightThenRightToSwitch());
+			lrChooser.addObject("Switch Side", new SideOfLeftSwitchFromP1());
 			lrChooser.addObject("Cross Auto Line", new CrossAutoLine());
+			lrChooser.addObject("Center to Left Switch", new LeftSwitchFromP3());
 			rlChooser.addDefault("Do Nothing", new AutoDoNothing());
 			rlChooser.addObject("Switch Front", new StraightToSwitch());
-			rlChooser.addObject("Switch Side", new StraightThenLeftToSwitch());
+			rlChooser.addObject("Switch Side", new SideOfRightSwitchFromP5());
 			rlChooser.addObject("Cross Auto Line", new CrossAutoLine());
+			rlChooser.addObject("Center to Right Switch", new RightSwitchFromP3());
 			rrChooser.addDefault("Do Nothing", new AutoDoNothing());
 			rrChooser.addObject("Switch Front", new StraightToSwitch());
-			rrChooser.addObject("Switch Side", new StraightThenLeftToSwitch());
-			rrChooser.addObject("Scale", new StraightThenLeftToScale());
+			rrChooser.addObject("Switch Side", new SideOfRightSwitchFromP5());
+			rrChooser.addObject("Scale", new RightScaleFromP5());
 			rrChooser.addObject("Cross Auto Line", new CrossAutoLine());
+			rrChooser.addObject("Center to Right Switch", new RightSwitchFromP3());
 			SmartDashboard.putData("Left Switch Left Scale", llChooser);
 			SmartDashboard.putData("Left Switch Right Scale", lrChooser);
 			SmartDashboard.putData("Right Switch Left Scale", rlChooser);
@@ -121,6 +127,8 @@ public class Robot extends TimedRobot {
 	public void autonomousInit() {
 		try {
 			RobotIO.setVoltageComp(true);
+			RobotIO.elevatorEncoder.reset();
+
 			hasAutoCommandStarted = false;
 			OwnedSide switchState = MatchData.getOwnedSide(GameFeature.SWITCH_NEAR);
 			OwnedSide scaleState = MatchData.getOwnedSide(GameFeature.SCALE);
@@ -150,7 +158,6 @@ public class Robot extends TimedRobot {
 
 			RobotIO.logger.startLogging("auto");
 			
-			RobotIO.elevatorEncoder.reset();
 		} catch (Throwable t) {
 			t.printStackTrace();
 		}
@@ -197,6 +204,7 @@ public class Robot extends TimedRobot {
 	
 	@Override
 	public void robotPeriodic() {
-		GrabberAngleSub.updateMotorAvg();
+		SmartDashboard.putNumber("Pressure", RobotIO.getAirPressure());
+		SmartDashboard.putNumber("Voltage", RobotIO.pdp.getVoltage());
 	}
 }

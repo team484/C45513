@@ -1,6 +1,5 @@
 package org.usfirst.frc.team484.robot.commands;
 
-import java.util.ArrayList;
 
 import org.usfirst.frc.team484.robot.Robot;
 import org.usfirst.frc.team484.robot.RobotIO;
@@ -12,7 +11,6 @@ import edu.wpi.first.wpilibj.PIDOutput;
 import edu.wpi.first.wpilibj.PIDSource;
 import edu.wpi.first.wpilibj.PIDSourceType;
 import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * Rotates the robot to a given yaw delta.

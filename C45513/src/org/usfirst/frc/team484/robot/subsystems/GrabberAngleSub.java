@@ -13,8 +13,6 @@ import edu.wpi.first.wpilibj.command.Subsystem;
  */
 public class GrabberAngleSub extends Subsystem {
 	
-	private static ArrayList<Double> motorCurrent = new ArrayList<>();
-
 	/**
 	 * Sets the default command for this subsystem to a command that keeps the motor speed at 0.
 	 * This is to ensure that when a rotation command ends, the motor stops.
@@ -61,27 +59,5 @@ public class GrabberAngleSub extends Subsystem {
 		return RobotIO.irSensor.getAverageVoltage() > 2.4;
 	}
 	
-	/**
-	 * Updates the moving average for the grabber angle motor current.
-	 */
-	public static void updateMotorAvg() {
-		motorCurrent.add(RobotIO.pdp.getCurrent(RobotSettings.GRABBER_ROTATE_PDP_PORT));
-		while (motorCurrent.size() > 20) {
-			motorCurrent.remove(0);
-		}
-	}
-	
-	/**
-	 * Calculates the moving average for grabber angle motor's current.
-	 * @return the average current draw (amps) over recent history.
-	 */
-	public static double getAvgCurrent() {
-		double total = 0;
-		for (Double val : motorCurrent) {
-			total += val;
-		}
-		total /= motorCurrent.size();
-		return total;
-	}
 }
 

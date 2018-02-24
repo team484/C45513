@@ -66,6 +66,10 @@ public class RobotSettings {
 	public static final double ROTATE_PID_UPDATE_RATE = 0.01; //In seconds
 	public static final int GYRO_SAMPLES_TO_AVERAGE = 20; //Used in determining rate
 	
+	public static final double MAINTAIN_ANGLE_KP = 0.05;
+	public static final double MAINTAIN_ANGLE_KI = 0.001;
+	public static final double MAINTAIN_ANGLE_KD = 0.0;
+	
 	//-----Elevator Settings-----
 	public static final double ELEVATOR_GRAVITY_COMPENSATION_POWER = 0.1;
 	public static final double SWITCH_HEIGHT = 0.5; //Value out of 1. 0 is ground 1 is max
@@ -100,9 +104,12 @@ public class RobotSettings {
 	public static final int ELEVATOR_DOWN_DI_PORT = 8;
 	public static final int ELEVATOR_UP_DI_PORT = 7;
 	
+	public static final int ULTRASONIC_PING_CHANNEL = 11;
+	public static final int ULTRASONIC_ECHO_CHANNEL = 10;
+	
 		//-----PCM-----
-	public static final int SHIFTER_SOLENOID_LOW_GEAR_PORT = 0;
-	public static final int SHIFTER_SOLENOID_HIGH_GEAR_PORT = 1;
+	public static final int SHIFTER_SOLENOID_LOW_GEAR_PORT = 1;
+	public static final int SHIFTER_SOLENOID_HIGH_GEAR_PORT = 0;
 	public static final int GRABBER_OPEN_PORT = 2;
 	public static final int GRABBER_CLOSE_PORT = 3;
 	

@@ -11,6 +11,7 @@ import org.usfirst.frc.team484.robot.commands.ClimbWithJoystick;
 import org.usfirst.frc.team484.robot.commands.ClimberDoNothing;
 import org.usfirst.frc.team484.robot.commands.DriveAngle;
 import org.usfirst.frc.team484.robot.commands.DriveDistance;
+import org.usfirst.frc.team484.robot.commands.DriveStraight;
 import org.usfirst.frc.team484.robot.commands.GrabberAngleDoNothing;
 import org.usfirst.frc.team484.robot.commands.JoystickDrive;
 import org.usfirst.frc.team484.robot.commands.RotateGrabberDown;
@@ -45,7 +46,7 @@ public class OI {
 			shiftDown = new JoystickButton(RobotIO.driveStick, RobotSettings.SHIFT_DOWN_BUTTON);
 			triggerShifting = new JoystickButton(RobotIO.driveStick, 1);
 			test = new JoystickButton(RobotIO.driveStick, 8);
-			test.whenPressed(new DriveDistance(250));
+			test.whenPressed(new DriveStraight(300));
 			test.whenReleased(new JoystickDrive());
 			
 			shiftUp.whenPressed(new ShiftUp());
