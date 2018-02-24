@@ -10,6 +10,7 @@ package org.usfirst.frc.team484.robot;
 import edu.wpi.cscore.UsbCamera;
 import edu.wpi.cscore.VideoMode.PixelFormat;
 import edu.wpi.first.wpilibj.CameraServer;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
@@ -59,6 +60,8 @@ public class Robot extends TimedRobot {
 	private static final SendableChooser<Command> rrChooser = new SendableChooser<>();
 	private static boolean hasAutoCommandStarted = false;
 
+	private static boolean isCameraServerUp = false;
+
 
 	@Override
 	public void robotInit() {
@@ -92,16 +95,12 @@ public class Robot extends TimedRobot {
 			SmartDashboard.putData("Left Switch Right Scale", lrChooser);
 			SmartDashboard.putData("Right Switch Left Scale", rlChooser);
 			SmartDashboard.putData("Right Switch Right Scale", rrChooser);
-			SmartDashboard.putNumber("Delay", 0);
-			SmartDashboard.putNumber("Delay Set To", SmartDashboard.getNumber("Delay", 0));
-			UsbCamera camera = CameraServer.getInstance().startAutomaticCapture();
-			camera.setExposureAuto();
-			camera.setWhiteBalanceAuto();
-			camera.setFPS(30);
-			camera.setVideoMode(PixelFormat.kMJPEG, 320, 240, 30);
+			SmartDashboard.setDefaultNumber("Delay", 0);
 		} catch (Throwable t) {
 			t.printStackTrace();
 		}
+
+		enableCameraServer();
 	}
 
 	@Override
@@ -118,6 +117,7 @@ public class Robot extends TimedRobot {
 		try {
 			SmartDashboard.putNumber("Delay Set To", SmartDashboard.getNumber("Delay", 0));
 			Scheduler.getInstance().run();
+			enableCameraServer(); //Will try to enable server if it has not started up yet.
 		} catch (Throwable t) {
 			t.printStackTrace();
 		}
@@ -130,34 +130,15 @@ public class Robot extends TimedRobot {
 			RobotIO.elevatorEncoder.reset();
 
 			hasAutoCommandStarted = false;
-			OwnedSide switchState = MatchData.getOwnedSide(GameFeature.SWITCH_NEAR);
-			OwnedSide scaleState = MatchData.getOwnedSide(GameFeature.SCALE);
-			if (switchState == OwnedSide.LEFT) {
-				if (scaleState == OwnedSide.LEFT) {
-					autonomousCommand = llChooser.getSelected();
-				} else if (scaleState == OwnedSide.RIGHT) {
-					autonomousCommand = lrChooser.getSelected();
-				} else {
-					System.err.println("Could not get field state");
-				}
-			} else if (switchState == MatchData.OwnedSide.RIGHT) {
-				if (scaleState == OwnedSide.LEFT) {
-					autonomousCommand = rlChooser.getSelected();
-				} else if (scaleState == OwnedSide.RIGHT) {
-					autonomousCommand = rrChooser.getSelected();
-				} else {
-					System.err.println("Could not get field state");
-				}
-			} else {
-				System.err.println("Could not get field state");
-			}
-			
+			autonomousCommand = null;
+			updateAutoSelection();
+
 			double delay = SmartDashboard.getNumber("Delay", 0);
 			delayCommand = new WaitCommand("Auto Delay", delay);
 			delayCommand.start();
 
 			RobotIO.logger.startLogging("auto");
-			
+
 		} catch (Throwable t) {
 			t.printStackTrace();
 		}
@@ -166,6 +147,11 @@ public class Robot extends TimedRobot {
 	@Override
 	public void autonomousPeriodic() {
 		try {
+			// People have reported that the game specific message does not always come in before
+			//autonomous starts. This will continue updating until the message has come
+			if (autonomousCommand == null) {
+				updateAutoSelection();
+			}
 			if (delayCommand.isCompleted() && autonomousCommand != null && !hasAutoCommandStarted) {
 				hasAutoCommandStarted = true;
 				autonomousCommand.start();
@@ -201,10 +187,55 @@ public class Robot extends TimedRobot {
 	@Override
 	public void testPeriodic() {
 	}
-	
+
 	@Override
 	public void robotPeriodic() {
 		SmartDashboard.putNumber("Pressure", RobotIO.getAirPressure());
 		SmartDashboard.putNumber("Voltage", RobotIO.pdp.getVoltage());
+	}
+
+	/**
+	 * Sets the auto mode based on the GameSpecificMessage.
+	 */
+	private static void updateAutoSelection() {
+		if (DriverStation.getInstance().getGameSpecificMessage() == null) return;
+		if (DriverStation.getInstance().getGameSpecificMessage().length() < 3) return;
+		OwnedSide switchState = MatchData.getOwnedSide(GameFeature.SWITCH_NEAR);
+		OwnedSide scaleState = MatchData.getOwnedSide(GameFeature.SCALE);
+		if (switchState == OwnedSide.LEFT) {
+			if (scaleState == OwnedSide.LEFT) {
+				autonomousCommand = llChooser.getSelected();
+			} else if (scaleState == OwnedSide.RIGHT) {
+				autonomousCommand = lrChooser.getSelected();
+			} else {
+				System.err.println("Could not get field state");
+			}
+		} else if (switchState == MatchData.OwnedSide.RIGHT) {
+			if (scaleState == OwnedSide.LEFT) {
+				autonomousCommand = rlChooser.getSelected();
+			} else if (scaleState == OwnedSide.RIGHT) {
+				autonomousCommand = rrChooser.getSelected();
+			} else {
+				System.err.println("Could not get field state");
+			}
+		} else {
+			System.err.println("Could not get field state");
+		}
+
+	}
+
+	private static void enableCameraServer() {
+		if (!isCameraServerUp) {
+			try {
+				UsbCamera camera = CameraServer.getInstance().startAutomaticCapture();
+				camera.setExposureAuto();
+				camera.setWhiteBalanceAuto();
+				camera.setFPS(30);
+				camera.setVideoMode(PixelFormat.kMJPEG, 320, 240, 30);
+				isCameraServerUp = true;
+			} catch (Throwable t) {
+				t.printStackTrace();
+			}
+		}
 	}
 }
