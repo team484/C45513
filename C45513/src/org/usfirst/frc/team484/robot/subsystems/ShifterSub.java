@@ -30,5 +30,14 @@ public class ShifterSub extends Subsystem {
 		if (RobotIO.shifterSolenoid == null) return;
 		RobotIO.shifterSolenoid.set(Value.kReverse);
 	}
+	
+	/**
+	 * Returns true if the shifter is currently in low gear. True otherwise.
+	 * @return - if shifter is low
+	 */
+	public static boolean isLow() {
+		if (RobotIO.shifterSolenoid == null) return false;
+		return RobotIO.shifterSolenoid.get().equals(Value.kReverse);
+	}
 }
 

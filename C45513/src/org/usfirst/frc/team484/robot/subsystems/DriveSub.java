@@ -25,6 +25,7 @@ public class DriveSub extends Subsystem {
 		if (RobotIO.drive == null) return;
 		RobotIO.drive.tankDrive(0, 0);
 	}
+	
 	/**
 	 * Arcade drive with squared inputs
 	 * @param y - forward power
@@ -34,6 +35,17 @@ public class DriveSub extends Subsystem {
 	public static void squaredDrive(double y, double rot) {
 		if (RobotIO.drive == null) return;
 		RobotIO.drive.arcadeDrive(y, rot, true);
+	}
+	
+	/**
+	 * Drives with the rotation value multiplied by the y value to reduce current draw
+	 * and increase control at higher speeds.
+	 * @param y - forward power
+	 * @param rot - rotation power
+	 */
+	public static void curvatureDrive(double y, double rot) {
+		if (RobotIO.drive == null) return;
+		RobotIO.drive.curvatureDrive(y, rot, false);
 	}
 
 	/**
