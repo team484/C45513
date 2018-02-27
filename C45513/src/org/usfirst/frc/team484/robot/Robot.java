@@ -22,11 +22,17 @@ import org.usfirst.frc.team484.robot.MatchData.GameFeature;
 import org.usfirst.frc.team484.robot.MatchData.OwnedSide;
 import org.usfirst.frc.team484.robot.commands.auto.AutoDoNothing;
 import org.usfirst.frc.team484.robot.commands.auto.CrossAutoLine;
+import org.usfirst.frc.team484.robot.commands.auto.LeftScaleAngledFromP1;
+import org.usfirst.frc.team484.robot.commands.auto.LeftScaleAngledFromP5;
 import org.usfirst.frc.team484.robot.commands.auto.LeftSwitchFromP3;
+import org.usfirst.frc.team484.robot.commands.auto.RightScaleAngledFromP1;
+import org.usfirst.frc.team484.robot.commands.auto.RightScaleAngledFromP5;
+import org.usfirst.frc.team484.robot.commands.auto.RightScaleFromP1;
 import org.usfirst.frc.team484.robot.commands.auto.RightSwitchFromP3;
 import org.usfirst.frc.team484.robot.commands.auto.RightScaleFromP5;
 import org.usfirst.frc.team484.robot.commands.auto.SideOfRightSwitchFromP5;
 import org.usfirst.frc.team484.robot.commands.auto.LeftScaleFromP1;
+import org.usfirst.frc.team484.robot.commands.auto.LeftScaleFromP5;
 import org.usfirst.frc.team484.robot.commands.auto.SideOfLeftSwitchFromP1;
 import org.usfirst.frc.team484.robot.commands.auto.StraightToSwitch;
 import org.usfirst.frc.team484.robot.subsystems.ClimberSub;
@@ -242,48 +248,71 @@ public class Robot extends TimedRobot {
 		rrChooser.addDefault("Do Nothing", new AutoDoNothing());
 		switch(pos) {
 		case 1:
-			llChooser.addObject("Switch Side", new SideOfLeftSwitchFromP1());
-			llChooser.addObject("Scale", new LeftScaleFromP1());
 			llChooser.addObject("Cross Auto Line", new CrossAutoLine());
-			lrChooser.addObject("Switch Side", new SideOfLeftSwitchFromP1());
 			lrChooser.addObject("Cross Auto Line", new CrossAutoLine());
 			rlChooser.addObject("Cross Auto Line", new CrossAutoLine());
 			rrChooser.addObject("Cross Auto Line", new CrossAutoLine());
+
+			llChooser.addObject("Switch Side", new SideOfLeftSwitchFromP1());
+			lrChooser.addObject("Switch Side", new SideOfLeftSwitchFromP1());
+
+			llChooser.addObject("Scale Side", new LeftScaleFromP1());
+			lrChooser.addObject("Scale Side", new RightScaleFromP1());
+			rlChooser.addObject("Scale Side", new LeftScaleFromP1());
+			rrChooser.addObject("Scale Side", new RightScaleFromP1());
+
+			llChooser.addObject("Scale Corner", new LeftScaleAngledFromP1());
+			lrChooser.addObject("Scale Corner", new RightScaleAngledFromP1());
+			rlChooser.addObject("Scale Corner", new LeftScaleAngledFromP1());
+			rrChooser.addObject("Scale Corner", new RightScaleAngledFromP1());
 			break;
 		case 2:
-			llChooser.addObject("Switch Front", new StraightToSwitch());
 			llChooser.addObject("Cross Auto Line", new CrossAutoLine());
-			lrChooser.addObject("Switch Front", new StraightToSwitch());
 			lrChooser.addObject("Cross Auto Line", new CrossAutoLine());
 			rlChooser.addObject("Cross Auto Line", new CrossAutoLine());
 			rrChooser.addObject("Cross Auto Line", new CrossAutoLine());
+
+			llChooser.addObject("Switch Front", new StraightToSwitch());
+			lrChooser.addObject("Switch Front", new StraightToSwitch());
 			break;
 		case 3:
 			llChooser.addObject("Cross Auto Line", new CrossAutoLine());
-			llChooser.addObject("Center to Left Switch", new LeftSwitchFromP3());
 			lrChooser.addObject("Cross Auto Line", new CrossAutoLine());
-			lrChooser.addObject("Center to Left Switch", new LeftSwitchFromP3());
 			rlChooser.addObject("Cross Auto Line", new CrossAutoLine());
-			rlChooser.addObject("Center to Right Switch", new RightSwitchFromP3());
 			rrChooser.addObject("Cross Auto Line", new CrossAutoLine());
+
+			llChooser.addObject("Center to Left Switch", new LeftSwitchFromP3());
+			lrChooser.addObject("Center to Left Switch", new LeftSwitchFromP3());
+			rlChooser.addObject("Center to Right Switch", new RightSwitchFromP3());
 			rrChooser.addObject("Center to Right Switch", new RightSwitchFromP3());
 			break;
 		case 4:
 			llChooser.addObject("Cross Auto Line", new CrossAutoLine());
 			lrChooser.addObject("Cross Auto Line", new CrossAutoLine());
-			rlChooser.addObject("Switch Front", new StraightToSwitch());
 			rlChooser.addObject("Cross Auto Line", new CrossAutoLine());
-			rrChooser.addObject("Switch Front", new StraightToSwitch());
 			rrChooser.addObject("Cross Auto Line", new CrossAutoLine());
+
+			rlChooser.addObject("Switch Front", new StraightToSwitch());
+			rrChooser.addObject("Switch Front", new StraightToSwitch());
 			break;
 		case 5:
 			llChooser.addObject("Cross Auto Line", new CrossAutoLine());
 			lrChooser.addObject("Cross Auto Line", new CrossAutoLine());
-			rlChooser.addObject("Switch Side", new SideOfRightSwitchFromP5());
 			rlChooser.addObject("Cross Auto Line", new CrossAutoLine());
-			rrChooser.addObject("Switch Side", new SideOfRightSwitchFromP5());
-			rrChooser.addObject("Scale", new RightScaleFromP5());
 			rrChooser.addObject("Cross Auto Line", new CrossAutoLine());
+			
+			rlChooser.addObject("Switch Side", new SideOfRightSwitchFromP5());
+			rrChooser.addObject("Switch Side", new SideOfRightSwitchFromP5());
+			
+			llChooser.addObject("Scale Side", new LeftScaleFromP5());
+			lrChooser.addObject("Scale Side", new RightScaleFromP5());
+			rlChooser.addObject("Scale Side", new LeftScaleFromP5());
+			rrChooser.addObject("Scale Side", new RightScaleFromP5());
+
+			llChooser.addObject("Scale Corner", new LeftScaleAngledFromP5());
+			lrChooser.addObject("Scale Corner", new RightScaleAngledFromP5());
+			rlChooser.addObject("Scale Corner", new LeftScaleAngledFromP5());
+			rrChooser.addObject("Scale Corner", new RightScaleAngledFromP5());
 			break;
 		default:
 			break;
