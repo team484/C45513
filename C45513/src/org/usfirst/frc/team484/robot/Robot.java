@@ -242,17 +242,19 @@ public class Robot extends TimedRobot {
 		lrChooser = new SendableChooser<Command>();
 		rlChooser = new SendableChooser<Command>();
 		rrChooser = new SendableChooser<Command>();
+		
 		llChooser.addDefault("Do Nothing", new AutoDoNothing());
 		lrChooser.addDefault("Do Nothing", new AutoDoNothing());
 		rlChooser.addDefault("Do Nothing", new AutoDoNothing());
 		rrChooser.addDefault("Do Nothing", new AutoDoNothing());
+		
+		llChooser.addObject("Cross Auto Line", new CrossAutoLine());
+		lrChooser.addObject("Cross Auto Line", new CrossAutoLine());
+		rlChooser.addObject("Cross Auto Line", new CrossAutoLine());
+		rrChooser.addObject("Cross Auto Line", new CrossAutoLine());
+		
 		switch(pos) {
 		case 1:
-			llChooser.addObject("Cross Auto Line", new CrossAutoLine());
-			lrChooser.addObject("Cross Auto Line", new CrossAutoLine());
-			rlChooser.addObject("Cross Auto Line", new CrossAutoLine());
-			rrChooser.addObject("Cross Auto Line", new CrossAutoLine());
-
 			llChooser.addObject("Switch Side", new SideOfLeftSwitchFromP1());
 			lrChooser.addObject("Switch Side", new SideOfLeftSwitchFromP1());
 
@@ -267,40 +269,21 @@ public class Robot extends TimedRobot {
 			rrChooser.addObject("Scale Corner", new RightScaleAngledFromP1());
 			break;
 		case 2:
-			llChooser.addObject("Cross Auto Line", new CrossAutoLine());
-			lrChooser.addObject("Cross Auto Line", new CrossAutoLine());
-			rlChooser.addObject("Cross Auto Line", new CrossAutoLine());
-			rrChooser.addObject("Cross Auto Line", new CrossAutoLine());
 
 			llChooser.addObject("Switch Front", new StraightToSwitch());
 			lrChooser.addObject("Switch Front", new StraightToSwitch());
 			break;
 		case 3:
-			llChooser.addObject("Cross Auto Line", new CrossAutoLine());
-			lrChooser.addObject("Cross Auto Line", new CrossAutoLine());
-			rlChooser.addObject("Cross Auto Line", new CrossAutoLine());
-			rrChooser.addObject("Cross Auto Line", new CrossAutoLine());
-
 			llChooser.addObject("Center to Left Switch", new LeftSwitchFromP3());
 			lrChooser.addObject("Center to Left Switch", new LeftSwitchFromP3());
 			rlChooser.addObject("Center to Right Switch", new RightSwitchFromP3());
 			rrChooser.addObject("Center to Right Switch", new RightSwitchFromP3());
 			break;
 		case 4:
-			llChooser.addObject("Cross Auto Line", new CrossAutoLine());
-			lrChooser.addObject("Cross Auto Line", new CrossAutoLine());
-			rlChooser.addObject("Cross Auto Line", new CrossAutoLine());
-			rrChooser.addObject("Cross Auto Line", new CrossAutoLine());
-
 			rlChooser.addObject("Switch Front", new StraightToSwitch());
 			rrChooser.addObject("Switch Front", new StraightToSwitch());
 			break;
 		case 5:
-			llChooser.addObject("Cross Auto Line", new CrossAutoLine());
-			lrChooser.addObject("Cross Auto Line", new CrossAutoLine());
-			rlChooser.addObject("Cross Auto Line", new CrossAutoLine());
-			rrChooser.addObject("Cross Auto Line", new CrossAutoLine());
-			
 			rlChooser.addObject("Switch Side", new SideOfRightSwitchFromP5());
 			rrChooser.addObject("Switch Side", new SideOfRightSwitchFromP5());
 			
