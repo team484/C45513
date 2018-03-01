@@ -25,10 +25,12 @@ import org.usfirst.frc.team484.robot.commands.auto.CrossAutoLine;
 import org.usfirst.frc.team484.robot.commands.auto.LeftScaleAngledFromP1;
 import org.usfirst.frc.team484.robot.commands.auto.LeftScaleAngledFromP5;
 import org.usfirst.frc.team484.robot.commands.auto.LeftSwitchFromP3;
+import org.usfirst.frc.team484.robot.commands.auto.LeftSwitchFromP3V2;
 import org.usfirst.frc.team484.robot.commands.auto.RightScaleAngledFromP1;
 import org.usfirst.frc.team484.robot.commands.auto.RightScaleAngledFromP5;
 import org.usfirst.frc.team484.robot.commands.auto.RightScaleFromP1;
 import org.usfirst.frc.team484.robot.commands.auto.RightSwitchFromP3;
+import org.usfirst.frc.team484.robot.commands.auto.RightSwitchFromP3V2;
 import org.usfirst.frc.team484.robot.commands.auto.RightScaleFromP5;
 import org.usfirst.frc.team484.robot.commands.auto.SideOfRightSwitchFromP5;
 import org.usfirst.frc.team484.robot.commands.auto.LeftScaleFromP1;
@@ -278,6 +280,10 @@ public class Robot extends TimedRobot {
 			lrChooser.addObject("Center to Left Switch", new LeftSwitchFromP3());
 			rlChooser.addObject("Center to Right Switch", new RightSwitchFromP3());
 			rrChooser.addObject("Center to Right Switch", new RightSwitchFromP3());
+			llChooser.addObject("Center to Left Switch (45)", new LeftSwitchFromP3V2());
+			lrChooser.addObject("Center to Left Switch (45)", new LeftSwitchFromP3V2());
+			rlChooser.addObject("Center to Right Switch (45)", new RightSwitchFromP3V2());
+			rrChooser.addObject("Center to Right Switch (45)", new RightSwitchFromP3V2());
 			break;
 		case 4:
 			rlChooser.addObject("Switch Front", new StraightToSwitch());

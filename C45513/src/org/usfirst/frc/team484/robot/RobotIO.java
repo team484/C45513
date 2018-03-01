@@ -9,6 +9,7 @@ import com.ctre.phoenix.sensors.PigeonIMU;
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
@@ -205,12 +206,14 @@ public class RobotIO {
 			shifterSolenoid = new DoubleSolenoid(RobotSettings.SHIFTER_SOLENOID_HIGH_GEAR_PORT,
 					RobotSettings.SHIFTER_SOLENOID_LOW_GEAR_PORT);
 			shifterSolenoid.setName("Shifter", "Solenoid");
+			shifterSolenoid.set(Value.kForward);
 		} catch (Throwable t) {
 			t.printStackTrace();
 		}
 		try {
 			grabberSolenoid = new DoubleSolenoid(RobotSettings.GRABBER_CLOSE_PORT, RobotSettings.GRABBER_OPEN_PORT);
 			grabberSolenoid.setName("Grabber", "Solenoid");
+			grabberSolenoid.set(Value.kForward);
 		} catch (Throwable t) {
 			t.printStackTrace();
 		}

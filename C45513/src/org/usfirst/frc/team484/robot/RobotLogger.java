@@ -268,6 +268,7 @@ public class RobotLogger {
 	 */
 	public void endLogging() {
 		try {
+			if (logThread == null) return;
 			logThread.interrupt();
 		} catch (Throwable t) {
 			t.printStackTrace();
