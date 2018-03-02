@@ -280,10 +280,10 @@ public class Robot extends TimedRobot {
 			lrChooser.addObject("Center to Left Switch", new LeftSwitchFromP3());
 			rlChooser.addObject("Center to Right Switch", new RightSwitchFromP3());
 			rrChooser.addObject("Center to Right Switch", new RightSwitchFromP3());
-			llChooser.addObject("Center to Left Switch (45)", new LeftSwitchFromP3V2());
-			lrChooser.addObject("Center to Left Switch (45)", new LeftSwitchFromP3V2());
-			rlChooser.addObject("Center to Right Switch (45)", new RightSwitchFromP3V2());
-			rrChooser.addObject("Center to Right Switch (45)", new RightSwitchFromP3V2());
+			llChooser.addObject("Center to Left Switch (V2)", new LeftSwitchFromP3V2());
+			lrChooser.addObject("Center to Left Switch (V2)", new LeftSwitchFromP3V2());
+			rlChooser.addObject("Center to Right Switch (V2)", new RightSwitchFromP3V2());
+			rrChooser.addObject("Center to Right Switch (V2)", new RightSwitchFromP3V2());
 			break;
 		case 4:
 			rlChooser.addObject("Switch Front", new StraightToSwitch());
