@@ -24,7 +24,7 @@ public class JoystickDrive extends Command {
     		if (ShifterSub.isLow()) {
     			DriveSub.squaredDrive(-RobotIO.driveStick.getY(), RobotIO.driveStick.getX());
     		} else {
-    			DriveSub.curvatureDrive(-RobotIO.driveStick.getY(), RobotIO.driveStick.getX());
+    			DriveSub.curvatureDrive(-RobotIO.driveStick.getY(), RobotIO.driveStick.getX() * Math.abs(RobotIO.driveStick.getX()));
     		}
     }
 
