@@ -36,7 +36,7 @@ public class RobotSettings {
 	public static final boolean INVERT_RIGHT_CLIMBER_MOTOR = false;
 	
 	public static final double VOLTAGE_TARGET = 7.5; //In volts
-	public static final int CAN_COMMAND_TIMEOUT = 10; //In milliseconds
+	public static final int CAN_COMMAND_TIMEOUT = 100; //In milliseconds
 	
 	//-----Joystick Map-----
 	public static final int DRIVE_STICK_PORT = 0;

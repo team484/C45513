@@ -20,6 +20,8 @@ import org.usfirst.frc.team484.robot.commands.ShiftDown;
 import org.usfirst.frc.team484.robot.commands.ShiftUp;
 import org.usfirst.frc.team484.robot.commands.ToggleGrabber;
 
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.MatchType;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 
@@ -27,50 +29,62 @@ import edu.wpi.first.wpilibj.buttons.JoystickButton;
  * Creates all joystick button objects and assigns them to commands
  */
 public class OI {
-	private Button shiftUp;
-	private Button shiftDown;
-	private Button triggerShifting;
-	private Button lowerGrabber;
-	private Button raiseGrabber;
-	private Button toggleGrabber;
-	private Button climbButton;
+	private static Button shiftUp;
+	private static Button shiftDown;
+	private static Button triggerShifting;
+	private static Button lowerGrabber;
+	private static Button raiseGrabber;
+	private static Button toggleGrabber;
+	private static Button climbButton;
+
+	private static Button test;
 	
-	private Button test;
+	private static boolean isDriveStickSetup = false;
+	private static boolean isOpStickSetup = false;
 
+	public static void setupOI() {
 
-	public OI() {
-		
 		//-----Initialize button on driver stick-----
 		try {
-			shiftUp = new JoystickButton(RobotIO.driveStick, RobotSettings.SHIFT_UP_BUTTON);
-			shiftDown = new JoystickButton(RobotIO.driveStick, RobotSettings.SHIFT_DOWN_BUTTON);
-			triggerShifting = new JoystickButton(RobotIO.driveStick, 1);
-			test = new JoystickButton(RobotIO.driveStick, 8);
-			test.whenPressed(new DriveStraight(300));
-			test.whenReleased(new JoystickDrive());
-			
-			shiftUp.whenPressed(new ShiftUp());
-			shiftDown.whenPressed(new ShiftDown());
-			triggerShifting.whenPressed(new ShiftUp());
-			triggerShifting.whenReleased(new ShiftDown());
+			if ((!RobotIO.driveStick.getName().equals("")
+				|| DriverStation.getInstance().getMatchType() != MatchType.None)
+					&& !isDriveStickSetup) {
+				shiftUp = new JoystickButton(RobotIO.driveStick, RobotSettings.SHIFT_UP_BUTTON);
+				shiftDown = new JoystickButton(RobotIO.driveStick, RobotSettings.SHIFT_DOWN_BUTTON);
+				triggerShifting = new JoystickButton(RobotIO.driveStick, 1);
+				test = new JoystickButton(RobotIO.driveStick, 8);
+				test.whenPressed(new DriveStraight(300));
+				test.whenReleased(new JoystickDrive());
+
+				shiftUp.whenPressed(new ShiftUp());
+				shiftDown.whenPressed(new ShiftDown());
+				triggerShifting.whenPressed(new ShiftUp());
+				triggerShifting.whenReleased(new ShiftDown());
+				isDriveStickSetup = true;
+			}
 		} catch (Throwable t) {
 			t.printStackTrace();
 		}
-		
+
 		//-----Initialize buttons on operator stick-----
 		try {
-			lowerGrabber = new JoystickButton(RobotIO.opStick, RobotSettings.LOWER_GRABBER_BUTTON);
-			raiseGrabber = new JoystickButton(RobotIO.opStick, RobotSettings.RAISE_GRABBER_BUTTON);
-			toggleGrabber = new JoystickButton(RobotIO.opStick, RobotSettings.TOGGLE_GRABBER_BUTTON);
-			climbButton = new JoystickButton(RobotIO.opStick, RobotSettings.CLIMBER_BUTTON);
+			if ((!RobotIO.driveStick.getName().equals("")
+					|| DriverStation.getInstance().getMatchType() != MatchType.None)
+						&& !isOpStickSetup) {
+				lowerGrabber = new JoystickButton(RobotIO.opStick, RobotSettings.LOWER_GRABBER_BUTTON);
+				raiseGrabber = new JoystickButton(RobotIO.opStick, RobotSettings.RAISE_GRABBER_BUTTON);
+				toggleGrabber = new JoystickButton(RobotIO.opStick, RobotSettings.TOGGLE_GRABBER_BUTTON);
+				climbButton = new JoystickButton(RobotIO.opStick, RobotSettings.CLIMBER_BUTTON);
 
-			lowerGrabber.whenPressed(new RotateGrabberDown(RobotSettings.GRABBER_ROTATE_SPEED_DOWN));
-			raiseGrabber.whenPressed(new RotateGrabberUp(RobotSettings.GRABBER_ROTATE_SPEED_UP));
-			lowerGrabber.whenReleased(new GrabberAngleDoNothing());
-			raiseGrabber.whenReleased(new GrabberAngleDoNothing());
-			toggleGrabber.whenPressed(new ToggleGrabber());
-			climbButton.whileHeld(new ClimbWithJoystick());
-			climbButton.whenReleased(new ClimberDoNothing());
+				lowerGrabber.whenPressed(new RotateGrabberDown(RobotSettings.GRABBER_ROTATE_SPEED_DOWN));
+				raiseGrabber.whenPressed(new RotateGrabberUp(RobotSettings.GRABBER_ROTATE_SPEED_UP));
+				lowerGrabber.whenReleased(new GrabberAngleDoNothing());
+				raiseGrabber.whenReleased(new GrabberAngleDoNothing());
+				toggleGrabber.whenPressed(new ToggleGrabber());
+				climbButton.whileHeld(new ClimbWithJoystick());
+				climbButton.whenReleased(new ClimberDoNothing());
+				isOpStickSetup = true;
+			}
 		} catch (Throwable t) {
 			t.printStackTrace();
 		}

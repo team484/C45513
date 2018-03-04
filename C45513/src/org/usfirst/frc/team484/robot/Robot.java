@@ -17,7 +17,11 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.command.WaitCommand;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.vision.VisionThread;
 
+import org.opencv.core.MatOfPoint;
+import org.opencv.core.Rect;
+import org.opencv.imgproc.Imgproc;
 import org.usfirst.frc.team484.robot.MatchData.GameFeature;
 import org.usfirst.frc.team484.robot.MatchData.OwnedSide;
 import org.usfirst.frc.team484.robot.commands.auto.AutoDoNothing;
@@ -56,9 +60,6 @@ public class Robot extends TimedRobot {
 	public static final GrabberAngleSub grabberAngleSub = new GrabberAngleSub();
 	public static final ClimberSub climberSub = new ClimberSub();
 
-	//-----Creates Operator Interface-----
-	public static OI oi;
-
 	//-----Choosers for Auto Mode-----
 	private static Command autonomousCommand;
 	private static Command delayCommand;
@@ -69,14 +70,20 @@ public class Robot extends TimedRobot {
 	private static SendableChooser<Integer> position = new SendableChooser<>();
 	private static boolean hasAutoCommandStarted = false;
 
+	//-----Camera and computer vision objects-----
 	private static boolean isCameraServerUp = false;
+	public static VisionThread visionThread;
+	public static double visionCubeAngle = 0.0; //The angle the robot must turn to face the cube
+	public static double visionCubeY = 0.0; //The distance (in inches) to the cube
+	public static final Object imgLock = new Object(); //Obj to synchronize to for thread safety
+	public static long lastVisionUpdate = 0; //Last timestamp the results were updated
 
 
 	@Override
 	public void robotInit() {
 		try {
 			setPeriod(RobotSettings.ROBOT_UPDATE_RATE);
-			oi = new OI();
+			OI.setupOI();
 			position.addDefault("(1) Far Left",1);
 			position.addObject("(2) Left",2);
 			position.addObject("(3) Center",3);
@@ -89,12 +96,18 @@ public class Robot extends TimedRobot {
 		}
 
 		enableCameraServer();
+		//visionThread.start(); //Uncomment for vision testing
 	}
 
 	@Override
 	public void disabledInit() {
 		try {
 			RobotIO.logger.endLogging();
+			if (visionThread != null) {
+				if (visionThread.isAlive()) {
+					visionThread.interrupt(); //Comment out for vision testing
+				}
+			}
 		} catch (Throwable t) {
 			t.printStackTrace();
 		}
@@ -127,7 +140,7 @@ public class Robot extends TimedRobot {
 			delayCommand.start();
 
 			RobotIO.logger.startLogging("auto");
-
+			visionThread.start();
 		} catch (Throwable t) {
 			t.printStackTrace();
 		}
@@ -157,8 +170,13 @@ public class Robot extends TimedRobot {
 			RobotIO.setVoltageComp(false);
 			if (delayCommand != null) delayCommand.cancel();
 			if (autonomousCommand != null) autonomousCommand.cancel();
-
+			OI.setupOI(); // Runs this in case a joystick was plugged in after robot init
 			RobotIO.logger.startLogging("tele");
+			if (visionThread != null) {
+				if (visionThread.isAlive()) {
+					visionThread.interrupt();
+				}
+			}
 		} catch (Throwable t) {
 			t.printStackTrace();
 		}
@@ -181,6 +199,9 @@ public class Robot extends TimedRobot {
 	public void robotPeriodic() {
 		SmartDashboard.putNumber("Pressure", RobotIO.getAirPressure());
 		SmartDashboard.putNumber("Voltage", RobotIO.pdp.getVoltage());
+		SmartDashboard.putNumber("CubeAngle", visionCubeAngle);
+		SmartDashboard.putNumber("CubeY", visionCubeY);
+		SmartDashboard.putNumber("Vision Period", lastVisionUpdate);
 	}
 
 	/**
@@ -213,21 +234,51 @@ public class Robot extends TimedRobot {
 
 	}
 
+	/**
+	 * Starts the camera server and initializes the vision thread object.
+	 */
 	private static void enableCameraServer() {
 		if (!isCameraServerUp) {
 			try {
 				UsbCamera camera = CameraServer.getInstance().startAutomaticCapture();
-				camera.setExposureAuto();
+				//camera.setExposureAuto();
+				camera.setExposureManual(2);
 				camera.setWhiteBalanceAuto();
 				camera.setFPS(120);
-				camera.setVideoMode(PixelFormat.kMJPEG, 320, 240, 30);
+				camera.setVideoMode(PixelFormat.kMJPEG, 320, 240, 120);
 				isCameraServerUp = true;
+				//A lambda expression to make Max happy
+				visionThread = new VisionThread(camera, new CubeVisionPipeline(), pipeline -> {
+					if (!pipeline.filterContoursOutput().isEmpty()) {
+						//Find the largest contour
+						double maxSize = 0;
+						Rect r = Imgproc.boundingRect(pipeline.filterContoursOutput().get(0));
+						for (MatOfPoint contour : pipeline.filterContoursOutput()) {
+							double size = Imgproc.contourArea(contour, true);
+							if (size > maxSize) {
+								maxSize = size;
+								r = Imgproc.boundingRect(contour);
+							}
+						}
+						synchronized (imgLock) {
+							//TODO: This code still needs to be calibrated using real world results
+							double centerX = r.x + (r.width / 2);
+							double centerY = r.y + (r.height / 2);
+							double radsPerPixel = 0.00736;
+							double visionAngleY = 0.698132 + (120.0 - centerY) * radsPerPixel;
+							visionCubeY = Math.tan(visionAngleY) * 38.0 - 11.0;
+							//double distFromCam = Math.sqrt(Math.pow(visionCubeY + 11.0, 2) + Math.pow(38,2));
+							visionCubeAngle = Math.toDegrees((centerX - 160.0) * radsPerPixel);
+							lastVisionUpdate = System.currentTimeMillis();
+						}
+					}
+				});
 			} catch (Throwable t) {
 				t.printStackTrace();
 			}
 		}
 	}
-	
+
 	private static int oldPos = 1;
 	/**
 	 * Update the SendableChoosers based on field position
@@ -244,17 +295,17 @@ public class Robot extends TimedRobot {
 		lrChooser = new SendableChooser<Command>();
 		rlChooser = new SendableChooser<Command>();
 		rrChooser = new SendableChooser<Command>();
-		
+
 		llChooser.addDefault("Do Nothing", new AutoDoNothing());
 		lrChooser.addDefault("Do Nothing", new AutoDoNothing());
 		rlChooser.addDefault("Do Nothing", new AutoDoNothing());
 		rrChooser.addDefault("Do Nothing", new AutoDoNothing());
-		
+
 		llChooser.addObject("Cross Auto Line", new CrossAutoLine());
 		lrChooser.addObject("Cross Auto Line", new CrossAutoLine());
 		rlChooser.addObject("Cross Auto Line", new CrossAutoLine());
 		rrChooser.addObject("Cross Auto Line", new CrossAutoLine());
-		
+
 		switch(pos) {
 		case 1:
 			llChooser.addObject("Switch Side", new SideOfLeftSwitchFromP1());
@@ -287,7 +338,7 @@ public class Robot extends TimedRobot {
 		case 5:
 			rlChooser.addObject("Switch Side", new SideOfRightSwitchFromP5());
 			rrChooser.addObject("Switch Side", new SideOfRightSwitchFromP5());
-			
+
 			llChooser.addObject("Scale Side", new LeftScaleFromP5());
 			lrChooser.addObject("Scale Side", new RightScaleFromP5());
 			rlChooser.addObject("Scale Side", new LeftScaleFromP5());
