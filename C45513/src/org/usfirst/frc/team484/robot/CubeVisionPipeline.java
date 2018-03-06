@@ -37,8 +37,8 @@ public class CubeVisionPipeline implements VisionPipeline {
 	private static final double filterContoursMinArea = 1000.0;
 	private static final double filterContoursMinWidth = 10.0;
 	private static final double filterContoursMinHeight = 10.0;
-	private static final double filterContoursMinRatio = 0.5;
-	private static final double filterContoursMaxRatio = 1.5;
+	private static final double filterContoursMinRatio = 0.7;
+	private static final double filterContoursMaxRatio = 1.3;
 	
 	static {
 		System.loadLibrary(Core.NATIVE_LIBRARY_NAME);

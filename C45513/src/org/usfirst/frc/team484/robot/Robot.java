@@ -7,6 +7,8 @@
 
 package org.usfirst.frc.team484.robot;
 
+import edu.wpi.cscore.CvSink;
+import edu.wpi.cscore.CvSource;
 import edu.wpi.cscore.UsbCamera;
 import edu.wpi.cscore.VideoMode.PixelFormat;
 import edu.wpi.first.wpilibj.CameraServer;
@@ -19,8 +21,11 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.vision.VisionThread;
 
+import org.opencv.core.Mat;
 import org.opencv.core.MatOfPoint;
+import org.opencv.core.Point;
 import org.opencv.core.Rect;
+import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
 import org.usfirst.frc.team484.robot.MatchData.GameFeature;
 import org.usfirst.frc.team484.robot.MatchData.OwnedSide;
@@ -75,6 +80,7 @@ public class Robot extends TimedRobot {
 	public static VisionThread visionThread;
 	public static double visionCubeAngle = 0.0; //The angle the robot must turn to face the cube
 	public static double visionCubeY = 0.0; //The distance (in inches) to the cube
+	public static double visionCubeX = 0.0; //The translation (in inches) to the cube
 	public static final Object imgLock = new Object(); //Obj to synchronize to for thread safety
 	public static long lastVisionUpdate = 0; //Last timestamp the results were updated
 
@@ -96,7 +102,7 @@ public class Robot extends TimedRobot {
 		}
 
 		enableCameraServer();
-		//visionThread.start(); //Uncomment for vision testing
+		visionThread.start(); //Uncomment for vision testing
 	}
 
 	@Override
@@ -105,7 +111,7 @@ public class Robot extends TimedRobot {
 			RobotIO.logger.endLogging();
 			if (visionThread != null) {
 				if (visionThread.isAlive()) {
-					visionThread.interrupt(); //Comment out for vision testing
+					//visionThread.interrupt(); //Comment out for vision testing
 				}
 			}
 		} catch (Throwable t) {
@@ -174,7 +180,7 @@ public class Robot extends TimedRobot {
 			RobotIO.logger.startLogging("tele");
 			if (visionThread != null) {
 				if (visionThread.isAlive()) {
-					visionThread.interrupt();
+					//visionThread.interrupt();
 				}
 			}
 		} catch (Throwable t) {
@@ -200,6 +206,7 @@ public class Robot extends TimedRobot {
 		SmartDashboard.putNumber("Pressure", RobotIO.getAirPressure());
 		SmartDashboard.putNumber("Voltage", RobotIO.pdp.getVoltage());
 		SmartDashboard.putNumber("CubeAngle", visionCubeAngle);
+		SmartDashboard.putNumber("CubeX", visionCubeX);
 		SmartDashboard.putNumber("CubeY", visionCubeY);
 		SmartDashboard.putNumber("Vision Period", lastVisionUpdate);
 	}
@@ -234,6 +241,8 @@ public class Robot extends TimedRobot {
 
 	}
 
+	private static Point cubeP1 = new Point();
+	private static Point cubeP2 = new Point();
 	/**
 	 * Starts the camera server and initializes the vision thread object.
 	 */
@@ -241,12 +250,23 @@ public class Robot extends TimedRobot {
 		if (!isCameraServerUp) {
 			try {
 				UsbCamera camera = CameraServer.getInstance().startAutomaticCapture();
-				//camera.setExposureAuto();
 				camera.setExposureManual(2);
 				camera.setWhiteBalanceAuto();
-				camera.setFPS(120);
+				camera.setFPS(60);
 				camera.setVideoMode(PixelFormat.kMJPEG, 320, 240, 120);
 				isCameraServerUp = true;
+				new Thread(() -> {	                
+	                CvSink cvSink = CameraServer.getInstance().getVideo();
+	                CvSource outputStream = CameraServer.getInstance().putVideo("camera stream", 320, 240);
+	                
+	                Mat source = new Mat();
+	                
+	                while(!Thread.interrupted()) {
+	                    cvSink.grabFrame(source);
+	                    Imgproc.rectangle(source, cubeP1, cubeP2, new Scalar(0.0, 255.0, 0.0), 1);
+	                    outputStream.putFrame(source);
+	                }
+	            }).start();
 				//A lambda expression to make Max happy
 				visionThread = new VisionThread(camera, new CubeVisionPipeline(), pipeline -> {
 					if (!pipeline.filterContoursOutput().isEmpty()) {
@@ -260,15 +280,25 @@ public class Robot extends TimedRobot {
 								r = Imgproc.boundingRect(contour);
 							}
 						}
+						cubeP1 = r.tl();
+						cubeP2 = r.br();
 						synchronized (imgLock) {
-							//TODO: This code still needs to be calibrated using real world results
 							double centerX = r.x + (r.width / 2);
 							double centerY = r.y + (r.height / 2);
-							double radsPerPixel = 0.00736;
-							double visionAngleY = 0.698132 + (120.0 - centerY) * radsPerPixel;
-							visionCubeY = Math.tan(visionAngleY) * 38.0 - 11.0;
-							//double distFromCam = Math.sqrt(Math.pow(visionCubeY + 11.0, 2) + Math.pow(38,2));
-							visionCubeAngle = Math.toDegrees((centerX - 160.0) * radsPerPixel);
+							final double radsPerPixel = 0.00736;
+							double visionAngleY = -0.8726643268 - (centerY - 120.0) * radsPerPixel;
+							double yzDistance = -(38.0-11.0)/Math.sin(visionAngleY);
+							double visionAngleX = (160 - centerX) * radsPerPixel;
+							double xyzDistance = yzDistance / Math.cos(visionAngleX);
+							//double zDist = xyzDistance * Math.cos(visionAngleX) * Math.sin(visionAngleY);
+							double xDist = xyzDistance * Math.sin(visionAngleX) * Math.sin(visionAngleY);
+							double yDist = xyzDistance * Math.cos(visionAngleY);
+							double yActual = 1.0353 * yDist + 17.748;
+							double xActual = 0.75 + xDist * 0.8889;
+							double xyAngle = Math.toDegrees(Math.atan(-xActual/yActual));
+							visionCubeX = xActual;
+							visionCubeY = yActual;
+							visionCubeAngle = xyAngle;
 							lastVisionUpdate = System.currentTimeMillis();
 						}
 					}

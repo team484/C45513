@@ -16,6 +16,7 @@ import org.usfirst.frc.team484.robot.commands.GrabberAngleDoNothing;
 import org.usfirst.frc.team484.robot.commands.JoystickDrive;
 import org.usfirst.frc.team484.robot.commands.RotateGrabberDown;
 import org.usfirst.frc.team484.robot.commands.RotateGrabberUp;
+import org.usfirst.frc.team484.robot.commands.RotateToCube;
 import org.usfirst.frc.team484.robot.commands.ShiftDown;
 import org.usfirst.frc.team484.robot.commands.ShiftUp;
 import org.usfirst.frc.team484.robot.commands.ToggleGrabber;
@@ -53,7 +54,7 @@ public class OI {
 				shiftDown = new JoystickButton(RobotIO.driveStick, RobotSettings.SHIFT_DOWN_BUTTON);
 				triggerShifting = new JoystickButton(RobotIO.driveStick, 1);
 				test = new JoystickButton(RobotIO.driveStick, 8);
-				test.whenPressed(new DriveStraight(300));
+				test.whenPressed(new RotateToCube());
 				test.whenReleased(new JoystickDrive());
 
 				shiftUp.whenPressed(new ShiftUp());
