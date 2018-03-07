@@ -23,13 +23,13 @@ public class LeftSwitchFromP3 extends CommandGroup {
         addSequential(new ShiftDown(), 0.1);
         addSequential(new DriveAngle(90),3);
 		addSequential(new ShiftUp(), 0.1);
-        addSequential(new DriveStraight(57.1),3);
-		addParallel(new ElevateToHeight(RobotSettings.SWITCH_HEIGHT, 1), 1.2);
+        addSequential(new DriveStraight(62.1),3);
+		addParallel(new ElevateToHeight(RobotSettings.SWITCH_HEIGHT, 1), 1);
 		addParallel(new RotateGrabberDown(0.6));
 		addSequential(new ShiftDown(), 0.1);
         addSequential(new DriveAngle(-90),3);
 		addSequential(new ShiftUp(), 0.1);
-        addSequential(new DriveStraight(75),3);
+        addSequential(new DriveStraight(80),3);
         addSequential(new OpenGrabber());
 		addSequential(new WaitCommand(1));
 		addSequential(new DriveStraight(-20));

@@ -69,7 +69,7 @@ public class DriveUntilDistance extends Command {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return Math.abs(distance) <= Math.abs(RobotIO.getFusedEncoderDistance());
+        return distance <= RobotIO.getFusedEncoderDistance();
     }
 
     // Called once after isFinished returns true

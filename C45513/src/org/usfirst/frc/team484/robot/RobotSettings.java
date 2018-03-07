@@ -52,7 +52,7 @@ public class RobotSettings {
 	//-----PID Constants-----
 	public static final double DRIVE_DISTANCE_KP = 0.05;
 	public static final double DRIVE_DISTANCE_KI = 0;
-	public static final double DRIVE_DISTANCE_KD = 1.4;
+	public static final double DRIVE_DISTANCE_KD = 0.75;
 	public static final double DRIVE_PID_DRIFT_OFFSET = -0.125; //Compensate for rotational drift
 	public static final double DRIVE_PID_TOLERANCE = 8; //inches
 	public static final double DRIVE_PID_RATE_TOLERANCE = 0.5; //inches per second
@@ -71,7 +71,7 @@ public class RobotSettings {
 	public static final double MAINTAIN_ANGLE_KD = 0.0;
 	
 	//-----Elevator Settings-----
-	public static final double ELEVATOR_GRAVITY_COMPENSATION_POWER = 0.1;
+	public static final double ELEVATOR_GRAVITY_COMPENSATION_POWER = 0.12;
 	public static final double SWITCH_HEIGHT = 0.5; //Value out of 1. 0 is ground 1 is max
 	
 	//-----Grabber Settings-----

@@ -22,7 +22,7 @@ public class SideOfLeftSwitchFromP1 extends CommandGroup {
     public SideOfLeftSwitchFromP1() {
     		addSequential(new ShiftUp(), 0.1);
 		addParallel(new DriveStraight(168.0 - 32.0/2.0 - 3.75)); //Total distance - 1/2 robot length - bumper thickness
-		addParallel(new ElevateToHeight(RobotSettings.SWITCH_HEIGHT, 1), 1.2);
+		addParallel(new ElevateToHeight(RobotSettings.SWITCH_HEIGHT, 1), 1);
 		addParallel(new RotateGrabberDown(0.6));
 		addSequential(new WaitForChildren());
 		addSequential(new ShiftDown(), 0.1);

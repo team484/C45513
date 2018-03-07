@@ -20,7 +20,7 @@ public class StraightToSwitch extends CommandGroup {
     public StraightToSwitch() {
     		addSequential(new ShiftUp(), 0.1);
 		addParallel(new DriveStraight(109)); //Total distance - robot length - bumper thickness
-		addParallel(new ElevateToHeight(RobotSettings.SWITCH_HEIGHT, 1), 1.2);
+		addParallel(new ElevateToHeight(RobotSettings.SWITCH_HEIGHT, 1), 1);
 		addParallel(new RotateGrabberDown(0.6));
 		addSequential(new WaitForChildren());
 		addSequential(new OpenGrabber());
