@@ -31,15 +31,15 @@ import org.usfirst.frc.team484.robot.MatchData.GameFeature;
 import org.usfirst.frc.team484.robot.MatchData.OwnedSide;
 import org.usfirst.frc.team484.robot.commands.auto.AutoDoNothing;
 import org.usfirst.frc.team484.robot.commands.auto.CrossAutoLine;
+import org.usfirst.frc.team484.robot.commands.auto.LeftScaleAndSwitchFromP1;
 import org.usfirst.frc.team484.robot.commands.auto.LeftScaleAngledFromP1;
 import org.usfirst.frc.team484.robot.commands.auto.LeftScaleAngledFromP5;
 import org.usfirst.frc.team484.robot.commands.auto.LeftSwitchFromP3;
-import org.usfirst.frc.team484.robot.commands.auto.LeftSwitchFromP3V2;
+import org.usfirst.frc.team484.robot.commands.auto.RightScaleAndSwitchFromP5;
 import org.usfirst.frc.team484.robot.commands.auto.RightScaleAngledFromP1;
 import org.usfirst.frc.team484.robot.commands.auto.RightScaleAngledFromP5;
 import org.usfirst.frc.team484.robot.commands.auto.RightScaleFromP1;
 import org.usfirst.frc.team484.robot.commands.auto.RightSwitchFromP3;
-import org.usfirst.frc.team484.robot.commands.auto.RightSwitchFromP3V2;
 import org.usfirst.frc.team484.robot.commands.auto.RightScaleFromP5;
 import org.usfirst.frc.team484.robot.commands.auto.SideOfRightSwitchFromP5;
 import org.usfirst.frc.team484.robot.commands.auto.LeftScaleFromP1;
@@ -241,8 +241,8 @@ public class Robot extends TimedRobot {
 
 	}
 
-	private static Point cubeP1 = new Point();
-	private static Point cubeP2 = new Point();
+	//private static Point cubeP1 = new Point();
+	//private static Point cubeP2 = new Point();
 	/**
 	 * Starts the camera server and initializes the vision thread object.
 	 */
@@ -255,7 +255,7 @@ public class Robot extends TimedRobot {
 				camera.setFPS(120);
 				camera.setVideoMode(PixelFormat.kMJPEG, 320, 240, 120);
 				isCameraServerUp = true;
-				new Thread(() -> {	                
+				/*new Thread(() -> {	                
 	                CvSink cvSink = CameraServer.getInstance().getVideo();
 	                CvSource outputStream = CameraServer.getInstance().putVideo("camera stream", 320, 240);
 	                
@@ -266,7 +266,7 @@ public class Robot extends TimedRobot {
 	                    Imgproc.rectangle(source, cubeP1, cubeP2, new Scalar(0.0, 255.0, 0.0), 1);
 	                    outputStream.putFrame(source);
 	                }
-	            }).start();
+	            }).start();*/
 				//A lambda expression to make Max happy
 				visionThread = new VisionThread(camera, new CubeVisionPipeline(), pipeline -> {
 					if (!pipeline.filterContoursOutput().isEmpty()) {
@@ -280,8 +280,8 @@ public class Robot extends TimedRobot {
 								r = Imgproc.boundingRect(contour);
 							}
 						}
-						cubeP1 = r.tl();
-						cubeP2 = r.br();
+						//cubeP1 = r.tl();
+						//cubeP2 = r.br();
 						synchronized (imgLock) {
 							double centerX = r.x + (r.width / 2);
 							double centerY = r.y + (r.height / 2);
@@ -350,16 +350,14 @@ public class Robot extends TimedRobot {
 			lrChooser.addObject("Scale Corner", new RightScaleAngledFromP1());
 			rlChooser.addObject("Scale Corner", new LeftScaleAngledFromP1());
 			rrChooser.addObject("Scale Corner", new RightScaleAngledFromP1());
+			
+			llChooser.addObject("Scale and Switch", new LeftScaleAndSwitchFromP1());
 			break;
 		case 3:
 			llChooser.addObject("Center to Left Switch", new LeftSwitchFromP3());
 			lrChooser.addObject("Center to Left Switch", new LeftSwitchFromP3());
 			rlChooser.addObject("Center to Right Switch", new RightSwitchFromP3());
 			rrChooser.addObject("Center to Right Switch", new RightSwitchFromP3());
-			llChooser.addObject("Center to Left Switch (V2)", new LeftSwitchFromP3V2());
-			lrChooser.addObject("Center to Left Switch (V2)", new LeftSwitchFromP3V2());
-			rlChooser.addObject("Center to Right Switch (V2)", new RightSwitchFromP3V2());
-			rrChooser.addObject("Center to Right Switch (V2)", new RightSwitchFromP3V2());
 			break;
 		case 4:
 			rlChooser.addObject("Switch Front", new StraightToSwitch());
@@ -378,6 +376,8 @@ public class Robot extends TimedRobot {
 			lrChooser.addObject("Scale Corner", new RightScaleAngledFromP5());
 			rlChooser.addObject("Scale Corner", new LeftScaleAngledFromP5());
 			rrChooser.addObject("Scale Corner", new RightScaleAngledFromP5());
+			
+			rrChooser.addObject("Scale and Switch", new RightScaleAndSwitchFromP5());
 			break;
 		default:
 			break;

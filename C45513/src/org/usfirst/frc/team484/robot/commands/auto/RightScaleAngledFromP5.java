@@ -22,21 +22,21 @@ public class RightScaleAngledFromP5 extends CommandGroup {
 
     public RightScaleAngledFromP5() {
     		addSequential(new ShiftUp(), 0.1);
-		addSequential(new DriveStraight(254.5));
-		addParallel(new ElevateToHeight(1.0, 1));
+		addSequential(new DriveStraight(254.5), 4.5);
+		addParallel(new ElevateToHeight(1.0, 1), 2.5);
 		addSequential(new ShiftDown(), 0.1);
-		addSequential(new DriveAngle(45));
+		addSequential(new DriveAngle(45), 1);
 		addSequential(new ShiftUp(), 0.1);
 		addSequential(new WaitForChildren());
 		addParallel(new DriveStraight(30), 2);
 		addSequential(new RotateGrabberDown(0.5), 1);
 		addSequential(new WaitForChildren());
-		addSequential(new OpenGrabber());
+		addSequential(new OpenGrabber(), 0.1);
 		addSequential(new WaitCommand(0.5));
-		addParallel(new DriveStraight(-10));
+		addParallel(new DriveStraight(-10), 1);
 		addParallel(new RotateGrabberUp(1), 1);
-		addParallel(new CloseGrabber());
+		addParallel(new CloseGrabber(), 0.1);
 		addSequential(new WaitForChildren());
-		addSequential(new ElevateToHeight(0, 1));
+		addSequential(new ElevateToHeight(0, 1), 2.5);
     }
 }

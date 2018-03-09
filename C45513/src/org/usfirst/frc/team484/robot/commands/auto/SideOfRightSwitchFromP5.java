@@ -21,17 +21,17 @@ public class SideOfRightSwitchFromP5 extends CommandGroup {
 
     public SideOfRightSwitchFromP5() {
     		addSequential(new ShiftUp(), 0.1);
-		addParallel(new DriveStraight(168.0 - 32.0/2.0 - 3.75)); //Total distance - 1/2 robot length - bumper thickness
+		addParallel(new DriveStraight(168.0 - 32.0/2.0 - 3.75), 2.5); //Total distance - 1/2 robot length - bumper thickness
 		addParallel(new ElevateToHeight(RobotSettings.SWITCH_HEIGHT, 1), 1);
-		addParallel(new RotateGrabberDown(0.6));
+		addParallel(new RotateGrabberDown(0.6), 1);
 		addSequential(new WaitForChildren());
 		addSequential(new ShiftDown(), 0.1);
-		addSequential(new DriveAngle(90));
+		addSequential(new DriveAngle(90),1);
 		addSequential(new ShiftUp(), 0.1);
-		addSequential(new DriveStraight(45)); //Total distance - 1/2 robot length - bumper thickness
+		addSequential(new DriveStraight(45),1.1); //Total distance - 1/2 robot length - bumper thickness
 		addSequential(new OpenGrabber());
 		addSequential(new WaitCommand(1));
-		addSequential(new DriveStraight(-20));
+		addParallel(new DriveStraight(-20), 1);
 		addSequential(new RotateGrabberUp(1), 1);
     }
 }

@@ -13,6 +13,6 @@ public class CrossAutoLine extends CommandGroup {
 
     public CrossAutoLine() {
     		addSequential(new ShiftUp(), 0.1);
-    		addSequential(new DriveStraight(90));
+    		addSequential(new DriveStraight(90), 3.5);
     }
 }
