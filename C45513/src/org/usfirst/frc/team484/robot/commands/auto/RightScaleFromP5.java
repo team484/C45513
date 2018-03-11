@@ -21,7 +21,7 @@ public class RightScaleFromP5 extends CommandGroup {
 
     public RightScaleFromP5() {
     		addSequential(new ShiftUp(), 0.1);
-		addSequential(new DriveStraight(307.25), 4.5);
+		addSequential(new DriveStraight(304), 4.5);
 		addParallel(new ElevateToHeight(1.0, 1), 2.5);
 		addSequential(new ShiftDown(), 0.1);
 		addSequential(new DriveAngle(90), 1.0);
@@ -32,7 +32,7 @@ public class RightScaleFromP5 extends CommandGroup {
 		addSequential(new WaitForChildren());
 		addSequential(new OpenGrabber(), 0.1);
 		addSequential(new WaitCommand(0.5));
-		addParallel(new DriveStraight(-10), 1);
+		addParallel(new DriveStraight(-20), 1);
 		addParallel(new RotateGrabberUp(1), 1);
 		addParallel(new CloseGrabber(), 0.1);
 		addSequential(new WaitForChildren());

@@ -1,9 +1,6 @@
 package org.usfirst.frc.team484.robot.subsystems;
 
-import java.util.ArrayList;
-
 import org.usfirst.frc.team484.robot.RobotIO;
-import org.usfirst.frc.team484.robot.RobotSettings;
 import org.usfirst.frc.team484.robot.commands.GrabberAngleDoNothing;
 
 import edu.wpi.first.wpilibj.command.Subsystem;

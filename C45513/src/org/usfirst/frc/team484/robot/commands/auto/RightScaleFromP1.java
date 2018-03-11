@@ -20,8 +20,8 @@ import edu.wpi.first.wpilibj.command.WaitForChildren;
 public class RightScaleFromP1 extends CommandGroup {
 
     public RightScaleFromP1() {
-    		addSequential(new ShiftUp(), 0.1);
-		addSequential(new DriveStraight(235.2), 4);
+    	addSequential(new ShiftUp(), 0.1);
+		addSequential(new DriveStraight(210), 4);
 		addSequential(new ShiftDown(), 0.1);
 		addSequential(new DriveAngle(-90), 1.0);
 		addSequential(new ShiftUp(), 0.1);
@@ -40,7 +40,7 @@ public class RightScaleFromP1 extends CommandGroup {
 		addSequential(new WaitForChildren());
 		addSequential(new OpenGrabber(), 0.1);
 		addSequential(new WaitCommand(0.5));
-		addParallel(new DriveStraight(-10), 1);
+		addParallel(new DriveStraight(-20), 1);
 		addParallel(new RotateGrabberUp(1), 1);
 		addParallel(new CloseGrabber(), 0.1);
 		addSequential(new WaitForChildren());

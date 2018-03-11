@@ -1,6 +1,5 @@
 package org.usfirst.frc.team484.robot.commands.auto;
 
-import org.usfirst.frc.team484.robot.commands.DriveDistance;
 import org.usfirst.frc.team484.robot.commands.DriveStraight;
 import org.usfirst.frc.team484.robot.commands.ShiftUp;
 

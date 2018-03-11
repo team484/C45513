@@ -21,7 +21,7 @@ public class LeftScaleAngledFromP5 extends CommandGroup {
 
 	public LeftScaleAngledFromP5() {	
 		addSequential(new ShiftUp(), 0.1);
-		addSequential(new DriveStraight(235.2), 4.5);
+		addSequential(new DriveStraight(210.2), 4.5);
 		addSequential(new ShiftDown(), 0.1);
 		addSequential(new DriveAngle(90), 1.0);
 		addSequential(new ShiftUp(), 0.1);

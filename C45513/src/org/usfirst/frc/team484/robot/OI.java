@@ -9,16 +9,15 @@ package org.usfirst.frc.team484.robot;
 
 import org.usfirst.frc.team484.robot.commands.ClimbWithJoystick;
 import org.usfirst.frc.team484.robot.commands.ClimberDoNothing;
-import org.usfirst.frc.team484.robot.commands.DriveAngle;
-import org.usfirst.frc.team484.robot.commands.DriveDistance;
-import org.usfirst.frc.team484.robot.commands.DriveStraight;
 import org.usfirst.frc.team484.robot.commands.GrabberAngleDoNothing;
 import org.usfirst.frc.team484.robot.commands.JoystickDrive;
+import org.usfirst.frc.team484.robot.commands.JoystickElevator;
 import org.usfirst.frc.team484.robot.commands.RotateGrabberDown;
 import org.usfirst.frc.team484.robot.commands.RotateGrabberUp;
 import org.usfirst.frc.team484.robot.commands.RotateToCube;
 import org.usfirst.frc.team484.robot.commands.ShiftDown;
 import org.usfirst.frc.team484.robot.commands.ShiftUp;
+import org.usfirst.frc.team484.robot.commands.TeleScaleCube;
 import org.usfirst.frc.team484.robot.commands.ToggleGrabber;
 
 import edu.wpi.first.wpilibj.DriverStation;
@@ -37,6 +36,7 @@ public class OI {
 	private static Button raiseGrabber;
 	private static Button toggleGrabber;
 	private static Button climbButton;
+	private static Button teleCubeButton;
 
 	private static Button test;
 	
@@ -54,6 +54,7 @@ public class OI {
 				shiftDown = new JoystickButton(RobotIO.driveStick, RobotSettings.SHIFT_DOWN_BUTTON);
 				triggerShifting = new JoystickButton(RobotIO.driveStick, 1);
 				test = new JoystickButton(RobotIO.driveStick, 8);
+				teleCubeButton = new JoystickButton(RobotIO.driveStick, 4);
 				test.whenPressed(new RotateToCube());
 				test.whenReleased(new JoystickDrive());
 
@@ -61,6 +62,11 @@ public class OI {
 				shiftDown.whenPressed(new ShiftDown());
 				triggerShifting.whenPressed(new ShiftUp());
 				triggerShifting.whenReleased(new ShiftDown());
+				
+				teleCubeButton.whenPressed(new TeleScaleCube());
+				teleCubeButton.whenReleased(new JoystickDrive());
+				teleCubeButton.whenReleased(new JoystickElevator());
+				
 				isDriveStickSetup = true;
 			}
 		} catch (Throwable t) {

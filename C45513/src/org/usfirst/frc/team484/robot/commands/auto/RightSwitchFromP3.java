@@ -24,7 +24,7 @@ public class RightSwitchFromP3 extends CommandGroup {
         addSequential(new DriveAngle(-90),1);
 		addSequential(new ShiftUp(), 0.1);
         addSequential(new DriveStraight(53.5),3);
-		addParallel(new ElevateToHeight(RobotSettings.SWITCH_HEIGHT, 1), 1);
+		addParallel(new ElevateToHeight(RobotSettings.SWITCH_HEIGHT, 1),  1.5);
 		addParallel(new RotateGrabberDown(0.6), 1.5);
 		addSequential(new ShiftDown(), 0.1);
         addSequential(new DriveAngle(90),1);

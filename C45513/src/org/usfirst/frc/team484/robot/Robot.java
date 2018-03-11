@@ -7,8 +7,6 @@
 
 package org.usfirst.frc.team484.robot;
 
-import edu.wpi.cscore.CvSink;
-import edu.wpi.cscore.CvSource;
 import edu.wpi.cscore.UsbCamera;
 import edu.wpi.cscore.VideoMode.PixelFormat;
 import edu.wpi.first.wpilibj.CameraServer;
@@ -21,11 +19,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.vision.VisionThread;
 
-import org.opencv.core.Mat;
 import org.opencv.core.MatOfPoint;
-import org.opencv.core.Point;
 import org.opencv.core.Rect;
-import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
 import org.usfirst.frc.team484.robot.MatchData.GameFeature;
 import org.usfirst.frc.team484.robot.MatchData.OwnedSide;
@@ -97,12 +92,24 @@ public class Robot extends TimedRobot {
 			position.addObject("(5) Far Right",5);
 			SmartDashboard.putData("Field Position", position);
 			SmartDashboard.setDefaultNumber("Delay", 0);
+			updateChoosers();
 		} catch (Throwable t) {
 			t.printStackTrace();
 		}
 
 		enableCameraServer();
-		visionThread.start(); //Uncomment for vision testing
+		//visionThread.start(); //Uncomment for vision testing
+		RobotIO.logger.log("DS", DriverStation.getInstance());
+		RobotIO.logger.log("PDP", RobotIO.pdp);
+		RobotIO.logger.log("Left", RobotIO.leftDriveMotors);
+		RobotIO.logger.log("Right", RobotIO.rightDriveMotors);
+		RobotIO.logger.log("Left Enc", RobotIO.leftEncoder);
+		RobotIO.logger.log("Right Enc", RobotIO.rightEncoder);
+		RobotIO.logger.log("Drive Stick", RobotIO.driveStick);
+		RobotIO.logger.log("OP Stick", RobotIO.opStick);
+		RobotIO.logger.log("Elevator", RobotIO.elevatorMotor);
+		RobotIO.logger.log("IR", RobotIO.irSensor);
+		RobotIO.logger.log("Pressure", RobotIO.pressureSensor);
 	}
 
 	@Override
@@ -111,7 +118,7 @@ public class Robot extends TimedRobot {
 			RobotIO.logger.endLogging();
 			if (visionThread != null) {
 				if (visionThread.isAlive()) {
-					//visionThread.interrupt(); //Comment out for vision testing
+					visionThread.interrupt(); //Comment out for vision testing
 				}
 			}
 		} catch (Throwable t) {
@@ -180,7 +187,7 @@ public class Robot extends TimedRobot {
 			RobotIO.logger.startLogging("tele");
 			if (visionThread != null) {
 				if (visionThread.isAlive()) {
-					//visionThread.interrupt();
+					visionThread.interrupt();
 				}
 			}
 		} catch (Throwable t) {
@@ -252,8 +259,8 @@ public class Robot extends TimedRobot {
 				UsbCamera camera = CameraServer.getInstance().startAutomaticCapture();
 				camera.setExposureManual(2);
 				camera.setWhiteBalanceAuto();
-				camera.setFPS(120);
-				camera.setVideoMode(PixelFormat.kMJPEG, 320, 240, 120);
+				camera.setFPS(30);
+				camera.setVideoMode(PixelFormat.kMJPEG, 320, 240, 30);
 				isCameraServerUp = true;
 				/*new Thread(() -> {	                
 	                CvSink cvSink = CameraServer.getInstance().getVideo();
@@ -309,7 +316,7 @@ public class Robot extends TimedRobot {
 		}
 	}
 
-	private static int oldPos = 1;
+	private static int oldPos = -1;
 	/**
 	 * Update the SendableChoosers based on field position
 	 */

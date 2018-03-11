@@ -2,7 +2,6 @@ package org.usfirst.frc.team484.robot.commands.auto;
 
 import org.usfirst.frc.team484.robot.commands.CloseGrabber;
 import org.usfirst.frc.team484.robot.commands.DriveAngle;
-import org.usfirst.frc.team484.robot.commands.DriveDistance;
 import org.usfirst.frc.team484.robot.commands.DriveStraight;
 import org.usfirst.frc.team484.robot.commands.ElevateToHeight;
 import org.usfirst.frc.team484.robot.commands.OpenGrabber;

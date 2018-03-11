@@ -2,7 +2,6 @@ package org.usfirst.frc.team484.robot.commands.auto;
 
 import org.usfirst.frc.team484.robot.commands.CloseGrabber;
 import org.usfirst.frc.team484.robot.commands.DriveAngle;
-import org.usfirst.frc.team484.robot.commands.DriveDistance;
 import org.usfirst.frc.team484.robot.commands.DriveStraight;
 import org.usfirst.frc.team484.robot.commands.ElevateToHeight;
 import org.usfirst.frc.team484.robot.commands.OpenGrabber;
@@ -22,7 +21,7 @@ public class RightScaleAngledFromP1 extends CommandGroup {
 
     public RightScaleAngledFromP1() {
     		addSequential(new ShiftUp(), 0.1);
-		addSequential(new DriveStraight(235.2), 4.5);
+		addSequential(new DriveStraight(210.2), 4.5);
 		addSequential(new ShiftDown(), 0.1);
 		addSequential(new DriveAngle(-90), 1.0);
 		addSequential(new ShiftUp(), 0.1);
