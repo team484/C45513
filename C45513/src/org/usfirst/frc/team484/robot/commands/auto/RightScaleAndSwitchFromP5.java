@@ -57,13 +57,13 @@ public class RightScaleAndSwitchFromP5 extends CommandGroup {
 		addSequential(new WaitCommand(0.3));
 		addParallel(new ElevateToHeight(RobotSettings.SWITCH_HEIGHT, 1), 1.5);
 		addSequential(new DriveStraight(-10), 1);
-		addSequential(new ShiftDown(), 0.1);
-		addSequential(new DriveAngle(-25), 1);
-		addSequential(new ShiftUp(), 0.1);
-		addSequential(new WaitForChildren());
-		addSequential(new DriveStraight(45), 1.2);
-		addSequential(new OpenGrabber(), 0.1);
-		addSequential(new WaitCommand(0.5));
-		addSequential(new RotateGrabberUp(1), 1);
+		//addSequential(new ShiftDown(), 0.1);
+		//addSequential(new DriveAngle(-25), 1);
+		//addSequential(new ShiftUp(), 0.1);
+		//addSequential(new WaitForChildren());
+		//addSequential(new DriveStraight(45), 1.2);
+		//addSequential(new OpenGrabber(), 0.1);
+		//addSequential(new WaitCommand(0.5));
+		//addSequential(new RotateGrabberUp(1), 1);
     }
 }

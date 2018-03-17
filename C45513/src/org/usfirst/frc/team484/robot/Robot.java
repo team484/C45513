@@ -359,6 +359,7 @@ public class Robot extends TimedRobot {
 			rrChooser.addObject("Scale Corner", new RightScaleAngledFromP1());
 			
 			llChooser.addObject("Scale and Switch", new LeftScaleAndSwitchFromP1());
+			rlChooser.addObject("Scale and Switch", new LeftScaleAndSwitchFromP1());
 			break;
 		case 3:
 			llChooser.addObject("Center to Left Switch", new LeftSwitchFromP3());
@@ -385,6 +386,7 @@ public class Robot extends TimedRobot {
 			rrChooser.addObject("Scale Corner", new RightScaleAngledFromP5());
 			
 			rrChooser.addObject("Scale and Switch", new RightScaleAndSwitchFromP5());
+			lrChooser.addObject("Scale and Switch", new RightScaleAndSwitchFromP5());
 			break;
 		default:
 			break;
