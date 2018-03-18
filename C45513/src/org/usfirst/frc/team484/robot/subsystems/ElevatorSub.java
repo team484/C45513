@@ -24,8 +24,10 @@ public class ElevatorSub extends Subsystem {
      * Applies an output of 0 to the elevator motor.
      */
     public static void doNothing() {
-		if (RobotIO.elevatorMotor == null) return;
-    		RobotIO.elevatorMotor.set(0);
+    		RobotIO.elevatorMotorL1.set(0);
+    		RobotIO.elevatorMotorL2.set(0);
+    		RobotIO.elevatorMotorR1.set(0);
+    		RobotIO.elevatorMotorR2.set(0);
     }
     
     /**
@@ -33,13 +35,12 @@ public class ElevatorSub extends Subsystem {
      * @param speed - the power output from -1 to 1.
      */
     public static void setRate(double speed) {
-    		if (RobotIO.elevatorMotor == null) return;
     		if (speed > 0 && isUp()) {
-    			RobotIO.elevatorMotor.set(-RobotSettings.ELEVATOR_GRAVITY_COMPENSATION_POWER);
+    			applyPower(-RobotSettings.ELEVATOR_GRAVITY_COMPENSATION_POWER);
     		} else if (speed < 0 && isDown()) {
-    			RobotIO.elevatorMotor.set(-RobotSettings.ELEVATOR_GRAVITY_COMPENSATION_POWER / 2.0);
+    			applyPower(-RobotSettings.ELEVATOR_GRAVITY_COMPENSATION_POWER / 2.0);
     		} else {
-    			RobotIO.elevatorMotor.set(-speed - RobotSettings.ELEVATOR_GRAVITY_COMPENSATION_POWER);
+    			applyPower(-speed - RobotSettings.ELEVATOR_GRAVITY_COMPENSATION_POWER);
     		}
     }
     
@@ -62,6 +63,13 @@ public class ElevatorSub extends Subsystem {
     	if (RobotIO.elevatorUpDI == null) return false;
     	SmartDashboard.putBoolean("is up", RobotIO.elevatorUpDI.get());
     		return !RobotIO.elevatorUpDI.get();
+    }
+    
+    private static void applyPower(double output) {
+    	RobotIO.elevatorMotorL1.set(output);
+    	RobotIO.elevatorMotorL2.set(output);
+    	RobotIO.elevatorMotorR1.set(output);
+    	RobotIO.elevatorMotorR2.set(output);
     }
 }
 

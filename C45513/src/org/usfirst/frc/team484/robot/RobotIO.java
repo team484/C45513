@@ -27,10 +27,11 @@ public class RobotIO {
 
 	public static SpeedControllerGroup leftDriveMotors;
 	public static SpeedControllerGroup rightDriveMotors;
-	public static VictorSP elevatorMotor;
+	public static WPI_TalonSRX elevatorMotorL1;
+	public static WPI_TalonSRX elevatorMotorL2;
+	public static WPI_TalonSRX elevatorMotorR1;
+	public static WPI_TalonSRX elevatorMotorR2;
 	public static VictorSP grabberAngleMotor;
-	public static VictorSP leftClimberMotor;
-	public static VictorSP rightClimberMotor;
 
 	public static DifferentialDrive drive;
 
@@ -101,9 +102,18 @@ public class RobotIO {
 			t.printStackTrace();
 		}
 		try {
-			elevatorMotor = new VictorSP(RobotSettings.ELEVATOR_MOTOR_PORT);
-			elevatorMotor.setName("Elevator", "Motor");
-			elevatorMotor.setInverted(RobotSettings.INVERT_ELEVATOR_MOTOR);
+			elevatorMotorL1 = new WPI_TalonSRX(RobotSettings.ELEVATOR_MOTOR_PORT_L1);
+			elevatorMotorL2 = new WPI_TalonSRX(RobotSettings.ELEVATOR_MOTOR_PORT_L2);
+			elevatorMotorR1 = new WPI_TalonSRX(RobotSettings.ELEVATOR_MOTOR_PORT_R1);
+			elevatorMotorR2 = new WPI_TalonSRX(RobotSettings.ELEVATOR_MOTOR_PORT_R2);
+			elevatorMotorL1.setInverted(RobotSettings.INVERT_ELEVATOR_MOTOR_L1);
+			elevatorMotorL2.setInverted(RobotSettings.INVERT_ELEVATOR_MOTOR_L2);
+			elevatorMotorR1.setInverted(RobotSettings.INVERT_ELEVATOR_MOTOR_R1);
+			elevatorMotorR2.setInverted(RobotSettings.INVERT_ELEVATOR_MOTOR_R2);
+			elevatorMotorL1.setName("Elevator", "L1");
+			elevatorMotorL2.setName("Elevator", "L2");
+			elevatorMotorR1.setName("Elevator", "R1");
+			elevatorMotorR2.setName("Elevator", "R2");
 		} catch (Throwable t) {
 			t.printStackTrace();
 		}
@@ -114,21 +124,6 @@ public class RobotIO {
 		} catch (Throwable t) {
 			t.printStackTrace();
 		}
-		try {
-			leftClimberMotor = new VictorSP(RobotSettings.LEFT_CLIMBER_MOTOR_PORT);
-			leftClimberMotor.setName("Climber", "Left Motor");
-			leftClimberMotor.setInverted(RobotSettings.INVERT_LEFT_CLIMBER_MOTOR);
-		} catch (Throwable t) {
-			t.printStackTrace();
-		}
-		try {
-			rightClimberMotor = new VictorSP(RobotSettings.RIGHT_CLIMBER_MOTOR_PORT);
-			rightClimberMotor.setName("Climber", "Right Motor");
-			rightClimberMotor.setInverted(RobotSettings.INVERT_RIGHT_CLIMBER_MOTOR);
-		} catch (Throwable t) {
-			t.printStackTrace();
-		}
-
 
 		//-----Initialize all rotary encoders-----
 		try {

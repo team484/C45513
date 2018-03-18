@@ -41,7 +41,6 @@ import org.usfirst.frc.team484.robot.commands.auto.LeftScaleFromP1;
 import org.usfirst.frc.team484.robot.commands.auto.LeftScaleFromP5;
 import org.usfirst.frc.team484.robot.commands.auto.SideOfLeftSwitchFromP1;
 import org.usfirst.frc.team484.robot.commands.auto.StraightToSwitch;
-import org.usfirst.frc.team484.robot.subsystems.ClimberSub;
 import org.usfirst.frc.team484.robot.subsystems.DriveSub;
 import org.usfirst.frc.team484.robot.subsystems.ElevatorSub;
 import org.usfirst.frc.team484.robot.subsystems.GrabberAngleSub;
@@ -58,7 +57,6 @@ public class Robot extends TimedRobot {
 	public static final GrabberSub grabberSub = new GrabberSub();
 	public static final ShifterSub shifterSub = new ShifterSub();
 	public static final GrabberAngleSub grabberAngleSub = new GrabberAngleSub();
-	public static final ClimberSub climberSub = new ClimberSub();
 
 	//-----Choosers for Auto Mode-----
 	private static Command autonomousCommand;
@@ -107,7 +105,6 @@ public class Robot extends TimedRobot {
 		RobotIO.logger.log("Right Enc", RobotIO.rightEncoder);
 		RobotIO.logger.log("Drive Stick", RobotIO.driveStick);
 		RobotIO.logger.log("OP Stick", RobotIO.opStick);
-		RobotIO.logger.log("Elevator", RobotIO.elevatorMotor);
 		RobotIO.logger.log("IR", RobotIO.irSensor);
 		RobotIO.logger.log("Pressure", RobotIO.pressureSensor);
 	}

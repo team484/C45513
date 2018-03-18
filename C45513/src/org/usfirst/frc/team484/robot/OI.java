@@ -7,8 +7,6 @@
 
 package org.usfirst.frc.team484.robot;
 
-import org.usfirst.frc.team484.robot.commands.ClimbWithJoystick;
-import org.usfirst.frc.team484.robot.commands.ClimberDoNothing;
 import org.usfirst.frc.team484.robot.commands.GrabberAngleDoNothing;
 import org.usfirst.frc.team484.robot.commands.JoystickDrive;
 import org.usfirst.frc.team484.robot.commands.JoystickElevator;
@@ -35,7 +33,6 @@ public class OI {
 	private static Button lowerGrabber;
 	private static Button raiseGrabber;
 	private static Button toggleGrabber;
-	private static Button climbButton;
 	private static Button teleCubeButton;
 
 	private static Button test;
@@ -81,15 +78,12 @@ public class OI {
 				lowerGrabber = new JoystickButton(RobotIO.opStick, RobotSettings.LOWER_GRABBER_BUTTON);
 				raiseGrabber = new JoystickButton(RobotIO.opStick, RobotSettings.RAISE_GRABBER_BUTTON);
 				toggleGrabber = new JoystickButton(RobotIO.opStick, RobotSettings.TOGGLE_GRABBER_BUTTON);
-				climbButton = new JoystickButton(RobotIO.opStick, RobotSettings.CLIMBER_BUTTON);
 
 				lowerGrabber.whenPressed(new RotateGrabberDown(RobotSettings.GRABBER_ROTATE_SPEED_DOWN));
 				raiseGrabber.whenPressed(new RotateGrabberUp(RobotSettings.GRABBER_ROTATE_SPEED_UP));
 				lowerGrabber.whenReleased(new GrabberAngleDoNothing());
 				raiseGrabber.whenReleased(new GrabberAngleDoNothing());
 				toggleGrabber.whenPressed(new ToggleGrabber());
-				climbButton.whileHeld(new ClimbWithJoystick());
-				climbButton.whenReleased(new ClimberDoNothing());
 				isOpStickSetup = true;
 			}
 		} catch (Throwable t) {

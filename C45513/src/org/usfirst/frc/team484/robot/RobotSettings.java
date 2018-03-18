@@ -32,8 +32,10 @@ public class RobotSettings {
 	public static final boolean INVERT_RIGHT_MOTORS = true;
 	public static final boolean INVERT_ELEVATOR_MOTOR = false;
 	public static final boolean INVERT_GRABBER_ANGLE_MOTOR = false;
-	public static final boolean INVERT_LEFT_CLIMBER_MOTOR = false;
-	public static final boolean INVERT_RIGHT_CLIMBER_MOTOR = false;
+	public static final boolean INVERT_ELEVATOR_MOTOR_L1 = false;
+	public static final boolean INVERT_ELEVATOR_MOTOR_L2 = false;
+	public static final boolean INVERT_ELEVATOR_MOTOR_R1 = true;
+	public static final boolean INVERT_ELEVATOR_MOTOR_R2 = false;
 	
 	public static final double VOLTAGE_TARGET = 7.5; //In volts
 	public static final int CAN_COMMAND_TIMEOUT = 100; //In milliseconds
@@ -47,7 +49,6 @@ public class RobotSettings {
 	public static final int TOGGLE_GRABBER_BUTTON = 1;
 	public static final int RAISE_GRABBER_BUTTON = 3;
 	public static final int LOWER_GRABBER_BUTTON = 2;
-	public static final int CLIMBER_BUTTON = 4;
 	
 	//-----PID Constants-----
 	public static final double DRIVE_DISTANCE_KP = 0.05;
@@ -71,7 +72,7 @@ public class RobotSettings {
 	public static final double MAINTAIN_ANGLE_KD = 0.0;
 	
 	//-----Elevator Settings-----
-	public static final double ELEVATOR_GRAVITY_COMPENSATION_POWER = 0.1;
+	public static final double ELEVATOR_GRAVITY_COMPENSATION_POWER = 0.0;
 	public static final double SWITCH_HEIGHT = 0.5; //Value out of 1. 0 is ground 1 is max
 	
 	//-----Grabber Settings-----
@@ -83,14 +84,13 @@ public class RobotSettings {
 	public static final int[] LEFT_DRIVE_MOTOR_IDS = {1,2,3};
 	public static final int[] RIGHT_DRIVE_MOTOR_IDS = {4,5,6};
 	public static final int IMU_TALON_ID = 4; //Talon the IMU is plugged into
+	public static final int ELEVATOR_MOTOR_PORT_L1 = 7;
+	public static final int ELEVATOR_MOTOR_PORT_L2 = 8;
+	public static final int ELEVATOR_MOTOR_PORT_R1 = 9;
+	public static final int ELEVATOR_MOTOR_PORT_R2 = 10;
 	
 		//-----PWM-----
-	public static final int ELEVATOR_MOTOR_PORT = 1;
-	
 	public static final int GRABBER_ANGLE_MOTOR_PORT = 0;
-	
-	public static final int LEFT_CLIMBER_MOTOR_PORT = 2;
-	public static final int RIGHT_CLIMBER_MOTOR_PORT = 3;
 	
 		//-----DIO-----
 	public static final int LEFT_ENCODER_A_CHANNEL = 0;
