@@ -72,7 +72,7 @@ public class RobotSettings {
 	public static final double MAINTAIN_ANGLE_KD = 0.0;
 	
 	//-----Elevator Settings-----
-	public static final double ELEVATOR_GRAVITY_COMPENSATION_POWER = 0.0;
+	public static final double ELEVATOR_GRAVITY_COMPENSATION_POWER = 0.1;
 	public static final double SWITCH_HEIGHT = 0.5; //Value out of 1. 0 is ground 1 is max
 	
 	//-----Grabber Settings-----
