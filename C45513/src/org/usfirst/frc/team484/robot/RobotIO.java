@@ -3,6 +3,8 @@ package org.usfirst.frc.team484.robot;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.ctre.phoenix.ParamEnum;
+import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.sensors.PigeonIMU;
 
@@ -114,6 +116,17 @@ public class RobotIO {
 			elevatorMotorL2.setName("Elevator", "L2");
 			elevatorMotorR1.setName("Elevator", "R1");
 			elevatorMotorR2.setName("Elevator", "R2");
+			elevatorMotorL1.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 0);
+			elevatorMotorR2.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 0);
+			elevatorMotorL1.configVoltageCompSaturation(10, RobotSettings.CAN_COMMAND_TIMEOUT);
+			elevatorMotorL1.enableVoltageCompensation(true);
+			elevatorMotorL2.configVoltageCompSaturation(10, RobotSettings.CAN_COMMAND_TIMEOUT);
+			elevatorMotorL2.enableVoltageCompensation(true);
+			elevatorMotorR1.configVoltageCompSaturation(10, RobotSettings.CAN_COMMAND_TIMEOUT);
+			elevatorMotorR1.enableVoltageCompensation(true);
+			elevatorMotorR2.configVoltageCompSaturation(10, RobotSettings.CAN_COMMAND_TIMEOUT);
+			elevatorMotorR2.enableVoltageCompensation(true);
+		
 		} catch (Throwable t) {
 			t.printStackTrace();
 		}
@@ -300,5 +313,45 @@ public class RobotIO {
 	 */
 	public static double getAirPressure() {
 		return pressureSensor.getAverageVoltage() * 49.3 - 17.666;
+	}
+	
+	/**
+	 * Fuses the encoder value from both elevator encoders. This method will only return the distance of
+	 * 1 encoder if the 2nd encoder is deemed inoperable.
+	 * @return elevator height [0.0 to 1.0]
+	 */
+	public static double getElevatorHeight() {
+		double p1 = elevatorMotorL1.getSensorCollection().getQuadraturePosition();
+		double p2 = -elevatorMotorR2.getSensorCollection().getQuadraturePosition();
+		
+		if (Math.abs(p1) < 100 ||
+				Math.abs(p1) * 2.0 < Math.abs(p2)) {
+			return p2 * RobotSettings.ELEVATOR_ENCODER_DISTANCE_PER_PULSE;
+		} 
+		if (Math.abs(p2) < 100 ||
+				Math.abs(p2) * 2.0 < Math.abs(p1)) {
+			return p1 * RobotSettings.ELEVATOR_ENCODER_DISTANCE_PER_PULSE;
+		}
+		return (p1 + p2) / 2.0 * RobotSettings.ELEVATOR_ENCODER_DISTANCE_PER_PULSE;
+		
+		
+	}
+	
+	/**
+	 * Fuses the encoder rates from both elevator encoders. This method will only return the rate of
+	 * 1 encoder if the 2nd encoder is deemed inoperable.
+	 * @return elevator speed in heights per second
+	 */
+	public static double getElevatorRate() {
+		double v1 = elevatorMotorL1.getSensorCollection().getQuadratureVelocity();
+		double v2 = -elevatorMotorR2.getSensorCollection().getQuadratureVelocity();
+		
+		if (Math.abs(v1) < 10) {
+			return v2 * RobotSettings.ELEVATOR_ENCODER_DISTANCE_PER_PULSE;
+		} 
+		if (Math.abs(v2) < 10) {
+			return v1 * RobotSettings.ELEVATOR_ENCODER_DISTANCE_PER_PULSE;
+		}
+		return (v1 + v2) / 2.0 * RobotSettings.ELEVATOR_ENCODER_DISTANCE_PER_PULSE;
 	}
 }

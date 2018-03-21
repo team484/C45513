@@ -25,7 +25,7 @@ public class RobotSettings {
 	public static final double HIGH_GEAR_ROTATIONS_PER_ENCODER_PULSE = 2.83/256.0/3.0;
 	public static final EncodingType ENCODER_ENCODING_TYPE = EncodingType.k1X;
 	
-	public static final double ELEVATOR_ENCODER_DISTANCE_PER_PULSE = 1.0 / 6310.0; //In percent/100
+	public static final double ELEVATOR_ENCODER_DISTANCE_PER_PULSE = -1.0/480000.0; //In percent/100
 	
 	//-----Motor Constants-----
 	public static final boolean INVERT_LEFT_MOTORS = true;
@@ -70,6 +70,14 @@ public class RobotSettings {
 	public static final double MAINTAIN_ANGLE_KP = 0.05;
 	public static final double MAINTAIN_ANGLE_KI = 0.001;
 	public static final double MAINTAIN_ANGLE_KD = 0.0;
+	
+	public static final double ELEVATOR_UP_KP = 2;
+	public static final double ELEVATOR_UP_KI = 0;
+	public static final double ELEVATOR_UP_KD = 100;
+	
+	public static final double ELEVATOR_DOWN_KP = 2;
+	public static final double ELEVATOR_DOWN_KI = 0;
+	public static final double ELEVATOR_DOWN_KD = 2;
 	
 	//-----Elevator Settings-----
 	public static final double ELEVATOR_GRAVITY_COMPENSATION_POWER = 0.1;

@@ -3,8 +3,9 @@ package org.usfirst.frc.team484.robot.commands.auto;
 import org.usfirst.frc.team484.robot.commands.CloseGrabber;
 import org.usfirst.frc.team484.robot.commands.DriveAngle;
 import org.usfirst.frc.team484.robot.commands.DriveStraight;
-import org.usfirst.frc.team484.robot.commands.ElevateToHeight;
 import org.usfirst.frc.team484.robot.commands.OpenGrabber;
+import org.usfirst.frc.team484.robot.commands.PIDElevateDownToHeight;
+import org.usfirst.frc.team484.robot.commands.PIDElevateUpToHeight;
 import org.usfirst.frc.team484.robot.commands.RotateGrabberDown;
 import org.usfirst.frc.team484.robot.commands.RotateGrabberUp;
 import org.usfirst.frc.team484.robot.commands.ShiftDown;
@@ -22,7 +23,7 @@ public class RightScaleAngledFromP5 extends CommandGroup {
     public RightScaleAngledFromP5() {
     		addSequential(new ShiftUp(), 0.1);
 		addSequential(new DriveStraight(254.5), 4.5);
-		addParallel(new ElevateToHeight(1.0, 1), 2.5);
+		addParallel(new PIDElevateUpToHeight(1.0), 2.5);
 		addSequential(new ShiftDown(), 0.1);
 		addSequential(new DriveAngle(45), 1);
 		addSequential(new ShiftUp(), 0.1);
@@ -36,6 +37,6 @@ public class RightScaleAngledFromP5 extends CommandGroup {
 		addParallel(new RotateGrabberUp(1), 1);
 		addParallel(new CloseGrabber(), 0.1);
 		addSequential(new WaitForChildren());
-		addSequential(new ElevateToHeight(0, 1), 2.5);
+		addSequential(new PIDElevateDownToHeight(0), 2.5);
     }
 }

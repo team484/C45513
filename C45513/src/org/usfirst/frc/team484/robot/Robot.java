@@ -213,6 +213,7 @@ public class Robot extends TimedRobot {
 		SmartDashboard.putNumber("CubeX", visionCubeX);
 		SmartDashboard.putNumber("CubeY", visionCubeY);
 		SmartDashboard.putNumber("Vision Period", lastVisionUpdate);
+		SmartDashboard.putNumber("Elevator Height", RobotIO.getElevatorHeight());
 	}
 
 	/**

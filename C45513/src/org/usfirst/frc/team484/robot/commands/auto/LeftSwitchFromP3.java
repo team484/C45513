@@ -3,8 +3,8 @@ package org.usfirst.frc.team484.robot.commands.auto;
 import org.usfirst.frc.team484.robot.RobotSettings;
 import org.usfirst.frc.team484.robot.commands.DriveAngle;
 import org.usfirst.frc.team484.robot.commands.DriveStraight;
-import org.usfirst.frc.team484.robot.commands.ElevateToHeight;
 import org.usfirst.frc.team484.robot.commands.OpenGrabber;
+import org.usfirst.frc.team484.robot.commands.PIDElevateUpToHeight;
 import org.usfirst.frc.team484.robot.commands.RotateGrabberDown;
 import org.usfirst.frc.team484.robot.commands.RotateGrabberUp;
 import org.usfirst.frc.team484.robot.commands.ShiftDown;
@@ -24,7 +24,7 @@ public class LeftSwitchFromP3 extends CommandGroup {
         addSequential(new DriveAngle(90),1);
 		addSequential(new ShiftUp(), 0.1);
         addSequential(new DriveStraight(62.1),3);
-		addParallel(new ElevateToHeight(RobotSettings.SWITCH_HEIGHT, 1), 1.5);
+		addParallel(new PIDElevateUpToHeight(RobotSettings.SWITCH_HEIGHT), 1.5);
 		addParallel(new RotateGrabberDown(0.6), 1.5);
 		addSequential(new ShiftDown(), 0.1);
         addSequential(new DriveAngle(-90),1);
