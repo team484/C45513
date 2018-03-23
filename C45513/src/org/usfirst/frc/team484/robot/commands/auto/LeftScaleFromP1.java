@@ -29,7 +29,7 @@ public class LeftScaleFromP1 extends CommandGroup {
 		addSequential(new ShiftUp(), 0.1);
 		addSequential(new WaitForChildren());
 		addParallel(new DriveStraight(25),2);
-		addSequential(new RotateGrabberDown(0.5), 1);
+		addSequential(new RotateGrabberDown(0.5), 0.5);
 		addSequential(new WaitForChildren());
 		addSequential(new OpenGrabber(), 0.1);
 		addSequential(new WaitCommand(0.5));

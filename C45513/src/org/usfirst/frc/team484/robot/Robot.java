@@ -209,11 +209,11 @@ public class Robot extends TimedRobot {
 	public void robotPeriodic() {
 		SmartDashboard.putNumber("Pressure", RobotIO.getAirPressure());
 		SmartDashboard.putNumber("Voltage", RobotIO.pdp.getVoltage());
-		SmartDashboard.putNumber("CubeAngle", visionCubeAngle);
-		SmartDashboard.putNumber("CubeX", visionCubeX);
-		SmartDashboard.putNumber("CubeY", visionCubeY);
-		SmartDashboard.putNumber("Vision Period", lastVisionUpdate);
-		SmartDashboard.putNumber("Elevator Height", RobotIO.getElevatorHeight());
+		//SmartDashboard.putNumber("CubeAngle", visionCubeAngle);
+		//SmartDashboard.putNumber("CubeX", visionCubeX);
+		//SmartDashboard.putNumber("CubeY", visionCubeY);
+		//SmartDashboard.putNumber("Vision Period", lastVisionUpdate);
+		//SmartDashboard.putNumber("Elevator Height", RobotIO.getElevatorHeight());
 	}
 
 	/**

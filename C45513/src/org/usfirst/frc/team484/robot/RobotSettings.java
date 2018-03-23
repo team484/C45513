@@ -38,7 +38,7 @@ public class RobotSettings {
 	public static final boolean INVERT_ELEVATOR_MOTOR_R2 = false;
 	
 	public static final double VOLTAGE_TARGET = 7.5; //In volts
-	public static final int CAN_COMMAND_TIMEOUT = 100; //In milliseconds
+	public static final int CAN_COMMAND_TIMEOUT = 1000; //In milliseconds
 	
 	//-----Joystick Map-----
 	public static final int DRIVE_STICK_PORT = 0;

@@ -15,6 +15,7 @@ import org.usfirst.frc.team484.robot.commands.PIDElevateUpToHeight;
 import org.usfirst.frc.team484.robot.commands.RotateGrabberDown;
 import org.usfirst.frc.team484.robot.commands.RotateGrabberUp;
 import org.usfirst.frc.team484.robot.commands.RotateToCube;
+import org.usfirst.frc.team484.robot.commands.SetVoltageComp;
 import org.usfirst.frc.team484.robot.commands.ShiftDown;
 import org.usfirst.frc.team484.robot.commands.ShiftUp;
 import org.usfirst.frc.team484.robot.commands.TeleScaleCube;
@@ -65,9 +66,12 @@ public class OI {
 				triggerShifting.whenPressed(new ShiftUp());
 				triggerShifting.whenReleased(new ShiftDown());
 				
+				teleCubeButton.whenPressed(new SetVoltageComp(true));
 				teleCubeButton.whenPressed(new TeleScaleCube());
 				teleCubeButton.whenReleased(new JoystickDrive());
 				teleCubeButton.whenReleased(new JoystickElevator());
+				teleCubeButton.whenReleased(new SetVoltageComp(false));
+
 				
 				isDriveStickSetup = true;
 			}
