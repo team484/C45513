@@ -20,7 +20,7 @@ public class JoystickDrive extends Command {
     			DriveSub.linearDrive(0, 0);
     			return;
     		}
-    		DriveSub.squaredDrive(-RobotIO.driveStick.getY(), 0.8 * RobotIO.driveStick.getX());
+    		DriveSub.squaredDrive(-RobotIO.driveStick.getY(), 0.9 * RobotIO.driveStick.getX());
     }
 
     protected boolean isFinished() { return false; }

@@ -36,9 +36,11 @@ import org.usfirst.frc.team484.robot.commands.auto.RightScaleAngledFromP5;
 import org.usfirst.frc.team484.robot.commands.auto.RightScaleFromP1;
 import org.usfirst.frc.team484.robot.commands.auto.RightSwitchFromP3;
 import org.usfirst.frc.team484.robot.commands.auto.RightScaleFromP5;
+import org.usfirst.frc.team484.robot.commands.auto.RightScaleFrontFromP1;
 import org.usfirst.frc.team484.robot.commands.auto.SideOfRightSwitchFromP5;
 import org.usfirst.frc.team484.robot.commands.auto.LeftScaleFromP1;
 import org.usfirst.frc.team484.robot.commands.auto.LeftScaleFromP5;
+import org.usfirst.frc.team484.robot.commands.auto.LeftScaleFrontFromP5;
 import org.usfirst.frc.team484.robot.commands.auto.SideOfLeftSwitchFromP1;
 import org.usfirst.frc.team484.robot.commands.auto.StraightToSwitch;
 import org.usfirst.frc.team484.robot.subsystems.DriveSub;
@@ -107,6 +109,12 @@ public class Robot extends TimedRobot {
 		RobotIO.logger.log("OP Stick", RobotIO.opStick);
 		RobotIO.logger.log("IR", RobotIO.irSensor);
 		RobotIO.logger.log("Pressure", RobotIO.pressureSensor);
+		RobotIO.logger.log("ElevDown", RobotIO.elevatorDownDI);
+		RobotIO.logger.log("ElevUp", RobotIO.elevatorUpDI);
+		RobotIO.logger.log("GrabberDow", RobotIO.grabberAngleDownDI);
+		RobotIO.logger.log("ElevMotor", RobotIO.elevatorMotorL1);
+		RobotIO.logger.log("Shifter", RobotIO.shifterSolenoid);
+		RobotIO.logger.log("Grabber", RobotIO.grabberSolenoid);
 	}
 
 	@Override
@@ -356,6 +364,10 @@ public class Robot extends TimedRobot {
 			rlChooser.addObject("Scale Corner", new LeftScaleAngledFromP1());
 			rrChooser.addObject("Scale Corner", new RightScaleAngledFromP1());
 			
+			lrChooser.addObject("Scale Front", new RightScaleFrontFromP1());
+			rrChooser.addObject("Scale Front", new RightScaleFrontFromP1());
+
+			
 			llChooser.addObject("Scale and Switch", new LeftScaleAndSwitchFromP1());
 			rlChooser.addObject("Scale and Switch", new LeftScaleAndSwitchFromP1());
 			break;
@@ -382,6 +394,10 @@ public class Robot extends TimedRobot {
 			lrChooser.addObject("Scale Corner", new RightScaleAngledFromP5());
 			rlChooser.addObject("Scale Corner", new LeftScaleAngledFromP5());
 			rrChooser.addObject("Scale Corner", new RightScaleAngledFromP5());
+			
+			llChooser.addObject("Scale Front", new LeftScaleFrontFromP5());
+			rlChooser.addObject("Scale Front", new LeftScaleFrontFromP5());
+
 			
 			rrChooser.addObject("Scale and Switch", new RightScaleAndSwitchFromP5());
 			lrChooser.addObject("Scale and Switch", new RightScaleAndSwitchFromP5());

@@ -3,7 +3,6 @@ package org.usfirst.frc.team484.robot;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.ctre.phoenix.ParamEnum;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.sensors.PigeonIMU;
@@ -243,7 +242,6 @@ public class RobotIO {
 			t.printStackTrace();
 		}
 		try {
-			SmartDashboard.putData(pdp);
 			//-----Creates logger-----
 			logger = new RobotLogger(RobotSettings.LOGGER_UPDATE_RATE);
 		} catch (Throwable t) {
@@ -279,11 +277,11 @@ public class RobotIO {
 		if (rightEncoder == null && leftEncoder != null) return leftEncoder.getDistance();
 		if (leftEncoder == null && rightEncoder == null) return 0;
 		if (Math.abs(leftEncoder.getRaw()) < 10 ||
-				Math.abs(leftEncoder.getRaw()) * 2.0 < Math.abs(rightEncoder.getRaw())) {
+				Math.abs(leftEncoder.getRaw()) * 1.5 < Math.abs(rightEncoder.getRaw())) {
 			return rightEncoder.getDistance();
 		} 
 		if (Math.abs(rightEncoder.getRaw()) < 10 ||
-				Math.abs(rightEncoder.getRaw()) * 2.0 < Math.abs(leftEncoder.getRaw())) {
+				Math.abs(rightEncoder.getRaw()) * 1.5 < Math.abs(leftEncoder.getRaw())) {
 			return leftEncoder.getDistance();
 		}
 		return (leftEncoder.getDistance() + rightEncoder.getDistance()) / 2.0;

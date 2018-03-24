@@ -89,6 +89,8 @@ public class RobotLogger {
 	private Thread logThread;
 
 	private String fileName = "";
+	
+	private int matchNum = 0;
 
 	/**
 	 * Creates a new RobotLogger instance with a specified time to wait between recording logs. After an
@@ -257,6 +259,7 @@ public class RobotLogger {
 					log();
 				}
 			};
+			matchNum = DriverStation.getInstance().getMatchNumber();
 			logThread.start();
 		} catch (Throwable t) {
 			t.printStackTrace();
@@ -333,7 +336,7 @@ public class RobotLogger {
 	 */
 	private boolean createWriter() {
 		String timeStamp = new SimpleDateFormat("MM.dd.HH.mm.ss").format(new Date());
-		String fileName = FILE_NAME_PREFIX + this.fileName + timeStamp + FILE_EXTENSION;
+		String fileName = FILE_NAME_PREFIX + matchNum + this.fileName + timeStamp + FILE_EXTENSION;
 		outputFile = new File(activeSaveDirectory.getAbsolutePath() + "/" + fileName);
 		try {
 			writer = new PrintWriter(outputFile);

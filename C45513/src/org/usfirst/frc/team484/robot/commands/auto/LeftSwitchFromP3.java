@@ -31,8 +31,8 @@ public class LeftSwitchFromP3 extends CommandGroup {
 		addSequential(new ShiftUp(), 0.1);
         addSequential(new DriveStraight(80),3);
         addSequential(new OpenGrabber(), 0.1);
-		addSequential(new WaitCommand(1));
-		addSequential(new DriveStraight(-20), 1);
-		addSequential(new RotateGrabberUp(1), 1);
+		//addSequential(new WaitCommand(1));
+		//addSequential(new DriveStraight(-20), 1);
+		//addSequential(new RotateGrabberUp(1), 1);
     }
 }

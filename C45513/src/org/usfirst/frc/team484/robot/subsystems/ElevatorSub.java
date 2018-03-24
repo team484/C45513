@@ -38,8 +38,8 @@ public class ElevatorSub extends Subsystem {
 	public static void setRate(double speed) {
 		if (speed > 0 && isUp()) {
 			applyPower(RobotSettings.ELEVATOR_GRAVITY_COMPENSATION_POWER);
-		} else if (speed < 0 && isDown()) {
-			applyPower(RobotSettings.ELEVATOR_GRAVITY_COMPENSATION_POWER / 2.0);
+		} else if (speed <= 0 && isDown()) {
+			applyPower(RobotSettings.ELEVATOR_GRAVITY_COMPENSATION_POWER / 4.0);
 		} else {
 			applyPower(speed + RobotSettings.ELEVATOR_GRAVITY_COMPENSATION_POWER);
 		}

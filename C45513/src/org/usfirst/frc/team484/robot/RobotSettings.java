@@ -38,7 +38,7 @@ public class RobotSettings {
 	public static final boolean INVERT_ELEVATOR_MOTOR_R2 = false;
 	
 	public static final double VOLTAGE_TARGET = 7.5; //In volts
-	public static final int CAN_COMMAND_TIMEOUT = 1000; //In milliseconds
+	public static final int CAN_COMMAND_TIMEOUT = 100; //In milliseconds
 	
 	//-----Joystick Map-----
 	public static final int DRIVE_STICK_PORT = 0;
@@ -59,7 +59,7 @@ public class RobotSettings {
 	public static final double DRIVE_PID_RATE_TOLERANCE = 0.5; //inches per second
 	public static final double DRIVE_PID_UPDATE_RATE = 0.01; //In seconds
 	
-	public static final double ROTATE_ANGLE_KP = 0.1;
+	public static final double ROTATE_ANGLE_KP = 0.06;
 	public static final double ROTATE_ANGLE_KI = 0;
 	public static final double ROTATE_ANGLE_KD = 0.6;
 	public static final double ROTATE_PID_TOLERANCE = 2; //Degrees
