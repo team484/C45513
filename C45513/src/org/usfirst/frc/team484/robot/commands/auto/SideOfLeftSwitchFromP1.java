@@ -4,6 +4,7 @@ import org.usfirst.frc.team484.robot.RobotSettings;
 import org.usfirst.frc.team484.robot.commands.DriveAngle;
 import org.usfirst.frc.team484.robot.commands.DriveStraight;
 import org.usfirst.frc.team484.robot.commands.OpenGrabber;
+import org.usfirst.frc.team484.robot.commands.PIDElevateDownToHeight;
 import org.usfirst.frc.team484.robot.commands.PIDElevateUpToHeight;
 import org.usfirst.frc.team484.robot.commands.RotateGrabberDown;
 import org.usfirst.frc.team484.robot.commands.RotateGrabberUp;
@@ -31,7 +32,10 @@ public class SideOfLeftSwitchFromP1 extends CommandGroup {
 		addSequential(new DriveStraight(45),1.1); //Total distance - 1/2 robot length - bumper thickness
 		addSequential(new OpenGrabber());
 		addSequential(new WaitCommand(1));
-		addParallel(new DriveStraight(-20), 1);
-		addSequential(new RotateGrabberUp(1), 1);
+		addParallel(new PIDElevateUpToHeight(RobotSettings.SWITCH_HEIGHT + 0.3), 1.5);
+		addSequential(new WaitCommand(1));
+		addParallel(new PIDElevateDownToHeight(RobotSettings.SWITCH_HEIGHT), 1.5);
+		//addParallel(new DriveStraight(-20), 1);
+		//addSequential(new RotateGrabberUp(1), 1);
     }
 }

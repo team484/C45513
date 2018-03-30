@@ -354,14 +354,14 @@ public class Robot extends TimedRobot {
 			llChooser.addObject("Switch Side", new SideOfLeftSwitchFromP1());
 			lrChooser.addObject("Switch Side", new SideOfLeftSwitchFromP1());
 
-			llChooser.addObject("Scale Side", new LeftScaleFromP1());
-			lrChooser.addObject("Scale Side", new RightScaleFromP1());
-			rlChooser.addObject("Scale Side", new LeftScaleFromP1());
-			rrChooser.addObject("Scale Side", new RightScaleFromP1());
+			//llChooser.addObject("Scale Side", new LeftScaleFromP1());
+			//lrChooser.addObject("Scale Side", new RightScaleFromP1());
+			//rlChooser.addObject("Scale Side", new LeftScaleFromP1());
+			//rrChooser.addObject("Scale Side", new RightScaleFromP1());
 
-			llChooser.addObject("Scale Corner", new LeftScaleAngledFromP1());
+			//llChooser.addObject("Scale Corner", new LeftScaleAngledFromP1());
 			lrChooser.addObject("Scale Corner", new RightScaleAngledFromP1());
-			rlChooser.addObject("Scale Corner", new LeftScaleAngledFromP1());
+			//rlChooser.addObject("Scale Corner", new LeftScaleAngledFromP1());
 			rrChooser.addObject("Scale Corner", new RightScaleAngledFromP1());
 			
 			lrChooser.addObject("Scale Front", new RightScaleFrontFromP1());
@@ -385,15 +385,15 @@ public class Robot extends TimedRobot {
 			rlChooser.addObject("Switch Side", new SideOfRightSwitchFromP5());
 			rrChooser.addObject("Switch Side", new SideOfRightSwitchFromP5());
 
-			llChooser.addObject("Scale Side", new LeftScaleFromP5());
-			lrChooser.addObject("Scale Side", new RightScaleFromP5());
-			rlChooser.addObject("Scale Side", new LeftScaleFromP5());
-			rrChooser.addObject("Scale Side", new RightScaleFromP5());
+			//llChooser.addObject("Scale Side", new LeftScaleFromP5());
+			//lrChooser.addObject("Scale Side", new RightScaleFromP5());
+			//rlChooser.addObject("Scale Side", new LeftScaleFromP5());
+			//rrChooser.addObject("Scale Side", new RightScaleFromP5());
 
 			llChooser.addObject("Scale Corner", new LeftScaleAngledFromP5());
-			lrChooser.addObject("Scale Corner", new RightScaleAngledFromP5());
+			//lrChooser.addObject("Scale Corner", new RightScaleAngledFromP5());
 			rlChooser.addObject("Scale Corner", new LeftScaleAngledFromP5());
-			rrChooser.addObject("Scale Corner", new RightScaleAngledFromP5());
+			//rrChooser.addObject("Scale Corner", new RightScaleAngledFromP5());
 			
 			llChooser.addObject("Scale Front", new LeftScaleFrontFromP5());
 			rlChooser.addObject("Scale Front", new LeftScaleFrontFromP5());
