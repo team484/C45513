@@ -15,8 +15,37 @@ import edu.wpi.first.wpilibj.CounterBase.EncodingType;
  * (Basically anything that isn't a physical port on the robot)
  */
 public class RobotSettings {
-	public static final double ROBOT_UPDATE_RATE = 0.01; //In seconds
+	public static final double TIME_STEP = 0.02; //In seconds
 	public static final long LOGGER_UPDATE_RATE = 10; //in milliseconds
+	//-----Autonomous Driving Variables-----//
+	public static final boolean FORCE_PATH_REGEN = false;
+	
+	public static final double MAX_VELOCITY = 1.9; //m/s
+	public static final double MAX_ACCELERATION = 3.5; //m/s^2
+	public static final double MAX_JERK = 60; //m/s^3
+	public static final double WHEELBASE_WIDTH = 23.5 * 0.0254;
+	public static final double ENC_DIFF_PER_DEGREE = 1.7673048601;
+	public static final String SAVE_DIR_POSES = "/home/lvuser/poses/";
+	public static final String SAVE_DIR_TRAJECTORIES = "/home/lvuser/trajectories/";
+	
+	// The first argument is the proportional gain. Usually this will be quite high
+	// The second argument is the integral gain. This is unused for motion profiling
+	// The third argument is the derivative gain. Tweak this if unhappy with the tracking of the trajectory
+	// The fourth argument is the velocity ratio. This is 1 over the maximum velocity provided in the 
+	// trajectory configuration (it translates m/s to a -1 to 1 scale that the motors can read)
+	// The fifth argument is the acceleration gain. Tweak this if you want to get to a higher or lower speed quicker
+	public static final double KP = 1.0;
+	public static final double KI = 0.0;
+	public static final double KD = 0.2;
+	public static final double VELOCITY_RATIO = 1.0/MAX_VELOCITY;
+	public static final double ACCELERATION_GAIN = 0.0;
+	
+	public static final int LEFT_ENC_TIC_PER_ROT = 1130; //Encoder ticks per wheel rotation
+	public static final int RIGHT_ENC_TIC_PER_ROT = -1130; //Encoder ticks per wheel rotation
+	public static final double WHEEL_DIAMETER = 4.0 * 0.0254; //Wheel diameter (in) * m/in
+	
+	
+	public static final double VOLTAGE_TARGET = 8;
 	
 	//-----Encoder Constants-----
 	public static final double LEFT_ENCODER_DISTANCE_PER_PULSE = 0.03337939375 / 3.0; //For inches
@@ -37,7 +66,6 @@ public class RobotSettings {
 	public static final boolean INVERT_ELEVATOR_MOTOR_R1 = true;
 	public static final boolean INVERT_ELEVATOR_MOTOR_R2 = false;
 	
-	public static final double VOLTAGE_TARGET = 7.5; //In volts
 	public static final int CAN_COMMAND_TIMEOUT = 100; //In milliseconds
 	
 	//-----Joystick Map-----

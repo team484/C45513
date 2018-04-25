@@ -18,6 +18,8 @@ import edu.wpi.first.wpilibj.command.WaitCommand;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.vision.VisionThread;
+import jaci.pathfinder.Pathfinder;
+import jaci.pathfinder.Waypoint;
 
 import org.opencv.core.MatOfPoint;
 import org.opencv.core.Rect;
@@ -27,20 +29,14 @@ import org.usfirst.frc.team484.robot.MatchData.OwnedSide;
 import org.usfirst.frc.team484.robot.commands.auto.AutoDoNothing;
 import org.usfirst.frc.team484.robot.commands.auto.CrossAutoLine;
 import org.usfirst.frc.team484.robot.commands.auto.LeftScaleAndSwitchFromP1;
-import org.usfirst.frc.team484.robot.commands.auto.LeftScaleAngledFromP1;
-import org.usfirst.frc.team484.robot.commands.auto.LeftScaleAngledFromP5;
-import org.usfirst.frc.team484.robot.commands.auto.LeftSwitchFromP3;
-import org.usfirst.frc.team484.robot.commands.auto.RightScaleAndSwitchFromP5;
-import org.usfirst.frc.team484.robot.commands.auto.RightScaleAngledFromP1;
-import org.usfirst.frc.team484.robot.commands.auto.RightScaleAngledFromP5;
-import org.usfirst.frc.team484.robot.commands.auto.RightScaleFromP1;
-import org.usfirst.frc.team484.robot.commands.auto.RightSwitchFromP3;
-import org.usfirst.frc.team484.robot.commands.auto.RightScaleFromP5;
-import org.usfirst.frc.team484.robot.commands.auto.RightScaleFrontFromP1;
-import org.usfirst.frc.team484.robot.commands.auto.SideOfRightSwitchFromP5;
 import org.usfirst.frc.team484.robot.commands.auto.LeftScaleFromP1;
 import org.usfirst.frc.team484.robot.commands.auto.LeftScaleFromP5;
-import org.usfirst.frc.team484.robot.commands.auto.LeftScaleFrontFromP5;
+import org.usfirst.frc.team484.robot.commands.auto.LeftSwitchFromP3;
+import org.usfirst.frc.team484.robot.commands.auto.RightScaleAndSwitchFromP5;
+import org.usfirst.frc.team484.robot.commands.auto.RightScaleFromP1;
+import org.usfirst.frc.team484.robot.commands.auto.RightScaleFromP5;
+import org.usfirst.frc.team484.robot.commands.auto.RightSwitchFromP3;
+import org.usfirst.frc.team484.robot.commands.auto.SideOfRightSwitchFromP5;
 import org.usfirst.frc.team484.robot.commands.auto.SideOfLeftSwitchFromP1;
 import org.usfirst.frc.team484.robot.commands.auto.StraightToSwitch;
 import org.usfirst.frc.team484.robot.subsystems.DriveSub;
@@ -83,7 +79,7 @@ public class Robot extends TimedRobot {
 	@Override
 	public void robotInit() {
 		try {
-			setPeriod(RobotSettings.ROBOT_UPDATE_RATE);
+			setPeriod(RobotSettings.TIME_STEP);
 			OI.setupOI();
 			position.addDefault("(1) Far Left",1);
 			position.addObject("(2) Left",2);
@@ -97,6 +93,60 @@ public class Robot extends TimedRobot {
 			t.printStackTrace();
 		}
 
+		//True will automatically recalculate every trajectory below.
+		GenerateTrajectory.forceRegen = RobotSettings.FORCE_PATH_REGEN;
+		GenerateTrajectory.execute("RightScaleFromP1",
+				new Waypoint( 47.3 	,  19.5	, Pathfinder.d2r( 90)),
+				new Waypoint( 47.3	, 167.9	, Pathfinder.d2r( 90)),
+				new Waypoint(121.8	, 233.6 , Pathfinder.d2r(  0)),
+				new Waypoint(200.0	, 233.6	, Pathfinder.d2r(  0)),
+				new Waypoint(239.6	, 285.0	, Pathfinder.d2r( 90)));
+		
+		GenerateTrajectory.execute("LeftScaleFromP1",
+				new Waypoint( 47.3	,  19.5	, Pathfinder.d2r( 90)),
+				new Waypoint( 47.3	, 167.9	, Pathfinder.d2r( 90)),
+				new Waypoint( 62.1	, 289.2	, Pathfinder.d2r( 45)));
+		
+		GenerateTrajectory.execute("LeftScaleFrontFromP1",
+				new Waypoint( 47.3	,  19.5	, Pathfinder.d2r( 90)),
+				new Waypoint( 47.3	, 167.9	, Pathfinder.d2r( 90)),
+				new Waypoint( 84.4	, 285.0	, Pathfinder.d2r( 90)));
+		
+		GenerateTrajectory.execute("LeftSwitchFromP1",
+				new Waypoint( 47.3 	,  19.5	, Pathfinder.d2r( 90)),
+				new Waypoint( 47.3	, 110.0	, Pathfinder.d2r( 90)),
+				new Waypoint( 82.0	, 145.0	, Pathfinder.d2r(  0)));
+		
+		GenerateTrajectory.execute("LeftSwitchFromP3",
+				new Waypoint(167.3	,  19.5 , Pathfinder.d2r( 90)),
+				new Waypoint(120	, 110.3	, Pathfinder.d2r( 90)));
+		
+		GenerateTrajectory.execute("RightSwitchFromP3",
+				new Waypoint(167.3	,  19.5	, Pathfinder.d2r( 90)),
+				new Waypoint(200.3	, 110.3	, Pathfinder.d2r( 90)));
+		
+		GenerateTrajectory.execute("LeftScaleFromP5",
+				new Waypoint(277.3	,  19.5	, Pathfinder.d2r( 90)),
+				new Waypoint(277.3	, 167.9	, Pathfinder.d2r( 90)),
+				new Waypoint(202.3	, 233.6	, Pathfinder.d2r(180)),
+				new Waypoint(124.0	, 233.6	, Pathfinder.d2r(180)),
+				new Waypoint( 84.4	, 285.0	, Pathfinder.d2r( 90)));
+		
+		GenerateTrajectory.execute("RightScaleFromP5",
+				new Waypoint(277.3	,  19.5	, Pathfinder.d2r( 90)),
+				new Waypoint(277.3	, 167.9	, Pathfinder.d2r( 90)),
+				new Waypoint(261.9	, 289.2	, Pathfinder.d2r(135)));
+		
+		GenerateTrajectory.execute("RightScaleFrontFromP5",
+				new Waypoint(277.3	,  19.5	, Pathfinder.d2r( 90)),
+				new Waypoint(277.3	, 167.9	, Pathfinder.d2r( 90)),
+				new Waypoint(239.6	, 285.0	, Pathfinder.d2r( 90)));
+		
+		GenerateTrajectory.execute("RightSwitchFromP5",
+				new Waypoint(277.3	,  19.5	, Pathfinder.d2r( 90)),
+				new Waypoint(277.3	, 110.0	, Pathfinder.d2r( 90)),
+				new Waypoint(232.6	, 145.0	, Pathfinder.d2r(180)));
+		
 		enableCameraServer();
 		//visionThread.start(); //Uncomment for vision testing
 		RobotIO.logger.log("DS", DriverStation.getInstance());
@@ -354,22 +404,12 @@ public class Robot extends TimedRobot {
 			llChooser.addObject("Switch Side", new SideOfLeftSwitchFromP1());
 			lrChooser.addObject("Switch Side", new SideOfLeftSwitchFromP1());
 
-			//llChooser.addObject("Scale Side", new LeftScaleFromP1());
-			//lrChooser.addObject("Scale Side", new RightScaleFromP1());
-			//rlChooser.addObject("Scale Side", new LeftScaleFromP1());
-			//rrChooser.addObject("Scale Side", new RightScaleFromP1());
+			llChooser.addObject("Scale Side", new LeftScaleFromP1());
+			lrChooser.addObject("Scale Side", new RightScaleFromP1());
+			rlChooser.addObject("Scale Side", new LeftScaleFromP1());
+			rrChooser.addObject("Scale Side", new RightScaleFromP1());
 
-			//llChooser.addObject("Scale Corner", new LeftScaleAngledFromP1());
-			lrChooser.addObject("Scale Corner", new RightScaleAngledFromP1());
-			//rlChooser.addObject("Scale Corner", new LeftScaleAngledFromP1());
-			rrChooser.addObject("Scale Corner", new RightScaleAngledFromP1());
-			
-			lrChooser.addObject("Scale Front", new RightScaleFrontFromP1());
-			rrChooser.addObject("Scale Front", new RightScaleFrontFromP1());
-
-			
 			llChooser.addObject("Scale and Switch", new LeftScaleAndSwitchFromP1());
-			rlChooser.addObject("Scale and Switch", new LeftScaleAndSwitchFromP1());
 			break;
 		case 3:
 			llChooser.addObject("Center to Left Switch", new LeftSwitchFromP3());
@@ -385,22 +425,12 @@ public class Robot extends TimedRobot {
 			rlChooser.addObject("Switch Side", new SideOfRightSwitchFromP5());
 			rrChooser.addObject("Switch Side", new SideOfRightSwitchFromP5());
 
-			//llChooser.addObject("Scale Side", new LeftScaleFromP5());
-			//lrChooser.addObject("Scale Side", new RightScaleFromP5());
-			//rlChooser.addObject("Scale Side", new LeftScaleFromP5());
-			//rrChooser.addObject("Scale Side", new RightScaleFromP5());
-
-			llChooser.addObject("Scale Corner", new LeftScaleAngledFromP5());
-			//lrChooser.addObject("Scale Corner", new RightScaleAngledFromP5());
-			rlChooser.addObject("Scale Corner", new LeftScaleAngledFromP5());
-			//rrChooser.addObject("Scale Corner", new RightScaleAngledFromP5());
-			
-			llChooser.addObject("Scale Front", new LeftScaleFrontFromP5());
-			rlChooser.addObject("Scale Front", new LeftScaleFrontFromP5());
-
+			llChooser.addObject("Scale Side", new LeftScaleFromP5());
+			lrChooser.addObject("Scale Side", new RightScaleFromP5());
+			rlChooser.addObject("Scale Side", new LeftScaleFromP5());
+			rrChooser.addObject("Scale Side", new RightScaleFromP5());
 			
 			rrChooser.addObject("Scale and Switch", new RightScaleAndSwitchFromP5());
-			lrChooser.addObject("Scale and Switch", new RightScaleAndSwitchFromP5());
 			break;
 		default:
 			break;

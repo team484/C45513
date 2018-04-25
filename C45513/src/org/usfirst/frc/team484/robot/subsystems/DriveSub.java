@@ -63,5 +63,33 @@ public class DriveSub extends Subsystem {
 	public static void doublePIDDrive() {
 		linearDrive(pidOut1, pidOut2);
 	}
+
+	/**
+	 * zeros drivetrain encoders
+	 */
+	public static void resetEncoders() {
+		RobotIO.leftEncoder.reset();
+		RobotIO.rightEncoder.reset();
+		
+	}
+
+	/**
+	 * Gets the current heading (yaw) of the gyro.
+	 * @return - yaw in degrees
+	 */
+    public static double getHeading() {
+    	double[] ypr = new double[3];
+    	RobotIO.imu.getYawPitchRoll(ypr);
+    	return ypr[0];
+    }
+
+    /**
+     * Drives each side of the robot using independent power outputs.
+     * @param left [-1 to 1] % power to left side of robot
+     * @param right [-1 to 1] % power to right side of robot
+     */
+    public static void tankDrive(double left, double right) {
+    	RobotIO.drive.tankDrive(left, right, false);
+    }
 }
 
