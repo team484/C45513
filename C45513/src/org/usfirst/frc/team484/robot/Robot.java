@@ -95,6 +95,7 @@ public class Robot extends TimedRobot {
 
 		//True will automatically recalculate every trajectory below.
 		GenerateTrajectory.forceRegen = RobotSettings.FORCE_PATH_REGEN;
+		
 		GenerateTrajectory.execute("RightScaleFromP1",
 				new Waypoint( 47.3 	,  19.5	, Pathfinder.d2r( 90)),
 				new Waypoint( 47.3	, 167.9	, Pathfinder.d2r( 90)),
@@ -120,11 +121,9 @@ public class Robot extends TimedRobot {
 		GenerateTrajectory.execute("LeftSwitchFromP3",
 				new Waypoint(167.3	,  19.5 , Pathfinder.d2r( 90)),
 				new Waypoint(120	, 110.3	, Pathfinder.d2r( 90)));
-		
 		GenerateTrajectory.execute("RightSwitchFromP3",
 				new Waypoint(167.3	,  19.5	, Pathfinder.d2r( 90)),
-				new Waypoint(200.3	, 110.3	, Pathfinder.d2r( 90)));
-		
+				new Waypoint(210.3	, 113.3	, Pathfinder.d2r( 90)));
 		GenerateTrajectory.execute("LeftScaleFromP5",
 				new Waypoint(277.3	,  19.5	, Pathfinder.d2r( 90)),
 				new Waypoint(277.3	, 167.9	, Pathfinder.d2r( 90)),
@@ -207,13 +206,12 @@ public class Robot extends TimedRobot {
 			delayCommand = new WaitCommand("Auto Delay", delay);
 			delayCommand.start();
 
-			RobotIO.logger.startLogging("auto");
+			//RobotIO.logger.startLogging("auto");
 			visionThread.start();
 		} catch (Throwable t) {
 			t.printStackTrace();
 		}
 	}
-
 	@Override
 	public void autonomousPeriodic() {
 		try {

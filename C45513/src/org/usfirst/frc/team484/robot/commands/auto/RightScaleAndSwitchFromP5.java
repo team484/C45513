@@ -24,27 +24,18 @@ import edu.wpi.first.wpilibj.command.WaitForChildren;
 public class RightScaleAndSwitchFromP5 extends CommandGroup {
 
     public RightScaleAndSwitchFromP5() {
-    	addSequential( new RightScaleFromP5());
-		addSequential(new ShiftDown(), 0.1);
-		addSequential(new DriveAngle(-180), 2);
-		addSequential(new ShiftUp(), 0.1);
-		addSequential(new DriveStraight(55.0), 3);
-		addSequential(new WaitCommand(0.3));
+    	addSequential( new RightScaleFrontFromP5());
+		addSequential(new DriveStraight(50.0), 3);
+		addSequential(new WaitCommand(0.2));
 		addSequential(new RotateToCube(), 1);
 		addParallel(new RotateGrabberDown(0.6), 1);
 		addParallel(new OpenGrabber(), 0.1);
 		addSequential(new WaitForChildren());
-		addSequential(new DriveUntilCube(50), 2.5);
+		addSequential(new DriveUntilCube(20), 2.5);
 		addSequential(new CloseGrabber(), 0.1);
 		addSequential(new WaitCommand(0.3));
-		addParallel(new PIDElevateUpToHeight(RobotSettings.SWITCH_HEIGHT), 1.5);
-		addSequential(new DriveStraight(-10), 1);
-		addSequential(new ShiftDown(), 0.1);
-		addSequential(new DriveAngle(-25), 1);
-		addSequential(new ShiftUp(), 0.1);
-		addSequential(new WaitForChildren());
-		addSequential(new DriveStraight(45), 1.2);
+		addSequential(new PIDElevateUpToHeight(RobotSettings.SWITCH_HEIGHT), 1.0);
+		addSequential(new DriveStraight(20), 1.0);
 		addSequential(new OpenGrabber(), 0.1);
-		addSequential(new WaitCommand(0.5));
     }
 }

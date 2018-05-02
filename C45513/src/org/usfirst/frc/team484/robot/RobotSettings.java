@@ -15,13 +15,13 @@ import edu.wpi.first.wpilibj.CounterBase.EncodingType;
  * (Basically anything that isn't a physical port on the robot)
  */
 public class RobotSettings {
-	public static final double TIME_STEP = 0.02; //In seconds
+	public static final double TIME_STEP = 0.05; //In seconds
 	public static final long LOGGER_UPDATE_RATE = 10; //in milliseconds
 	//-----Autonomous Driving Variables-----//
 	public static final boolean FORCE_PATH_REGEN = false;
 	
 	public static final double MAX_VELOCITY = 1.9; //m/s
-	public static final double MAX_ACCELERATION = 3.5; //m/s^2
+	public static final double MAX_ACCELERATION = 2.5; //m/s^2
 	public static final double MAX_JERK = 60; //m/s^3
 	public static final double WHEELBASE_WIDTH = 23.5 * 0.0254;
 	public static final double ENC_DIFF_PER_DEGREE = 1.7673048601;
