@@ -27,6 +27,8 @@ public class RobotSettings {
 	public static final double ENC_DIFF_PER_DEGREE = 1.7673048601;
 	public static final String SAVE_DIR_POSES = "/home/lvuser/poses/";
 	public static final String SAVE_DIR_TRAJECTORIES = "/home/lvuser/trajectories/";
+	public static final String SAVE_DIR_ROUTINES = "/home/lvuser/routines/";
+
 	
 	// The first argument is the proportional gain. Usually this will be quite high
 	// The second argument is the integral gain. This is unused for motion profiling

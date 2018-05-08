@@ -4,10 +4,6 @@ import org.usfirst.frc.team484.robot.RobotIO;
 import org.usfirst.frc.team484.robot.RobotSettings;
 import org.usfirst.frc.team484.robot.commands.JoystickElevator;
 
-import edu.wpi.first.wpilibj.PIDController;
-import edu.wpi.first.wpilibj.PIDOutput;
-import edu.wpi.first.wpilibj.PIDSource;
-import edu.wpi.first.wpilibj.PIDSourceType;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -15,7 +11,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  * Subsystem for controlling the cube elevator.
  */
 public class ElevatorSub extends Subsystem {
-	
+	private static double lastOutput = 0;
 	/**
 	 * Sets the command that runs for this subsystem when no
 	 * other commands are running that require the subsystem.
@@ -36,6 +32,7 @@ public class ElevatorSub extends Subsystem {
 	 * @param speed - the power output from -1 to 1.
 	 */
 	public static void setRate(double speed) {
+		lastOutput = speed;
 		if (speed > 0 && isUp()) {
 			applyPower(RobotSettings.ELEVATOR_GRAVITY_COMPENSATION_POWER);
 		} else if (speed <= 0 && isDown()) {
@@ -71,6 +68,10 @@ public class ElevatorSub extends Subsystem {
 		RobotIO.elevatorMotorL2.set(-output);
 		RobotIO.elevatorMotorR1.set(-output);
 		RobotIO.elevatorMotorR2.set(-output);
+	}
+	
+	public static double getPower() {
+		return lastOutput;
 	}
 
 }
