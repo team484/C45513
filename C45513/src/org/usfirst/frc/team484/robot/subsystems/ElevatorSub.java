@@ -5,7 +5,6 @@ import org.usfirst.frc.team484.robot.RobotSettings;
 import org.usfirst.frc.team484.robot.commands.JoystickElevator;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * Subsystem for controlling the cube elevator.
@@ -59,7 +58,6 @@ public class ElevatorSub extends Subsystem {
 	 */
 	public static boolean isUp() {
 		if (RobotIO.elevatorUpDI == null) return false;
-		SmartDashboard.putBoolean("is up", RobotIO.elevatorUpDI.get());
 		return !RobotIO.elevatorUpDI.get();
 	}
 

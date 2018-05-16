@@ -10,7 +10,6 @@ import edu.wpi.first.wpilibj.PIDOutput;
 import edu.wpi.first.wpilibj.PIDSource;
 import edu.wpi.first.wpilibj.PIDSourceType;
 import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * Drives the robot a given distance.
@@ -46,7 +45,6 @@ public class DriveDistance extends Command {
 	public DriveDistance(double distance) {
 		requires(Robot.driveSub);
 		setpoint = distance;
-		SmartDashboard.putData(pid);
 	}
 
 	protected void initialize() {

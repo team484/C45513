@@ -30,13 +30,17 @@ public class RightScaleFrontFromP5 extends CommandGroup {
 		addSequential(new RotateGrabberDown(0.4), 0.4);
 		addSequential(new WaitForChildren());
 		addSequential(new OpenGrabber(), 0.1);
-		addSequential(new DriveStraight(-20), 1);
+		addSequential(new RotateGrabberDown(0.5), 0.5);
+		addSequential(new WaitCommand(0.3), 0.3);
+		CommandGroup reverseAndTurn = new CommandGroup();
+		reverseAndTurn.addSequential(new DriveStraight(-50, 0.65), 3.0);
+		reverseAndTurn.addParallel(new ShiftDown(), 0.1);
+		reverseAndTurn.addSequential(new DriveAngle(160));
+		reverseAndTurn.addSequential(new ShiftUp(), 0.1);
+		addParallel(reverseAndTurn);
+		addSequential(new WaitCommand(0.2),0.2);
 		addParallel(new RotateGrabberUp(1), 1);
-		addSequential(new WaitCommand(0.2), 0.2);
 		addParallel(new PIDElevateDownToHeight(0), 3);
-		addParallel(new ShiftDown(), 0.1);
-		addSequential(new DriveAngle(170));
-		addSequential(new ShiftUp(), 0.1);
-		
+		addSequential(new WaitForChildren(), 3);
     }
 }

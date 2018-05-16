@@ -8,7 +8,6 @@ import org.usfirst.frc.team484.robot.RobotSettings;
 import org.usfirst.frc.team484.robot.subsystems.DriveSub;
 
 import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import jaci.pathfinder.Pathfinder;
 import jaci.pathfinder.Trajectory;
 import jaci.pathfinder.followers.EncoderFollower;

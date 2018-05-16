@@ -20,9 +20,9 @@ import edu.wpi.first.wpilibj.Ultrasonic;
 import edu.wpi.first.wpilibj.VictorSP;
 import edu.wpi.first.wpilibj.Ultrasonic.Unit;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class RobotIO {
+	private static double elevatorOffset = 0.0;
 	private static List<WPI_TalonSRX> leftTalons = new ArrayList<>();
 	private static List<WPI_TalonSRX> rightTalons = new ArrayList<>();
 
@@ -247,6 +247,8 @@ public class RobotIO {
 		} catch (Throwable t) {
 			t.printStackTrace();
 		}
+		elevatorOffset = 0;
+		elevatorOffset = getElevatorHeight();
 	}
 
 	/**
@@ -324,13 +326,13 @@ public class RobotIO {
 		
 		if (Math.abs(p1) < 100 ||
 				Math.abs(p1) * 2.0 < Math.abs(p2)) {
-			return p2 * RobotSettings.ELEVATOR_ENCODER_DISTANCE_PER_PULSE;
+			return p2 * RobotSettings.ELEVATOR_ENCODER_DISTANCE_PER_PULSE - elevatorOffset;
 		} 
 		if (Math.abs(p2) < 100 ||
 				Math.abs(p2) * 2.0 < Math.abs(p1)) {
-			return p1 * RobotSettings.ELEVATOR_ENCODER_DISTANCE_PER_PULSE;
+			return p1 * RobotSettings.ELEVATOR_ENCODER_DISTANCE_PER_PULSE - elevatorOffset;
 		}
-		return (p1 + p2) / 2.0 * RobotSettings.ELEVATOR_ENCODER_DISTANCE_PER_PULSE;
+		return (p1 + p2) / 2.0 * RobotSettings.ELEVATOR_ENCODER_DISTANCE_PER_PULSE - elevatorOffset;
 		
 		
 	}

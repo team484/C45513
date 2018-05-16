@@ -15,9 +15,10 @@ import edu.wpi.first.wpilibj.command.Command;
  *
  */
 public class DriveStraight extends Command {
+	private static double speed = 1.0;
+	private double speedMultiplier = 1.0;
 	private static PIDController pid = new PIDController(RobotSettings.DRIVE_DISTANCE_KP, RobotSettings.DRIVE_DISTANCE_KI, RobotSettings.DRIVE_DISTANCE_KD,
 			new PIDSource() {
-
 		@Override
 		public void setPIDSourceType(PIDSourceType pidSource) {}
 
@@ -31,10 +32,9 @@ public class DriveStraight extends Command {
 			return PIDSourceType.kDisplacement;
 		}
 	}, new PIDOutput() {
-
 		@Override
 		public void pidWrite(double output) {
-			DriveSub.pidOut1 = output;
+			DriveSub.pidOut1 = output * speed;
 			DriveSub.doublePIDDrive();
 		}
 	}, RobotSettings.DRIVE_PID_UPDATE_RATE);
@@ -72,10 +72,17 @@ public class DriveStraight extends Command {
     public DriveStraight(double setpoint) {
         requires(Robot.driveSub);
         this.setpoint = setpoint;
+        speedMultiplier = 1.0;
+    }
+    public DriveStraight(double setpoint, double speedMultiplier) {
+    	requires(Robot.driveSub);
+        this.setpoint = setpoint;
+        this.speedMultiplier = speedMultiplier;
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
+    	speed = speedMultiplier;
     	if (RobotIO.leftEncoder != null) {
 			RobotIO.leftEncoder.reset();
 		}

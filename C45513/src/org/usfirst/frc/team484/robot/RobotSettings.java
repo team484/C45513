@@ -20,7 +20,7 @@ public class RobotSettings {
 	//-----Autonomous Driving Variables-----//
 	public static final boolean FORCE_PATH_REGEN = false;
 	
-	public static final double MAX_VELOCITY = 1.9; //m/s
+	public static final double MAX_VELOCITY = 3.0; //m/s
 	public static final double MAX_ACCELERATION = 2.5; //m/s^2
 	public static final double MAX_JERK = 60; //m/s^3
 	public static final double WHEELBASE_WIDTH = 23.5 * 0.0254;
@@ -47,7 +47,7 @@ public class RobotSettings {
 	public static final double WHEEL_DIAMETER = 4.0 * 0.0254; //Wheel diameter (in) * m/in
 	
 	
-	public static final double VOLTAGE_TARGET = 8;
+	public static final double VOLTAGE_TARGET = 8.3;
 	
 	//-----Encoder Constants-----
 	public static final double LEFT_ENCODER_DISTANCE_PER_PULSE = 0.03337939375 / 3.0; //For inches

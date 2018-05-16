@@ -29,12 +29,10 @@ import org.usfirst.frc.team484.robot.MatchData.OwnedSide;
 import org.usfirst.frc.team484.robot.commands.auto.AutoDoNothing;
 import org.usfirst.frc.team484.robot.commands.auto.CrossAutoLine;
 import org.usfirst.frc.team484.robot.commands.auto.LeftScaleAndSwitchFromP1;
-import org.usfirst.frc.team484.robot.commands.auto.LeftScaleFromP1;
 import org.usfirst.frc.team484.robot.commands.auto.LeftScaleFromP5;
 import org.usfirst.frc.team484.robot.commands.auto.LeftSwitchFromP3;
 import org.usfirst.frc.team484.robot.commands.auto.RightScaleAndSwitchFromP5;
 import org.usfirst.frc.team484.robot.commands.auto.RightScaleFromP1;
-import org.usfirst.frc.team484.robot.commands.auto.RightScaleFromP5;
 import org.usfirst.frc.team484.robot.commands.auto.RightSwitchFromP3;
 import org.usfirst.frc.team484.robot.commands.auto.SideOfRightSwitchFromP5;
 import org.usfirst.frc.team484.robot.commands.auto.SideOfLeftSwitchFromP1;
@@ -100,51 +98,41 @@ public class Robot extends TimedRobot {
 				new Waypoint( 47.3 	,  19.5	, Pathfinder.d2r( 90)),
 				new Waypoint( 47.3	, 167.9	, Pathfinder.d2r( 90)),
 				new Waypoint(121.8	, 233.6 , Pathfinder.d2r(  0)),
-				new Waypoint(200.0	, 233.6	, Pathfinder.d2r(  0)),
-				new Waypoint(239.6	, 285.0	, Pathfinder.d2r( 90)));
-		
-		GenerateTrajectory.execute("LeftScaleFromP1",
-				new Waypoint( 47.3	,  19.5	, Pathfinder.d2r( 90)),
-				new Waypoint( 47.3	, 167.9	, Pathfinder.d2r( 90)),
-				new Waypoint( 62.1	, 289.2	, Pathfinder.d2r( 45)));
+				new Waypoint(220.0	, 233.6	, Pathfinder.d2r(  0)),
+				new Waypoint(279.6	, 285.0	, Pathfinder.d2r( 90)));
 		
 		GenerateTrajectory.execute("LeftScaleFrontFromP1",
 				new Waypoint( 47.3	,  19.5	, Pathfinder.d2r( 90)),
 				new Waypoint( 47.3	, 167.9	, Pathfinder.d2r( 90)),
-				new Waypoint( 84.4	, 285.0	, Pathfinder.d2r( 90)));
+				new Waypoint( 101.0	, 280.0	, Pathfinder.d2r( 90)));
 		
 		GenerateTrajectory.execute("LeftSwitchFromP1",
 				new Waypoint( 47.3 	,  19.5	, Pathfinder.d2r( 90)),
 				new Waypoint( 47.3	, 110.0	, Pathfinder.d2r( 90)),
-				new Waypoint( 82.0	, 145.0	, Pathfinder.d2r(  0)));
+				new Waypoint( 87.0	, 157.0	, Pathfinder.d2r(  0)));
 		
 		GenerateTrajectory.execute("LeftSwitchFromP3",
 				new Waypoint(167.3	,  19.5 , Pathfinder.d2r( 90)),
-				new Waypoint(120	, 110.3	, Pathfinder.d2r( 90)));
+				new Waypoint(120	, 121.3	, Pathfinder.d2r( 90)));
 		GenerateTrajectory.execute("RightSwitchFromP3",
 				new Waypoint(167.3	,  19.5	, Pathfinder.d2r( 90)),
-				new Waypoint(210.3	, 113.3	, Pathfinder.d2r( 90)));
+				new Waypoint(210.3	, 121.3	, Pathfinder.d2r( 90)));
 		GenerateTrajectory.execute("LeftScaleFromP5",
 				new Waypoint(277.3	,  19.5	, Pathfinder.d2r( 90)),
 				new Waypoint(277.3	, 167.9	, Pathfinder.d2r( 90)),
 				new Waypoint(202.3	, 233.6	, Pathfinder.d2r(180)),
-				new Waypoint(124.0	, 233.6	, Pathfinder.d2r(180)),
-				new Waypoint( 84.4	, 285.0	, Pathfinder.d2r( 90)));
-		
-		GenerateTrajectory.execute("RightScaleFromP5",
-				new Waypoint(277.3	,  19.5	, Pathfinder.d2r( 90)),
-				new Waypoint(277.3	, 167.9	, Pathfinder.d2r( 90)),
-				new Waypoint(261.9	, 289.2	, Pathfinder.d2r(135)));
+				new Waypoint(104.0	, 233.6	, Pathfinder.d2r(180)),
+				new Waypoint( 54.4	, 285.0	, Pathfinder.d2r( 90)));
 		
 		GenerateTrajectory.execute("RightScaleFrontFromP5",
 				new Waypoint(277.3	,  19.5	, Pathfinder.d2r( 90)),
 				new Waypoint(277.3	, 167.9	, Pathfinder.d2r( 90)),
-				new Waypoint(239.6	, 285.0	, Pathfinder.d2r( 90)));
+				new Waypoint(226.6	, 280.0	, Pathfinder.d2r( 90)));
 		
 		GenerateTrajectory.execute("RightSwitchFromP5",
 				new Waypoint(277.3	,  19.5	, Pathfinder.d2r( 90)),
 				new Waypoint(277.3	, 110.0	, Pathfinder.d2r( 90)),
-				new Waypoint(232.6	, 145.0	, Pathfinder.d2r(180)));
+				new Waypoint(227.6	, 157.0	, Pathfinder.d2r(180)));
 		
 		enableCameraServer();
 		//visionThread.start(); //Uncomment for vision testing
@@ -265,6 +253,7 @@ public class Robot extends TimedRobot {
 	public void robotPeriodic() {
 		SmartDashboard.putNumber("Pressure", RobotIO.getAirPressure());
 		SmartDashboard.putNumber("Voltage", RobotIO.pdp.getVoltage());
+		SmartDashboard.putNumber("Elevator Height", RobotIO.getElevatorHeight());
 		//SmartDashboard.putNumber("CubeAngle", visionCubeAngle);
 		//SmartDashboard.putNumber("CubeX", visionCubeX);
 		//SmartDashboard.putNumber("CubeY", visionCubeY);
@@ -402,10 +391,8 @@ public class Robot extends TimedRobot {
 			llChooser.addObject("Switch Side", new SideOfLeftSwitchFromP1());
 			lrChooser.addObject("Switch Side", new SideOfLeftSwitchFromP1());
 
-			llChooser.addObject("Scale Side", new LeftScaleFromP1());
-			lrChooser.addObject("Scale Side", new RightScaleFromP1());
-			rlChooser.addObject("Scale Side", new LeftScaleFromP1());
-			rrChooser.addObject("Scale Side", new RightScaleFromP1());
+			lrChooser.addObject("Scale", new RightScaleFromP1());
+			rrChooser.addObject("Scale", new RightScaleFromP1());
 
 			llChooser.addObject("Scale and Switch", new LeftScaleAndSwitchFromP1());
 			break;
@@ -423,10 +410,8 @@ public class Robot extends TimedRobot {
 			rlChooser.addObject("Switch Side", new SideOfRightSwitchFromP5());
 			rrChooser.addObject("Switch Side", new SideOfRightSwitchFromP5());
 
-			llChooser.addObject("Scale Side", new LeftScaleFromP5());
-			lrChooser.addObject("Scale Side", new RightScaleFromP5());
-			rlChooser.addObject("Scale Side", new LeftScaleFromP5());
-			rrChooser.addObject("Scale Side", new RightScaleFromP5());
+			llChooser.addObject("Scale", new LeftScaleFromP5());
+			rlChooser.addObject("Scale", new LeftScaleFromP5());
 			
 			rrChooser.addObject("Scale and Switch", new RightScaleAndSwitchFromP5());
 			break;
