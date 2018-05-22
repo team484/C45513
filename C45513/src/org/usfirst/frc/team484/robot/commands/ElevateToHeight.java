@@ -21,8 +21,7 @@ public class ElevateToHeight extends Command {
 	}
 
 	protected void initialize() {
-		if (RobotIO.elevatorEncoder == null) return;
-		goUp = RobotIO.elevatorEncoder.getDistance() < height;
+		goUp = RobotIO.getElevatorHeight() < height;
 	}
 
 	protected void execute() {

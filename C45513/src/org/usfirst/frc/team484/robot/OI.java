@@ -40,8 +40,6 @@ public class OI {
 	private static Button toggleElevatorUp;
 	private static Button toggleElevatorDown;
 
-	private static Button test;
-
 	private static Button record;
 	private static Button play;
 
@@ -51,13 +49,10 @@ public class OI {
 		shiftUp = new JoystickButton(RobotIO.driveStick, RobotSettings.SHIFT_UP_BUTTON);
 		shiftDown = new JoystickButton(RobotIO.driveStick, RobotSettings.SHIFT_DOWN_BUTTON);
 		triggerShifting = new JoystickButton(RobotIO.driveStick, 1);
-		test = new JoystickButton(RobotIO.driveStick, 8);
 		record = new JoystickButton(RobotIO.driveStick, 6);
 		play = new JoystickButton(RobotIO.driveStick, 7);
 		teleCubeButton = new JoystickButton(RobotIO.driveStick, 4);
 
-		test.whenPressed(new PIDElevateDownToHeight(0.0));
-		test.whenReleased(new JoystickElevator());
 		record.whileHeld(new RecordRoutine("test"));
 		play.whenPressed(new PlayRoutine("test"));
 		shiftUp.whenPressed(new ShiftUp());
@@ -82,9 +77,9 @@ public class OI {
 		lowerGrabber.whenReleased(new GrabberAngleDoNothing());
 		raiseGrabber.whenReleased(new GrabberAngleDoNothing());
 		toggleGrabber.whenPressed(new ToggleGrabber());
-		toggleElevatorUp.whileHeld(new PIDElevateUpToHeight(1.0));
+		toggleElevatorUp.whenPressed(new PIDElevateUpToHeight(1.0));
 		toggleElevatorUp.whenReleased(new JoystickElevator());
-		toggleElevatorDown.whileHeld(new PIDElevateDownToHeight(0.0));
+		toggleElevatorDown.whenPressed(new PIDElevateDownToHeight(0.0));
 		toggleElevatorDown.whenReleased(new JoystickElevator());
 	}
 }

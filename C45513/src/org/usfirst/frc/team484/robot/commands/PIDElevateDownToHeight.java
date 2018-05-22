@@ -55,7 +55,6 @@ public class PIDElevateDownToHeight extends Command {
 	}
 	
 	protected boolean isFinished() {
-		System.out.println(setpoint + ", " + RobotIO.getElevatorHeight() + ", " + ElevatorSub.isDown());
 		return RobotIO.getElevatorHeight() < setpoint || ElevatorSub.isDown();
 	}
 

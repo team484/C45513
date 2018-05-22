@@ -53,8 +53,8 @@ public class RobotState implements Serializable {
 
 		//----- Elevator variables -----
 		elevPwr = ElevatorSub.getPower();
-		elevPos = RobotIO.elevatorEncoder.getDistance();
-		elevVel = RobotIO.elevatorEncoder.getRate();
+		elevPos = RobotIO.getElevatorHeight();
+		elevVel = RobotIO.getElevatorRate();
 		elevatorDown = ElevatorSub.isDown();
 		elevatorUp = ElevatorSub.isUp();
 

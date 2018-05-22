@@ -101,8 +101,8 @@ public class PlayRoutine extends Command {
 		RobotIO.rightDriveMotors.set(state.rightPwr - rightOutput);
 
 		//----- Elevator -----
-		double elevDistOffset = state.elevPos - RobotIO.elevatorEncoder.getDistance();
-		double elevVelOffset = state.elevVel - RobotIO.elevatorEncoder.getRate();
+		double elevDistOffset = state.elevPos - RobotIO.getElevatorHeight();
+		double elevVelOffset = state.elevVel - RobotIO.getElevatorRate();
 		double elevOutput = state.elevPwr + elevDistOffset * kPElev + elevVelOffset * kDElev;
 		if (state.elevatorUp) {
 			elevOutput = 0.3;

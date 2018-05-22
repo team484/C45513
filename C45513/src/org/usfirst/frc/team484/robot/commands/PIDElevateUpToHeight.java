@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj.PIDOutput;
 import edu.wpi.first.wpilibj.PIDSource;
 import edu.wpi.first.wpilibj.PIDSourceType;
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * Drives the robot a given distance.
@@ -23,6 +24,7 @@ public class PIDElevateUpToHeight extends Command {
 
 		@Override
 		public double pidGet() {
+			System.out.println(RobotIO.getElevatorHeight());
 			return RobotIO.getElevatorHeight();
 		}
 
@@ -55,7 +57,7 @@ public class PIDElevateUpToHeight extends Command {
 	}
 	
 	protected boolean isFinished() {
-		return RobotIO.getElevatorHeight() > setpoint || ElevatorSub.isUp() || RobotIO.getElevatorHeight() > 0.9 && RobotIO.getElevatorRate() == 0;
+		return RobotIO.getElevatorHeight() > setpoint || ElevatorSub.isUp() || (RobotIO.getElevatorHeight() > 0.9 && RobotIO.getElevatorRate() == 0);
 	}
 
 	protected void end() {

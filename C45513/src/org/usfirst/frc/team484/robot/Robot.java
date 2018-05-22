@@ -142,8 +142,6 @@ public class Robot extends TimedRobot {
 		RobotIO.logger.log("Right", RobotIO.rightDriveMotors);
 		RobotIO.logger.log("Left Enc", RobotIO.leftEncoder);
 		RobotIO.logger.log("Right Enc", RobotIO.rightEncoder);
-		RobotIO.logger.log("Drive Stick", RobotIO.driveStick);
-		RobotIO.logger.log("OP Stick", RobotIO.opStick);
 		RobotIO.logger.log("IR", RobotIO.irSensor);
 		RobotIO.logger.log("Pressure", RobotIO.pressureSensor);
 		RobotIO.logger.log("ElevDown", RobotIO.elevatorDownDI);
@@ -184,7 +182,6 @@ public class Robot extends TimedRobot {
 	public void autonomousInit() {
 		try {
 			RobotIO.setVoltageComp(true);
-			RobotIO.elevatorEncoder.reset();
 
 			hasAutoCommandStarted = false;
 			autonomousCommand = null;

@@ -38,7 +38,6 @@ public class RobotIO {
 
 	public static Encoder leftEncoder;
 	public static Encoder rightEncoder;
-	public static Encoder elevatorEncoder;
 
 	public static DigitalInput grabberAngleDownDI;
 	public static DigitalInput elevatorDownDI;
@@ -152,14 +151,6 @@ public class RobotIO {
 		} catch (Throwable t) {
 			t.printStackTrace();
 		}
-		try {
-			elevatorEncoder = new Encoder(RobotSettings.ELEVATOR_ENCODER_A_CHANNEL, RobotSettings.ELEVATOR_ENCODER_B_CHANNEL);
-			elevatorEncoder.setDistancePerPulse(RobotSettings.ELEVATOR_ENCODER_DISTANCE_PER_PULSE);
-			elevatorEncoder.setName("Elevator", "Encoder");
-		} catch (Throwable t) {
-			t.printStackTrace();
-		}
-
 
 		//-----Initialize remaining DIO-----
 		try {
@@ -321,6 +312,7 @@ public class RobotIO {
 	 * @return elevator height [0.0 to 1.0]
 	 */
 	public static double getElevatorHeight() {
+		if (elevatorMotorL1 == null || elevatorMotorR1 == null) return 0;
 		double p1 = elevatorMotorL1.getSensorCollection().getQuadraturePosition();
 		double p2 = -elevatorMotorR2.getSensorCollection().getQuadraturePosition();
 		
@@ -345,7 +337,6 @@ public class RobotIO {
 	public static double getElevatorRate() {
 		double v1 = elevatorMotorL1.getSensorCollection().getQuadratureVelocity();
 		double v2 = -elevatorMotorR2.getSensorCollection().getQuadratureVelocity();
-		
 		if (Math.abs(v1) < 10) {
 			return v2 * RobotSettings.ELEVATOR_ENCODER_DISTANCE_PER_PULSE;
 		} 

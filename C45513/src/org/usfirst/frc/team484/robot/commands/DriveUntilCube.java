@@ -116,9 +116,9 @@ public class DriveUntilCube extends Command {
     }
     
     private boolean isAtCube() {
-    	//double ir = RobotIO.irSensor.getAverageVoltage();
-    	return false;
-    	//return ir > 1.3 && ir < 2;
+    	double ir = RobotIO.irSensor.getAverageVoltage();
+    	System.out.println(ir);
+    	return ir > 1.25 && ir < 2.2;
     }
 
 }
