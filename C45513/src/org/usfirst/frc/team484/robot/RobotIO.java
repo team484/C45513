@@ -247,13 +247,17 @@ public class RobotIO {
 	 * PID autonomous operation.
 	 */
 	public static void setVoltageComp(boolean enabled) {
+		setVoltageComp(enabled, RobotSettings.VOLTAGE_TARGET);
+	}
+	
+	public static void setVoltageComp(boolean enabled, double value) {
 		try {
 			for (WPI_TalonSRX talon : leftTalons) {
-				talon.configVoltageCompSaturation(RobotSettings.VOLTAGE_TARGET, RobotSettings.CAN_COMMAND_TIMEOUT);
+				talon.configVoltageCompSaturation(value, RobotSettings.CAN_COMMAND_TIMEOUT);
 				talon.enableVoltageCompensation(enabled);
 			}
 			for (WPI_TalonSRX talon : rightTalons) {
-				talon.configVoltageCompSaturation(RobotSettings.VOLTAGE_TARGET, RobotSettings.CAN_COMMAND_TIMEOUT);
+				talon.configVoltageCompSaturation(value, RobotSettings.CAN_COMMAND_TIMEOUT);
 				talon.enableVoltageCompensation(enabled);
 			}
 		} catch (Throwable t) {

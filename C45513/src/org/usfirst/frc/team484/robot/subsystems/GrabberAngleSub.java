@@ -3,6 +3,7 @@ package org.usfirst.frc.team484.robot.subsystems;
 import org.usfirst.frc.team484.robot.RobotIO;
 import org.usfirst.frc.team484.robot.commands.GrabberAngleDoNothing;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 /**
@@ -14,6 +15,7 @@ public class GrabberAngleSub extends Subsystem {
 	 * Sets the default command for this subsystem to a command that keeps the motor speed at 0.
 	 * This is to ensure that when a rotation command ends, the motor stops.
 	 */
+	private static int lowerCounter = 0;
 	public void initDefaultCommand() {
 		setDefaultCommand(new GrabberAngleDoNothing());
 	}
@@ -26,16 +28,24 @@ public class GrabberAngleSub extends Subsystem {
 	public static void setRotateSpeed(double speed) {
 		
 		if (RobotIO.grabberAngleMotor == null) return;
-		if (speed > 0 && isUp()) {
-			RobotIO.grabberAngleMotor.set(0);
-			return;
-		}
 
 		if (speed < 0 && isDown()) {
 			RobotIO.grabberAngleMotor.set(0);
+			lowerCounter = 0;
 			return;
 		}
 		
+		if (speed >= 0 && isUp()) {
+			if (DriverStation.getInstance().isAutonomous() || lowerCounter > 20) {
+				RobotIO.grabberAngleMotor.set(0);
+				return;
+			}
+			lowerCounter++;
+			RobotIO.grabberAngleMotor.set(-0.1);
+			return;
+
+		}
+		lowerCounter = 0;
 		RobotIO.grabberAngleMotor.set(speed);
 	}
 	

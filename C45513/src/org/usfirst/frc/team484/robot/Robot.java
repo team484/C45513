@@ -30,9 +30,13 @@ import org.usfirst.frc.team484.robot.commands.auto.AutoDoNothing;
 import org.usfirst.frc.team484.robot.commands.auto.CrossAutoLine;
 import org.usfirst.frc.team484.robot.commands.auto.LeftScaleAndSwitchFromP1;
 import org.usfirst.frc.team484.robot.commands.auto.LeftScaleFromP5;
+import org.usfirst.frc.team484.robot.commands.auto.LeftScaleFrontFromP1;
+import org.usfirst.frc.team484.robot.commands.auto.LeftScaleSideFromP1;
 import org.usfirst.frc.team484.robot.commands.auto.LeftSwitchFromP3;
 import org.usfirst.frc.team484.robot.commands.auto.RightScaleAndSwitchFromP5;
 import org.usfirst.frc.team484.robot.commands.auto.RightScaleFromP1;
+import org.usfirst.frc.team484.robot.commands.auto.RightScaleFrontFromP5;
+import org.usfirst.frc.team484.robot.commands.auto.RightScaleSideFromP5;
 import org.usfirst.frc.team484.robot.commands.auto.RightSwitchFromP3;
 import org.usfirst.frc.team484.robot.commands.auto.SideOfRightSwitchFromP5;
 import org.usfirst.frc.team484.robot.commands.auto.SideOfLeftSwitchFromP1;
@@ -99,7 +103,7 @@ public class Robot extends TimedRobot {
 				new Waypoint( 47.3	, 167.9	, Pathfinder.d2r( 90)),
 				new Waypoint(121.8	, 233.6 , Pathfinder.d2r(  0)),
 				new Waypoint(220.0	, 233.6	, Pathfinder.d2r(  0)),
-				new Waypoint(279.6	, 285.0	, Pathfinder.d2r( 90)));
+				new Waypoint(279.6	, 282.0	, Pathfinder.d2r( 90)));
 		
 		GenerateTrajectory.execute("LeftScaleFrontFromP1",
 				new Waypoint( 47.3	,  19.5	, Pathfinder.d2r( 90)),
@@ -122,7 +126,7 @@ public class Robot extends TimedRobot {
 				new Waypoint(277.3	, 167.9	, Pathfinder.d2r( 90)),
 				new Waypoint(202.3	, 233.6	, Pathfinder.d2r(180)),
 				new Waypoint(104.0	, 233.6	, Pathfinder.d2r(180)),
-				new Waypoint( 54.4	, 285.0	, Pathfinder.d2r( 90)));
+				new Waypoint( 54.4	, 282.0	, Pathfinder.d2r( 90)));
 		
 		GenerateTrajectory.execute("RightScaleFrontFromP5",
 				new Waypoint(277.3	,  19.5	, Pathfinder.d2r( 90)),
@@ -390,8 +394,13 @@ public class Robot extends TimedRobot {
 
 			lrChooser.addObject("Scale", new RightScaleFromP1());
 			rrChooser.addObject("Scale", new RightScaleFromP1());
+			
+			rlChooser.addObject("Scale", new LeftScaleFrontFromP1());
 
 			llChooser.addObject("Scale and Switch", new LeftScaleAndSwitchFromP1());
+			
+			llChooser.addObject("Left Scale Side", new LeftScaleSideFromP1());
+			rlChooser.addObject("Left Scale Side", new LeftScaleSideFromP1());
 			break;
 		case 3:
 			llChooser.addObject("Center to Left Switch", new LeftSwitchFromP3());
@@ -410,7 +419,12 @@ public class Robot extends TimedRobot {
 			llChooser.addObject("Scale", new LeftScaleFromP5());
 			rlChooser.addObject("Scale", new LeftScaleFromP5());
 			
+			lrChooser.addObject("Scale", new RightScaleFrontFromP5());
+			
 			rrChooser.addObject("Scale and Switch", new RightScaleAndSwitchFromP5());
+			
+			rrChooser.addObject("Right Scale Side", new RightScaleSideFromP5());
+			lrChooser.addObject("Right Scale Side", new RightScaleSideFromP5());
 			break;
 		default:
 			break;

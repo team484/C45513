@@ -66,7 +66,7 @@ public class RobotSettings {
 	public static final boolean INVERT_ELEVATOR_MOTOR_L1 = false;
 	public static final boolean INVERT_ELEVATOR_MOTOR_L2 = false;
 	public static final boolean INVERT_ELEVATOR_MOTOR_R1 = true;
-	public static final boolean INVERT_ELEVATOR_MOTOR_R2 = false;
+	public static final boolean INVERT_ELEVATOR_MOTOR_R2 = true;
 	
 	public static final int CAN_COMMAND_TIMEOUT = 100; //In milliseconds
 	

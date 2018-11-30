@@ -22,7 +22,7 @@ public class LeftScaleFromP5 extends CommandGroup {
 	public LeftScaleFromP5() {	
     	addSequential(new ShiftUp(), 0.1);
     	addParallel(new DriveUsingTrajectory("LeftScaleFromP5"));
-    	addSequential(new WaitCommand(4));
+    	addSequential(new WaitCommand(3.7));
 		addSequential(new PIDElevateUpToHeight(1.0), 2.5);
 		addSequential(new WaitForChildren());
 		addSequential(new RotateGrabberDown(0.5), 0.5);
